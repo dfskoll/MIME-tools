@@ -381,7 +381,7 @@ sub decode_headers {
 
 I<Instance method.>
 Some MIME messages will contain a part of type C<message/rfc822>
-or C<message/partial>:
+,C<message/partial> or C<message/external-body>:
 literally, the text of an embedded mail/news/whatever message.  
 This option controls whether (and how) we parse that embedded message.
 
@@ -592,6 +592,7 @@ sub process_to_bound {
 #
 # I<Instance method.>
 # Process and return the next header.
+# Return undef if, instead of a header, the encapsulation boundary is found.
 # Fatal exception on failure.
 #
 sub process_header {
@@ -612,6 +613,10 @@ sub process_header {
     foreach (@headlines) { s/[\r\n]+\Z/\n/ }  ### fold
 
     ### How did we do?
+    if ($hdr_rdr->eos_type eq 'DELIM') {
+       $self->whine("bogus part, without CRLF before body");
+       return undef;
+    }
     ($hdr_rdr->eos_type eq 'DONE') or
 	$self->error("unexpected end of header\n");
 
@@ -1000,6 +1005,16 @@ sub process_part {
 
     ### Parse and add the header:
     my $head = $self->process_header($in, $rdr);
+    if (not defined $head) {
+       $self->debug("bogus empty part");
+       $head = $self->interface('HEAD_CLASS')->new;
+       $head->mime_type('text/plain; charset=US-ASCII');
+       $ent->head($head);
+       $ent->bodyhandle($self->new_body_for($head));
+       $ent->bodyhandle->open("w")->close;
+       $self->results->level(-1);
+       return $ent;
+    }
     $ent->head($head);   
 
     ### Tweak the content-type based on context from our parent...
@@ -1015,7 +1030,8 @@ sub process_part {
 	return undef unless defined($self->process_multipart($in, $rdr, $ent));
     }
     elsif (("$type/$subtype" eq "message/rfc822" ||
-	    ("$type/$subtype" eq "message/partial" && $head->mime_attr("content-type.number") == 1)) && 
+	    "$type/$subtype" eq "message/external-body" ||
+	    ("$type/$subtype" eq "message/partial" && $head->mime_attr("content-type.number") == 1)) &&
 	    $self->extract_nested_messages) {
 	$self->debug("attempting to process a nested message");
 	return undef unless defined($self->process_message($in, $rdr, $ent));
