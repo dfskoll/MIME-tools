@@ -361,7 +361,7 @@ sub evil_filename {
     return 1 if (!defined($name) or ($name eq ''));   ### empty
     return 1 if ($name =~ m{(^\s)|(\s+\Z)});  ### leading/trailing whitespace
     return 1 if ($name =~ m{^\.+\Z});         ### dots
-    return 1 if ($name =~ /[^-A-Z0-9_+=.,@\#\$ ]/i); # Only allow good chars
+    return 1 if ($name =~ /[^-A-Z0-9_+=.,@\#\$\% ]/i); # Only allow good chars
     return 1 if ($self->{MPF_MaxName} and
 		 (length($name) > $self->{MPF_MaxName}));
     $self->debug("it's ok");
