@@ -545,7 +545,7 @@ sub output_filename {
 	       $self->{MPF_Ext}{"$type/*"} ||
 	       $self->{MPF_Ext}{"*/*"} ||
 	       ".dat");
-    
+
     ### Get a prefix:
     ++$GFileNo;
     return ($self->output_prefix . "-$$-$GFileNo$ext");
