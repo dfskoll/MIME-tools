@@ -57,8 +57,7 @@ if ($#missing >= 0) {
     foreach $m (@missing) {
 	print "$m\n";
     }
-    print "   *** Please install them before continuing.\n";
-    exit(1);
+    print "   *** Please install them before attempting to use MIME::Tools.\n";
 }
 
 WriteMakefile(
