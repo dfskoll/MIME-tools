@@ -106,12 +106,37 @@ sub encode_it {
     my ($self, $in, $out) = @_;
     my $line;
     my $buf = '';
-
     my $fname = (($self->head &&
 		  $self->head->mime_attr('content-disposition.filename')) ||
 		 '');
     my $B2H = Convert::BinHex->bin2hex;
     $out->print("(This file must be converted with BinHex 4.0)\n");
+
+    # Sigh... get length of file
+    $in->seek(0, 2);
+    my $datalen = $in->tell();
+    $in->seek(0, 0);
+
+    # Build header in core:
+    my @hdrs;
+    my $flen = length($fname);
+    push @hdrs, pack("C", $flen);
+    push @hdrs, pack("a$flen", $fname);
+    push @hdrs, pack('C', 4);
+    push @hdrs, pack('a4', '????');
+    push @hdrs, pack('a4', '????');
+    push @hdrs, pack('n',  0);
+    push @hdrs, pack('N',  $datalen);
+    push @hdrs, pack('N',  0); # Resource length
+    my $hdr = join '', @hdrs;
+
+    # Compute the header CRC:
+    my $crc = Convert::BinHex::binhex_crc("\000\000",
+					  Convert::BinHex::binhex_crc($hdr, 0));
+
+    # Output the header (plus its CRC):
+    $out->print($B2H->next($hdr . pack('n', $crc));
+
     while ($in->read($buf, 1000)) {
 	$out->print($B2H->next($buf));
     }

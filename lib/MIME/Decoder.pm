@@ -251,7 +251,7 @@ Returns true on success, throws exception on failure.
 
 sub encode {
     my ($self, $in, $out, $textual_type) = @_;
-    
+
     ### Coerce old-style filehandles to legit objects, and do it!
     $in  = wraphandle($in);
     $out = wraphandle($out);
