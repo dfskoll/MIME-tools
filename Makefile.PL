@@ -19,6 +19,7 @@ my($m, $foundit, @missing);
 @missing = ();
 foreach $m (sort keys %modules) {
     $foundit = 0;
+    $foundrec = 0;
     my $min_ver = $modules{$m}{min_version};
     my $rec_ver = $modules{$m}{rec_version};
     if (defined($rec_ver)) {
@@ -29,6 +30,7 @@ foreach $m (sort keys %modules) {
 	    print "not found.\n";
 	} else {
 	    $foundit = 1;
+	    $foundrec = 1;
 	    print "ok.\n";
 	}
     }
@@ -41,6 +43,10 @@ foreach $m (sort keys %modules) {
 	$foundit = 1;
 	print "ok.\n";
     }
+    if (defined($rec_ver) and not $found_rec) {
+	print "*** Warning: We can work with version $min_ver of $m, but\n*** we recommend that you upgrade to $rec_ver.\n";
+    }
+
     push @missing, "$m: At least version $min_ver" unless $foundit;
 }
 
