@@ -1,3 +1,8 @@
+WARNING
+    MIME-tools requires MIME::Base64 and MIME::QuotedPrint.  It will work
+    with versions as old as 2.20, but some tests (when you do "make test")
+    will fail for MIME::QuotedPrint older than 3.03.
+
 NAME
     MIME-tools - modules for parsing (and creating!) MIME entities
 
