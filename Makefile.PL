@@ -34,14 +34,16 @@ foreach $m (sort keys %modules) {
 	    print "ok.\n";
 	}
     }
-    print "Checking for module $m (version $min_ver)... ";
-    my $eval = "require $m; $m->VERSION >= $min_ver;";
-    my $r = eval($eval);
-    if ($@ || !$r) {
-	print "not found.\n";
-    } else {
-	$foundit = 1;
-	print "ok.\n";
+    if (!$foundit) {
+	print "Checking for module $m (version $min_ver)... ";
+	my $eval = "require $m; $m->VERSION >= $min_ver;";
+	my $r = eval($eval);
+	if ($@ || !$r) {
+	    print "not found.\n";
+	} else {
+	    $foundit = 1;
+	    print "ok.\n";
+	}
     }
     if (defined($rec_ver) and $foundit and !$foundrec) {
 	print "\n   *** Warning: We can work with version $min_ver of $m, but\n   *** we recommend that you upgrade to version $rec_ver.\n\n";
