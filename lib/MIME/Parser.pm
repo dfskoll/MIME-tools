@@ -182,7 +182,7 @@ package MIME::Parser;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision$, 10;
+$VERSION = "5.413";
 
 ### How to catenate:
 $CAT = '/bin/cat';

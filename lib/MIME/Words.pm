@@ -94,7 +94,7 @@ use MIME::QuotedPrint 3.03;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = substr q$Revision$, 10;
+$VERSION = "5.413";
 
 ### Nonprintables (controls + x7F + 8bit):
 my $NONPRINT = "\\x00-\\x1F\\x7F-\\xFF"; 
