@@ -142,7 +142,7 @@ use IO::Scalar;
 use Carp;
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.416";
+$VERSION = "5.417";
 
 
 #------------------------------
