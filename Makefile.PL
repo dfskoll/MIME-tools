@@ -27,7 +27,7 @@ foreach $m (sort keys %modules) {
 	my $eval = "require $m; $m->VERSION >= $rec_ver;";
 	my $r = eval($eval);
 	if ($@ || !$r) {
-	    print "not found.\n";
+	    print "not found.\n --- Fallback: ";
 	} else {
 	    $foundit = 1;
 	    $foundrec = 1;
