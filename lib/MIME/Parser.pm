@@ -865,6 +865,14 @@ sub hunt_for_uuencode {
     }
     $good or do { $self->debug("no one made the cut"); return 0 };
 
+    # If a decoder doesn't exist for this type, forget it!
+    my $decoder = MIME::Decoder->new(($how_encoded eq 'uu')?'x-uuencode'
+						     :'binhex');
+    unless (defined($decoder)) {
+	$self->debug("No decoder for $how_encoded attachments");
+	return 0;
+    }
+
     ### New entity:
     my $top_ent = $ent->dup;      ### no data yet
     $top_ent->make_multipart;
@@ -872,8 +880,6 @@ sub hunt_for_uuencode {
 
     ### Made the first cut; on to the real stuff:
     $ENCODED->seek(0,0);
-    my $decoder = MIME::Decoder->new(($how_encoded eq 'uu')?'x-uuencode'
-						     :'binhex');
     $self->whine("Found a $how_encoded attachment");
     my $pre;
     while (1) {

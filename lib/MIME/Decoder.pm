@@ -169,7 +169,9 @@ sub new {
 
     ### Create the new object (if we can):
     my $self = { MD_Encoding => lc($encoding) };
-    require $concrete_path;
+    unless (eval "require '$concrete_path';") {
+	return undef;
+    }
     bless $self, $concrete_name;
     $self->init(@args);
 }

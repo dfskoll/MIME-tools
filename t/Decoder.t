@@ -44,8 +44,12 @@ $T->msg($has_gzip
 my ($e, $eno) = (undef, 0);
 foreach $e (@encodings) {
     ++$eno;
-    my $decoder = new MIME::Decoder $e;
-    $decoder or next;
+    my $decoder = MIME::Decoder->new($e);
+    unless(defined($decoder)) {
+	$T->msg("Encoding/decoding of $e not supported -- skipping test");
+	$T->ok(1);
+	next;
+    }
 
     $T->msg("Encoding/decoding of $e");
     my $infile  = $T->catfile('.', 'testin', 'fun.txt');
