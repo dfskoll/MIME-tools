@@ -27,12 +27,12 @@ The B<decoder> does a line-by-line translation from input to output.
 
 The B<encoder> does a line-by-line translation, breaking lines
 so that they fall under the standard 76-character limit for this
-encoding.  
+encoding.
 
 =back
 
 
-B<Note:> just like MIME::QuotedPrint, we currently use the 
+B<Note:> just like MIME::QuotedPrint, we currently use the
 native C<"\n"> for line breaks, and not C<CRLF>.  This may
 need to change in future versions.
 
@@ -41,7 +41,7 @@ need to change in future versions.
 
 Eryq (F<eryq@zeegee.com>), ZeeGee Software Inc (F<http://www.zeegee.com>).
 
-All rights reserved.  This program is free software; you can redistribute 
+All rights reserved.  This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
 
 
@@ -65,7 +65,7 @@ $VERSION = substr q$Revision$, 10;
 #
 # encode_qp_really STRING TEXTUAL_TYPE_FLAG
 #
-# Encode QP, and then follow guideline 8 from RFC 2049 (thanks to Denis 
+# Encode QP, and then follow guideline 8 from RFC 2049 (thanks to Denis
 # N. Antonioli) whereby we make things a little safer for the transport
 # and storage of messages.  WARNING: we can only do this if the line won't
 # grow beyond 76 characters!
@@ -98,23 +98,23 @@ sub decode_it {
 	# an encoded CR before the newline this means the PDF is broken.
 	#
 	if (!$init) {
-		$init = 1;
-		if ($_ =~ /^%PDF-[0-9\.]+=0D/ && $_ !~ /(?!=0D)\n$/) {
-			$badpdf = 1;
-		}
+	    $init = 1;
+	    if ($_ =~ /^%PDF-[0-9\.]+=0D/ && $_ !~ /=0D\n$/) {
+		$badpdf = 1;
+	    }
 	}
 	#
 	# Decode everything with decode_qp() except corrupted PDFs.
 	#
 	if ($badpdf) {
-		my $output = $_;
-		$output =~ s/[ \t]+?(\r?\n)/$1/g;
-		$output =~ s/=\r?\n//g;
-		$output =~ s/(^$|[^\r])\n\Z/$1\r\n/;
-		$output =~ s/=([\da-fA-F]{2})/pack("C", hex($1))/ge;
-		$out->print($output);
+	    my $output = $_;
+	    $output =~ s/[ \t]+?(\r?\n)/$1/g;
+	    $output =~ s/=\r?\n//g;
+	    $output =~ s/(^$|[^\r])\n\Z/$1\r\n/;
+	    $output =~ s/=([\da-fA-F]{2})/pack("C", hex($1))/ge;
+	    $out->print($output);
 	} else {
-		$out->print(decode_qp($_));
+	    $out->print(decode_qp($_));
 	}
     }
     1;
