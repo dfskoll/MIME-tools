@@ -82,7 +82,6 @@ sub decode_it {
     while ($len > length($data)+21 && defined($line = $in->getline)) {
 	$data .= $H2B->next($line);
     }
-    print STDERR "DATA = $data, $len\n";
     $data = substr($data, 22+$len);
     $out->print($data);
     while (defined($_ = $in->getline)) {
