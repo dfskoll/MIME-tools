@@ -15,7 +15,7 @@ my %modules =
  'File::Path' =>     { min_version => "1" }
  );
 
-my($m, $foundit, @missing);
+my($m, $foundit, $foundrec, @missing);
 @missing = ();
 foreach $m (sort keys %modules) {
     $foundit = 0;
