@@ -328,7 +328,9 @@ in generating a disk file name?  It is if any of these are true:
 
     * it is empty
     * it is a string of dots: ".", "..", etc.
-    * it contains a known "path" character: '/' '\' ':' '[' ']'
+    * it contains characters not in the set: "A" - "Z", "a" - "z",
+      "0" - "9", "-", "_", "+", "=", ".", ",", "@", "#",
+      "$", and " ".
     * it is too long
 
 If you just want to change this behavior, you should override 
@@ -359,10 +361,9 @@ sub evil_filename {
     return 1 if (!defined($name) or ($name eq ''));   ### empty
     return 1 if ($name =~ m{(^\s)|(\s+\Z)});  ### leading/trailing whitespace
     return 1 if ($name =~ m{^\.+\Z});         ### dots
-    return 1 if ($name =~ /((?:[\[\]\\\/\<\>\|\?\*\:\"]|\p{IsCntrl}))/); ### path or special characters
-    return 1 if ($self->{MPF_MaxName} and 
+    return 1 if ($name =~ /[^-A-Z0-9_+=.,@\#\$ ]/i); # Only allow good chars
+    return 1 if ($self->{MPF_MaxName} and
 		 (length($name) > $self->{MPF_MaxName}));
-    
     $self->debug("it's ok");
     0;
 }
@@ -391,16 +392,16 @@ See L<MIME::WordDecoder/unmime> for more details.
 
 sub exorcise_filename {
     my ($self, $fname) = @_;
-    
+
     ### Isolate to last path element:
     my $last = $fname; $last =~ s{^.*[/\\\[\]:]}{};
     if ($last and !$self->evil_filename($last)) {
 	$self->debug("looks like I can use the last path element");
 	return $last;
-    }   
+    }
 
     ### Break last element into root and extension, and truncate:
-    my ($root, $ext) = (($last =~ /^(.*)\.([^\.]+)\Z/) 
+    my ($root, $ext) = (($last =~ /^(.*)\.([^\.]+)\Z/)
 			? ($1, $2)
 			: ($last, ''));
     ### Delete leading and trailing whitespace
@@ -414,7 +415,14 @@ sub exorcise_filename {
 	$self->debug("looks like I can use the truncated last path element");
 	return $trunc;
     }
-        
+
+    ### Remove all bad characters
+    $trunc =~ s/([^-A-Z0-9_+=.,@\#\$ ])/sprintf("%%%02X", unpack("C", $1))/ige;
+    if (!$self->evil_filename($trunc)) {
+	$self->debug("looks like I can use a munged version of the truncated last path element");
+	return $trunc;
+    }
+
     ### Hope that works:
     undef;
 }
@@ -645,7 +653,7 @@ sub output_path {
 
     ### Get the output directory:
     my $dir = $self->output_dir($head);
-    
+
     ### Get the output filename, decoding into the local character set:
     my $fname = unmime $head->recommended_filename;
 
