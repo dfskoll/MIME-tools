@@ -21,6 +21,7 @@ examples/mimetour
 lib/MIME/Body.pm
 lib/MIME/Decoder.pm
 lib/MIME/Decoder/Base64.pm
+lib/MIME/Decoder/BinHex.pm
 lib/MIME/Decoder/Binary.pm
 lib/MIME/Decoder/Gzip64.pm
 lib/MIME/Decoder/NBit.pm
