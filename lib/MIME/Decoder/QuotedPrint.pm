@@ -75,8 +75,7 @@ $VERSION = "5.415";
 BEGIN {
     if (!defined(&encode_qp_threearg)) {
         if ($::MIME::QuotedPrint::VERSION >= 3.01) {
-            eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift, shift, shif\
-t); }';
+            eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift, shift, shift); }';
         } else {
             eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift); }';
         }
