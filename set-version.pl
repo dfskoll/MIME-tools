@@ -27,6 +27,7 @@ sub fix_version($$) {
     }
     close(IN);
     close(OUT);
+    rename("$fname.new", "$fname") or die("Can't rename $fname.new to $fname: $!");
 }
 
 do './lib/MIME/Tools.pm';
