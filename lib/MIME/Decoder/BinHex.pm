@@ -135,7 +135,7 @@ sub encode_it {
 					  Convert::BinHex::binhex_crc($hdr, 0));
 
     # Output the header (plus its CRC):
-    $out->print($B2H->next($hdr . pack('n', $crc));
+    $out->print($B2H->next($hdr . pack('n', $crc)));
 
     while ($in->read($buf, 1000)) {
 	$out->print($B2H->next($buf));
