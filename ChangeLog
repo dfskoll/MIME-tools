@@ -1,4 +1,25 @@
+2004-09-08  David F. Skoll  <dfs@roaringpenguin.com>
+
+	* 5.412-RC-3 RELEASED
+
+	* Add missing support for BinHex decoding.
+
+	* Skip BinHex decoding if prerequisite modules not installed.
+
+	* Fix BinHex decoder so it encodes correctly; regression test for
+	BinHex encoding now passes.
+
+	* Require MIME::QuotedPrint 3.03 or newer.
+
+	* Rename variable "$jkfis" to "$how_encoded"
+
+	* Correct attribution of changes in changelog.
+
+	* Correct bad regexp test for "bad PDF" files.
+
 2004-09-07  David F. Skoll  <dfs@roaringpenguin.com>
+
+	* 5.412-RC-1 RELEASED
 
 	* lib/MIME/Parser/Filer.pm (evil_filename): Make evil_filename
 	more paranoid (Julian Field and Martin Blapp)
