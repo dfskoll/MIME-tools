@@ -357,8 +357,9 @@ sub evil_filename {
     $self->debug("is this evil? '$name'");
 
     return 1 if (!defined($name) or ($name eq ''));   ### empty
+    return 1 if ($name =~ m{(^\s)|(\s+\Z)});  ### leading/trailing whitespace
     return 1 if ($name =~ m{^\.+\Z});         ### dots
-    return 1 if ($name =~ tr{\\/:[]}{});      ### path characters
+    return 1 if ($name =~ /((?:[\[\]\\\/\<\>\|\?\*\:\"]|\p{IsCntrl}))/); ### path or special characters
     return 1 if ($self->{MPF_MaxName} and 
 		 (length($name) > $self->{MPF_MaxName}));
     
@@ -402,6 +403,9 @@ sub exorcise_filename {
     my ($root, $ext) = (($last =~ /^(.*)\.([^\.]+)\Z/) 
 			? ($1, $2)
 			: ($last, ''));
+    ### Delete leading and trailing whitespace
+    $root =~ s/^\s+//;
+    $ext  =~ s/\s+$//;
     $root = substr($root, 0, ($self->{MPF_TrimRoot} || 14));
     $ext  = substr($ext,  0, ($self->{MPF_TrimExt}  ||  3));
     $ext =~ /^\w+$/ or $ext = "dat";
