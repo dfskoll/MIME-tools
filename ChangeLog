@@ -1,0 +1,29 @@
+2004-09-07  David F. Skoll  <dfs@roaringpenguin.com>
+
+	* lib/MIME/Parser/Filer.pm (evil_filename): Make evil_filename
+	more paranoid (Martin Blapp)
+
+	* lib/MIME/Parser/Filer.pm (exorcise_filename): Delete leading and
+	trailing whitespace (Martin Blapp)
+
+	* Remove all the Benchmark code (Martin Blapp)
+
+	* lib/MIME/Decoder.pm: Add support for BinHex encoded attachments
+	(Martin Blapp)
+
+	* lib/MIME/Decoder.pm: Require MIME::QuotedPrint 3.01 or newer
+	for correct decoding of binary attachments.
+
+	* lib/MIME/Decoder/QuotedPrint.pm: Attempt to deal sanely with
+	PDF files encoded using quoted-printable encoding by Outlook,
+	which does not follow the RFC guidelines.  (Martin Blapp)
+
+	* lib/MIME/Field/ParamVal.pm: Deal with RFC2231-encoded parameters.
+
+	* lib/MIME/Head.pm: Correct "7-bit", "7 bit" and "7_bit" to 7bit;
+	likewise for 8bit lookalikes.  (Martin Blapp)
+
+	* lib/MIME/Parser.pm: Add max_parts method to limit maximum number
+	of MIME parts we are willing to parse.
+
+	* DSKOLL took over maintainership of MIME::tools at version 5.411a.

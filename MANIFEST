@@ -1,6 +1,8 @@
 COPYING
+ChangeLog
 INSTALLING
 MANIFEST
+META.yml
 Makefile.PL
 README
 README-OR-DIE
@@ -151,4 +153,3 @@ testmsgs/uu-junk.msg
 testmsgs/uu-junk.ref
 testmsgs/uu-zeegee.msg
 testmsgs/uu-zeegee.ref
-META.yml                                 Module meta-data (added by MakeMaker)
