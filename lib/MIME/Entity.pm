@@ -1373,7 +1373,7 @@ sub sign {
     elsif ($params{File}) {                      ### file contents
 	CORE::open SIG, $params{File} or croak "can't open $params{File}: $!";
 	$sig = join('', SIG->getlines);
-	close SIG;
+	close SIG or croak "can't close $params{File}: $!";
     }
     else {
 	croak "no signature given!";
@@ -1404,11 +1404,11 @@ sub sign {
 
 	### Output data back into body, followed by signature:
 	my $line;
-	$io = $self->open("w");
+	$io = $self->open("w") or croak("open: $!");
 	foreach $line (@body) { $io->print($line) };      ### body data
 	(($body[-1]||'') =~ /\n\Z/) or $io->print("\n");  ### ensure final \n
 	$io->print("-- \n$sig");                          ### separator + sig
-	$io->close;	
+	$io->close or croak("close: $!");
 	return 1;         ### done!
     }
 }

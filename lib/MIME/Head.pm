@@ -204,9 +204,9 @@ sub from_file {
 
     ### Parse:
     open(HDR, $file) or return error("open $file: $!");
-    binmode(HDR);  # we expect to have \r\n at line ends, and want to keep 'em.
+    binmode(HDR) or return error("binmode $file: $!");  # we expect to have \r\n at line ends, and want to keep 'em.
     $self = $class->new(\*HDR, @opts);      ### now, $self is instance or undef
-    close(HDR);
+    close(HDR) or return error("close $file: $!");
     $self;
 }
 
