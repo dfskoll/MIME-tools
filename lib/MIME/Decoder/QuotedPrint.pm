@@ -110,7 +110,7 @@ sub decode_it {
 	    my $output = $_;
 	    $output =~ s/[ \t]+?(\r?\n)/$1/g;
 	    $output =~ s/=\r?\n//g;
-	    $output =~ s/(^$|[^\r])\n\Z/$1\r\n/;
+	    $output =~ s/(^|[^\r])\n\Z/$1\r\n/;
 	    $output =~ s/=([\da-fA-F]{2})/pack("C", hex($1))/ge;
 	    $out->print($output);
 	} else {
