@@ -742,16 +742,14 @@ that we remove any trailing spaces:
    must be presumed to have been added by a gateway, and must be deleted.
 
 Returns undef (B<not> the empty string) if either the message is not
-multipart, if there is no specified boundary, or if the boundary is
-illegal (e.g., if it is empty after all trailing whitespace has been
-removed).
+multipart or if there is no specified boundary.
 
 =cut
 
 sub multipart_boundary {
     my $self = shift;
     my $value =  $self->mime_attr('content-type.boundary');
-    (!defined($value) or $value eq '') ? undef : $value;
+    (!defined($value)) ? undef : $value;
 }
 
 #------------------------------
