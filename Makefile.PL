@@ -53,11 +53,11 @@ foreach $m (sort keys %modules) {
 }
 
 if ($#missing >= 0) {
-    print "*** The following required modules are missing:\n";
+    print "\n\n   *** The following required modules are missing:\n";
     foreach $m (@missing) {
 	print "$m\n";
     }
-    print "*** Please install them before continuing.\n";
+    print "   *** Please install them before continuing.\n";
     exit(1);
 }
 
