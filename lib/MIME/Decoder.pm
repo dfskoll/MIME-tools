@@ -112,6 +112,9 @@ use Carp;
 
   ### Non-standard...
     'binhex'     => 'MIME::Decoder::BinHex',
+    'binhex40'   => 'MIME::Decoder::BinHex',
+    'mac-binhex40' => 'MIME::Decoder::BinHex',
+    'mac-binhex' => 'MIME::Decoder::BinHex',
     'x-uu'       => 'MIME::Decoder::UU',
     'x-uuencode' => 'MIME::Decoder::UU',
 
