@@ -72,51 +72,26 @@ $T->begin(12);
 {
     use MIME::Decoder::QuotedPrint;
     my $pair;
-    if ($MIME::QuotedPrint::VERSION < 3.01) {
-	$T->msg("Older version of MIME::QuotedPrint found.  QP decoding will be inaccurate");
-	print STDERR "\n** Older version of MIME::QuotedPrint found.  QP decoding will be inaccurate\n";
-	foreach $pair (["From me",   "=46rom me"],
-		       [".",         "."],  # soft line-break
-		       [".\n",       "=2E\n"], # line-break
-		       [" From you", " From you"]) {
-	    my $out = MIME::Decoder::QuotedPrint::encode_qp_really($pair->[0], 1);
-	    $T->ok_eq($out, $pair->[1],
-		      "bug 970725-DNA: QP use of RFC2049 guideline 8");
-	}
-    } else {
-	foreach $pair (["From me",   "=46rom me=\n"],
-		       [".",         ".=\n"],  # soft line-break
-		       [".\n",       "=2E\n"], # line-break
-		       [" From you", " From you=\n"]) {
-	    my $out = MIME::Decoder::QuotedPrint::encode_qp_really($pair->[0], 1);
-	    $T->ok_eq($out, $pair->[1],
-		      "bug 970725-DNA: QP use of RFC2049 guideline 8");
-	}
+    foreach $pair (["From me",   "=46rom me=\n"],
+		   [".",         ".=\n"],  # soft line-break
+		   [".\n",       "=2E\n"], # line-break
+		   [" From you", " From you=\n"]) {
+	my $out = MIME::Decoder::QuotedPrint::encode_qp_really($pair->[0], 1);
+	$T->ok_eq($out, $pair->[1],
+		  "bug 970725-DNA: QP use of RFC2049 guideline 8");
     }
 }
 # Binary mode
 {
     use MIME::Decoder::QuotedPrint;
     my $pair;
-    if ($MIME::QuotedPrint::VERSION < 3.01) {
-	$T->msg("Older version of MIME::QuotedPrint found.  QP decoding will be inaccurate");
-	foreach $pair (["From me",   "=46rom me"],
-		       [".",         "."],     # soft line-break
-		       [".\n",       "=2E\n"],  # line-break
-		       [" From you", " From you"]) {
-	    my $out = MIME::Decoder::QuotedPrint::encode_qp_really($pair->[0], 0);
-	    $T->ok_eq($out, $pair->[1],
-		      "bug 970725-DNA: QP use of RFC2049 guideline 8");
-	}
-    } else {
-	foreach $pair (["From me",   "=46rom me=\n"],
-		       [".",         ".=\n"],     # soft line-break
-		       [".\n",       ".=0A=\n"],  # line-break
-		       [" From you", " From you=\n"]) {
-	    my $out = MIME::Decoder::QuotedPrint::encode_qp_really($pair->[0], 0);
-	    $T->ok_eq($out, $pair->[1],
-		      "bug 970725-DNA: QP use of RFC2049 guideline 8");
-	}
+    foreach $pair (["From me",   "=46rom me=\n"],
+		   [".",         ".=\n"],     # soft line-break
+		   [".\n",       ".=0A=\n"],  # line-break
+		   [" From you", " From you=\n"]) {
+	my $out = MIME::Decoder::QuotedPrint::encode_qp_really($pair->[0], 0);
+	$T->ok_eq($out, $pair->[1],
+		  "bug 970725-DNA: QP use of RFC2049 guideline 8");
     }
 }
 
