@@ -44,7 +44,7 @@ foreach $m (sort keys %modules) {
 	print "ok.\n";
     }
     if (defined($rec_ver) and $foundit and !$foundrec) {
-	print "*** Warning: We can work with version $min_ver of $m, but\n*** we recommend that you upgrade to $rec_ver.\n";
+	print "\n   *** Warning: We can work with version $min_ver of $m, but\n   *** we recommend that you upgrade to version $rec_ver.\n\n";
     }
 
     push @missing, "$m: At least version $min_ver" unless $foundit;
