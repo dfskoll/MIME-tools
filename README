@@ -1425,7 +1425,7 @@ ACKNOWLEDGMENTS
 
 SEE ALSO
     At the time of this writing ($Date$), the MIME-
-    tools homepage is http://www.mimedefang.org/static/mime-tools.php.
+    tools homepage was http://www.mimedefang.org/static/mime-tools.php.
     Check there for updates and support.
 
     Users of this toolkit may wish to read the documentation of Mail::Header

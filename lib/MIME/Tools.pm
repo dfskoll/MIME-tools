@@ -1971,9 +1971,10 @@ Better yet, email me, and I'll put you in.
 
 =head1 SEE ALSO
 
-At the time of this writing ($Date$), the MIME-tools homepage was
-F<http://www.zeegee.com/code/perl/MIME-tools>.
-Check there for updates and support.
+At the time of this writing ($Date$), the
+MIME-tools homepage was
+F<http://www.mimedefang.org/static/mime-tools.php>.  Check there for
+updates and support.
 
 Users of this toolkit may wish to read the documentation of Mail::Header
 and Mail::Internet.
