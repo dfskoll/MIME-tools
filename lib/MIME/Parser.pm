@@ -798,10 +798,11 @@ sub process_singlepart {
     $self->debug("extract uuencode? ", $self->extract_uuencode);
     $self->debug("encoding?         ", $encoding);
     $self->debug("effective type?   ", $ent->effective_type);
+
     if ($self->extract_uuencode and
 	($encoding =~ /^(7bit|8bit|binary)\Z/) and
-	($ent->effective_type =~ m{^text/plain\Z})) {
-	
+	($ent->effective_type =~ 
+		m{^(?:text/plain|application/mac-binhex40|application/mac-binhex)\Z})) {
 	### Hunt for it:
 	my $uu_ent = eval { $self->hunt_for_uuencode($ENCODED, $ent) };
 	if ($uu_ent) {   ### snark
@@ -841,14 +842,21 @@ sub process_singlepart {
 #
 sub hunt_for_uuencode {
     my ($self, $ENCODED, $ent) = @_;
-    my $good;
+    my ($good, $jkfis);
     local $_;
     $self->debug("sniffing around for UUENCODE");
 
     ### Heuristic:
     $ENCODED->seek(0,0);
     while (defined($_ = $ENCODED->getline)) {
-	last if ($good = /^begin [0-7]{3}/);
+        if ($good = /^begin [0-7]{3}/) {
+          $jkfis = 'uu';
+          last;
+        }
+        if ($good = /^\(This file must be converted with/i) {
+          $jkfis = 'binhex';
+          last;
+        }
     }
     $good or do { $self->debug("no one made the cut"); return 0 };
 
@@ -859,7 +867,9 @@ sub hunt_for_uuencode {
 
     ### Made the first cut; on to the real stuff:
     $ENCODED->seek(0,0);
-    my $decoder = MIME::Decoder->new('x-uuencode');
+    my $decoder = MIME::Decoder->new(($jkfis eq 'uu')?'x-uuencode'
+                                                     :'binhex');
+    $self->whine("Found a $jkfis attachment");
     my $pre;
     while (1) {
 	my @bin_data;
@@ -909,12 +919,11 @@ sub hunt_for_uuencode {
 
     ### Did we get anything?
     @parts or return undef;
-
     ### Set the parts and a nice preamble:
     $top_ent->parts(\@parts);
     $top_ent->preamble
 	(["The following is a multipart MIME message which was extracted\n",
-	  "from a uuencoded message.\n"]);
+          "from a $jkfis-encoded message.\n"]);
     $top_ent;
 }
 

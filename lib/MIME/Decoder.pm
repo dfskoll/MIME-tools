@@ -111,6 +111,7 @@ use Carp;
     'quoted-printable' => 'MIME::Decoder::QuotedPrint',
 
   ### Non-standard...
+    'binhex'     => 'MIME::Decoder::BinHex',
     'x-uu'       => 'MIME::Decoder::UU',
     'x-uuencode' => 'MIME::Decoder::UU',
 
