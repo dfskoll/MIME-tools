@@ -62,7 +62,7 @@ use MIME::QuotedPrint;
 $VERSION = "5.416";
 
 #------------------------------
-# If we have MIME::QuotedPrint 3.01 or later, use the three-argument
+# If we have MIME::QuotedPrint 3.03 or later, use the three-argument
 # version.  If we have an earlier version of MIME::QuotedPrint, we
 # may get the wrong results.  However, on some systems (RH Linux,
 # for example), MIME::QuotedPrint is part of the Perl package and
@@ -74,7 +74,7 @@ $VERSION = "5.416";
 # The following code is horrible.  I know.  Beat me up. --dfs
 BEGIN {
     if (!defined(&encode_qp_threearg)) {
-        if ($::MIME::QuotedPrint::VERSION >= 3.01) {
+        if ($::MIME::QuotedPrint::VERSION >= 3.03) {
             eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift, shift, shift); }';
         } else {
             eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift); }';
