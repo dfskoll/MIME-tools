@@ -847,7 +847,7 @@ sub process_singlepart {
 #
 sub hunt_for_uuencode {
     my ($self, $ENCODED, $ent) = @_;
-    my ($good, $jkfis);
+    my ($good, $how_encoded);
     local $_;
     $self->debug("sniffing around for UUENCODE");
 
@@ -855,11 +855,11 @@ sub hunt_for_uuencode {
     $ENCODED->seek(0,0);
     while (defined($_ = $ENCODED->getline)) {
 	if ($good = /^begin [0-7]{3}/) {
-	  $jkfis = 'uu';
+	  $how_encoded = 'uu';
 	  last;
 	}
 	if ($good = /^\(This file must be converted with/i) {
-	  $jkfis = 'binhex';
+	  $how_encoded = 'binhex';
 	  last;
 	}
     }
@@ -872,9 +872,9 @@ sub hunt_for_uuencode {
 
     ### Made the first cut; on to the real stuff:
     $ENCODED->seek(0,0);
-    my $decoder = MIME::Decoder->new(($jkfis eq 'uu')?'x-uuencode'
+    my $decoder = MIME::Decoder->new(($how_encoded eq 'uu')?'x-uuencode'
 						     :'binhex');
-    $self->whine("Found a $jkfis attachment");
+    $self->whine("Found a $how_encoded attachment");
     my $pre;
     while (1) {
 	my @bin_data;
@@ -928,7 +928,7 @@ sub hunt_for_uuencode {
     $top_ent->parts(\@parts);
     $top_ent->preamble
 	(["The following is a multipart MIME message which was extracted\n",
-	  "from a $jkfis-encoded message.\n"]);
+	  "from a $how_encoded-encoded message.\n"]);
     $top_ent;
 }
 
