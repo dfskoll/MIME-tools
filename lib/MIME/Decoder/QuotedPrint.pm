@@ -109,6 +109,7 @@ sub decode_it {
     my $init = 0;
     my $badpdf = 0;
 
+    local $_;
     while (defined($_ = $in->getline)) {
 	#
 	# Dirty hack to fix QP-Encoded PDFs from MS-Outlook.
@@ -148,6 +149,7 @@ sub decode_it {
 sub encode_it {
     my ($self, $in, $out, $textual_type) = @_;
 
+    local $_;
     while (defined($_ = $in->getline)) {
 	$out->print(encode_qp_really($_, $textual_type));
     }
