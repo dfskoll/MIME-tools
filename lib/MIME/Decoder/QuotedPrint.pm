@@ -54,12 +54,30 @@ $Revision$ $Date$
 
 use vars qw(@ISA $VERSION);
 use MIME::Decoder;
-use MIME::QuotedPrint 3.01;
+use MIME::QuotedPrint 2.03;
 
 @ISA = qw(MIME::Decoder);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
 $VERSION = substr q$Revision$, 10;
+
+#------------------------------
+# If we have MIME::QuotedPrint 3.01 or later, use the three-argument
+# version.  If we have an earlier version of MIME::QuotedPrint, we
+# may get the wrong results.  However, on some systems (RH Linux,
+# for example), MIME::QuotedPrint is part of the Perl package and
+# upgrading it separately breaks their magic auto-update tools.
+
+# The following code is horrible.  I know.  Beat me up. --dfs
+BEGIN {
+    if (!defined(&encode_qp_threearg)) {
+	if ($::MIME::QuotedPrint::VERSION >= 3.01) {
+	    eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift, shift, shift); }';
+	} else {
+	    eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift); }';
+	}
+    }
+}
 
 #------------------------------
 #
@@ -71,7 +89,7 @@ $VERSION = substr q$Revision$, 10;
 # grow beyond 76 characters!
 #
 sub encode_qp_really {
-    my $enc = encode_qp(shift, undef, not shift);
+    my $enc = encode_qp_threearg(shift, undef, not shift);
     if (length($enc) < 74) {
 	$enc =~ s/^\.\n/=2E\n/g;      # force encoding of /^\.$/
 	$enc =~ s/^From /=46rom /g;   # force encoding of /^From /
