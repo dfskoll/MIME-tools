@@ -17,7 +17,7 @@ WriteMakefile(
        ABSTRACT => 'Tools to manipulate MIME messages',
       'dist'       => {
 	  #PREOP        =>"cvu_perl_preop -B -f -m MIME::Tools", 
-	  COMPRESS     =>'gzip',
+	  COMPRESS     =>'gzip -f',
 	  SUFFIX       =>'gz',
       },
 );
