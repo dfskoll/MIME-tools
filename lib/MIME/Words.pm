@@ -83,7 +83,7 @@ Exporter::export_ok_tags('all');
 
 ### Other modules:
 use MIME::Base64;
-use MIME::QuotedPrint 3.03;
+use MIME::QuotedPrint;
 
 
 

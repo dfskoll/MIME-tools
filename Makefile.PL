@@ -8,7 +8,7 @@ my %modules =
  'Mail::Header' =>   { min_version => "1.01" },
  'Mail::Internet' => { min_version => "1.0203" },
  'Mail::Field' =>    { min_version => "1.05" },
- 'MIME::Base64' =>   { min_version => "2.21",
+ 'MIME::Base64' =>   { min_version => "2.20",
 		       rec_version => "3.03" },
  'IO::Stringy' =>    { min_version => "1.211" },
  'File::Spec' =>     { min_version => "0.6" },
@@ -47,6 +47,9 @@ foreach $m (sort keys %modules) {
     }
     if (defined($rec_ver) and $foundit and !$foundrec) {
 	print "\n   *** Warning: We can work with version $min_ver of $m, but\n   *** we recommend that you upgrade to version $rec_ver.\n\n";
+	if ($m eq "MIME::Base64") {
+	    print "   *** Note that if you type 'make test', then tests\n   *** 4, 5 and 7-11 of t/Misc.t may fail because of the old version\n   *** of $m\n";
+	}
     }
 
     push @missing, "$m: At least version $min_ver" unless $foundit;
