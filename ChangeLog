@@ -11,7 +11,7 @@
 	* lib/MIME/Decoder.pm: Add support for BinHex encoded attachments
 	(Martin Blapp)
 
-	* lib/MIME/Decoder.pm: Require MIME::QuotedPrint 3.01 or newer
+	* lib/MIME/Decoder.pm: Require MIME::QuotedPrint 3.03 or newer
 	for correct decoding of binary attachments.
 
 	* lib/MIME/Decoder/QuotedPrint.pm: Attempt to deal sanely with

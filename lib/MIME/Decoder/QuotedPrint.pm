@@ -54,7 +54,7 @@ $Revision$ $Date$
 
 use vars qw(@ISA $VERSION);
 use MIME::Decoder;
-use MIME::QuotedPrint 3.01;
+use MIME::QuotedPrint 3.03;
 
 @ISA = qw(MIME::Decoder);
 

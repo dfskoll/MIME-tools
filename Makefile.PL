@@ -7,7 +7,7 @@ WriteMakefile(
 		       "Mail::Internet"    => 1.0203,
 		       "Mail::Field"       => 1.05,
 
-		       "MIME::QuotedPrint" => 3.01,
+		       "MIME::QuotedPrint" => 3.03,
 	               "MIME::Base64"      => 2.04,
 		       "IO::Stringy"       => 1.211,
 		       "File::Spec"        => 0.6,
