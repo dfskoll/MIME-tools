@@ -1425,8 +1425,8 @@ ACKNOWLEDGMENTS
 
 SEE ALSO
     At the time of this writing ($Date$), the MIME-
-    tools homepage was http://www.zeegee.com/code/perl/MIME-tools. Check
-    there for updates and support.
+    tools homepage is http://www.mimedefang.org/static/mime-tools.php.
+    Check there for updates and support.
 
     Users of this toolkit may wish to read the documentation of Mail::Header
     and Mail::Internet.
