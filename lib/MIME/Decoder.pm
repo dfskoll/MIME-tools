@@ -247,14 +247,14 @@ Returns true on success, throws exception on failure.
 =cut
 
 sub encode {
-    my ($self, $in, $out) = @_;
+    my ($self, $in, $out, $textual_type) = @_;
     
     ### Coerce old-style filehandles to legit objects, and do it!
     $in  = wraphandle($in);
     $out = wraphandle($out);
 
     ### Invoke back-end method to do the work:
-    $self->encode_it($in, $out) || 
+    $self->encode_it($in, $out, $self->encoding eq 'quoted-printable' ? ($textual_type) : ()) ||
 	die "$ME: ".$self->encoding." encoding failed\n";
 }
 

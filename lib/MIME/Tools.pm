@@ -24,7 +24,7 @@ $ME = "MIME-tools";
     'config'  => [qw(%CONFIG)],
     'msgs'    => [qw(usage debug whine error)],
     'msgtypes'=> [qw($M_DEBUG $M_WARNING $M_ERROR)],		
-    'utils'   => [qw(benchmark catfile shellquote textual_type tmpopen )],
+    'utils'   => [qw(catfile shellquote textual_type tmpopen )],
     );
 Exporter::export_ok_tags('config', 'msgs', 'msgtypes', 'utils');
 
@@ -150,26 +150,6 @@ sub usage {
 # UTILS...
 #
 #------------------------------
-
-#------------------------------
-#
-# benchmark CODE
-#
-# Private benchmarking utility.
-#
-sub benchmark(&) {
-    my ($code) = @_;
-    if (1) {
-	my $t0 = new Benchmark;
-	&$code;
-	my $t1 = new Benchmark;
-	return timestr(timediff($t1, $t0));
-    }
-    else {
-	&$code;
-	return "";
-    }
-}
 
 #------------------------------
 #
@@ -1394,7 +1374,6 @@ I<Thanks to "sen_ml" for suggesting this.>
        Newlines in the void
 
 Started using Benchmark for benchmarking.
-
 
 =item Version 5.205   (2000/06/06)
 

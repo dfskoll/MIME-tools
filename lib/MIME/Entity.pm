@@ -1853,7 +1853,7 @@ sub print_bodyhandle {
 
     ### Output the body:
     my $IO = $self->open("r")     || die "open body: $!";
-    $decoder->encode($IO, $out)   || return error "encoding failed";
+    $decoder->encode($IO, $out, textual_type($self->head->mime_type) ? 1 : 0)   || die "encoding failed\n";
     $IO->close;
     1;
 }

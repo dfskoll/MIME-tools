@@ -127,7 +127,7 @@ require 5.004;
 
 ### Pragmas:
 use strict;
-use vars (qw($VERSION $CAT $CRLF $BM));
+use vars (qw($VERSION $CAT $CRLF));
 
 ### Built-in modules:
 use FileHandle ();
@@ -582,10 +582,7 @@ sub process_to_bound {
     my ($self, $in, $rdr, $out) = @_;        
 
     ### Parse:
-    my $bm = benchmark {
-	$rdr->read_chunk($in, $out);
-    };
-    $self->debug("t bound: $bm");
+    $rdr->read_chunk($in, $out);
     1;
 }
 
@@ -823,11 +820,8 @@ sub process_singlepart {
 
     ### Decode and save the body (using the decoder):
     my $DECODED = $body->open("w") || die "$ME: body not opened: $!\n"; 
-    my $bm = benchmark {
-	eval { $decoder->decode($ENCODED, $DECODED); }; 
-	$@ and $self->error($@);
-    };
-    $self->debug("t decode: $bm");
+    eval { $decoder->decode($ENCODED, $DECODED); }; 
+    $@ and $self->error($@);
     $DECODED->close;
     
     ### Success!  Remember where we put stuff:
@@ -1111,11 +1105,8 @@ sub parse {
     my $entity;
     local $/ = "\n";    ### just to be safe
 
-    my $bm = benchmark {
-	$self->init_parse;
-	$entity = $self->process_part($in, undef);  ### parse!
-    };
-    $self->debug("t parse: $bm");
+    $self->init_parse;
+    $entity = $self->process_part($in, undef);  ### parse!
 
     $entity;
 }

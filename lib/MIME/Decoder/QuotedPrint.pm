@@ -54,7 +54,7 @@ $Revision$ $Date$
 
 use vars qw(@ISA $VERSION);
 use MIME::Decoder;
-use MIME::QuotedPrint 2.03;
+use MIME::QuotedPrint 3.01;
 
 @ISA = qw(MIME::Decoder);
 
@@ -63,7 +63,7 @@ $VERSION = substr q$Revision$, 10;
 
 #------------------------------
 #
-# encode_qp_really STRING
+# encode_qp_really STRING TEXTUAL_TYPE_FLAG
 #
 # Encode QP, and then follow guideline 8 from RFC 2049 (thanks to Denis 
 # N. Antonioli) whereby we make things a little safer for the transport
@@ -71,9 +71,9 @@ $VERSION = substr q$Revision$, 10;
 # grow beyond 76 characters!
 #
 sub encode_qp_really {
-    my $enc = encode_qp($_[0]);
+    my $enc = encode_qp(shift, undef, not shift);
     if (length($enc) < 74) {
-	$enc =~ s/^\.$/=2E/g;         # force encoding of /^\.$/
+	$enc =~ s/^\.\n/=2E\n/g;      # force encoding of /^\.$/
 	$enc =~ s/^From /=46rom /g;   # force encoding of /^From /
     }
     $enc;
@@ -97,10 +97,10 @@ sub decode_it {
 # encode_it IN, OUT
 #
 sub encode_it {
-    my ($self, $in, $out) = @_;
+    my ($self, $in, $out, $textual_type) = @_;
 
     while (defined($_ = $in->getline)) {
-	$out->print(encode_qp_really($_));
+	$out->print(encode_qp_really($_, $textual_type));
     }
     1;
 }
