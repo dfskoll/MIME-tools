@@ -59,7 +59,6 @@ sub decode_it {
     my (@preamble, @data);
     local $_;
     my $H2B = Convert::BinHex->hex2bin;
-    #my $H2B = Convert::BinHex->open($in);
     my $line;
 
     $self->{MDU_Preamble} = \@preamble;
@@ -67,58 +66,30 @@ sub decode_it {
     $self->{MDU_File} = undef;
 
     ### Find beginning...
-    $MailScanner::BinHex::Inline = 1;
-    if ($MailScanner::BinHex::Inline) {
-      while (defined($_ = $in->getline)) {
-        #print STDERR "Line is \"$_\"\n";
+    while (defined($_ = $in->getline)) {
         if (/^\(This file must be converted/) {
-          $_ = $in->getline;
-          last if /^:/;
+	    $_ = $in->getline;
+	    last if /^:/;
         }
         push @preamble, $_;
-      }
-      die("binhex decoding: fell off end of file\n") if !defined($_);
-    } else {
-      while (defined($_ = $in->getline)) {
-        # Found the header? So start decoding it
-        last if /^:/;
-        push @preamble, $_;
-      }
-      ## hit eof!
-      die("binhex decoding: no This file must be... found\n") if !defined($_);
     }
+    die("binhex decoding: fell off end of file\n") if !defined($_);
 
     ### Decode:
-    # Don't rely on the comment always being there
-    #$self->whine(":H2B is $H2B\n");
-    #$self->whine("Header is " . $H2B->read_header . "\n");
-    #@data = $H2B->read_data;
-    #$out->print(@data);
-    #print STDERR "End of binhex stream\n";
-    #return 1;
-    #if (/^:/) {
     my $data;
     $data = $H2B->next($_); # or whine("Next error is $@ $!\n");
-    #print STDERR "Data line 1 is length \"" . length($data) . "\" \"$data\"\n";
     my $len = unpack("C", $data);
     while ($len > length($data)+21 && defined($line = $in->getline)) {
-      $data .= $H2B->next($line);
+	$data .= $H2B->next($line);
     }
     $data = substr($data, 22+$len);
     $out->print($data);
-    #}
     while (defined($_ = $in->getline)) {
         $line = $_;
         $data = $H2B->next($line);
-        #print STDERR "Data is length " . length($data) . " \"$data\"\n";
         $out->print($data);
-        #chomp $line;
-        #print STDERR "Line is length " . length($line) . " \"$line\"\n";
-        #print STDERR "Line matches end\n" if $line =~ /:$/;
         last if $line =~ /:$/;
     }
-    #print STDERR "Broken out of loop\n";
-    #print STDERR "file incomplete, no end found\n" if !defined($_); # eof
     1;
 }
 
@@ -131,14 +102,13 @@ sub encode_it {
     my $line;
     my $buf = '';
 
-    my $fname = (($self->head && 
+    my $fname = (($self->head &&
 		  $self->head->mime_attr('content-disposition.filename')) ||
 		 '');
     my $B2H = Convert::BinHex->bin2hex;
     $out->print("(This file must be converted with BinHex 4.0)\n");
-    #while (defined($line = <$in>)) {
     while ($in->read($buf, 1000)) {
-      $out->print($B2H->next($buf));
+	$out->print($B2H->next($buf));
     }
     $out->print($B2H->done);
     1;
