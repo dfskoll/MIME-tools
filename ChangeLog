@@ -1,18 +1,18 @@
 2004-09-07  David F. Skoll  <dfs@roaringpenguin.com>
 
 	* lib/MIME/Parser/Filer.pm (evil_filename): Make evil_filename
-	more paranoid (Martin Blapp)
+	more paranoid (Julian Field and Martin Blapp)
 
 	* lib/MIME/Parser/Filer.pm (exorcise_filename): Delete leading and
-	trailing whitespace (Martin Blapp)
+	trailing whitespace (Julian Field)
 
 	* Remove all the Benchmark code (Martin Blapp)
 
 	* lib/MIME/Decoder.pm: Add support for BinHex encoded attachments
-	(Martin Blapp)
+	(Julian Field)
 
 	* lib/MIME/Decoder.pm: Require MIME::QuotedPrint 3.03 or newer
-	for correct decoding of binary attachments.
+	for correct decoding of binary attachments. (Alexey Kravchuk)
 
 	* lib/MIME/Decoder/QuotedPrint.pm: Attempt to deal sanely with
 	PDF files encoded using quoted-printable encoding by Outlook,
