@@ -1001,8 +1001,10 @@ Latin-2, or any other 8-bit alphabet).
 =head1 TERMS AND CONDITIONS
 
 Eryq (F<eryq@zeegee.com>), ZeeGee Software Inc (F<http://www.zeegee.com>).
+David F. Skoll (dfs@roaringpenguin.com) http://www.roaringpenguin.com
 
 Copyright (c) 1998, 1999 by ZeeGee Software Inc (www.zeegee.com).
+Copyright (c) 2004 by Roaring Penguin Software Inc (www.roaringpenguin.com)
 
 All rights reserved.  This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

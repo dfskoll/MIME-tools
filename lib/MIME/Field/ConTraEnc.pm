@@ -32,6 +32,7 @@ Instead, ask Mail::Field for new instances based on the field name!
 =head1 AUTHOR
 
 Eryq (F<eryq@zeegee.com>), ZeeGee Software Inc (F<http://www.zeegee.com>).
+David F. Skoll (dfs@roaringpenguin.com) http://www.roaringpenguin.com
 
 =cut
 
