@@ -43,7 +43,7 @@ foreach $m (sort keys %modules) {
 	$foundit = 1;
 	print "ok.\n";
     }
-    if (defined($rec_ver) and not $foundrec) {
+    if (defined($rec_ver) and $foundit and !$foundrec) {
 	print "*** Warning: We can work with version $min_ver of $m, but\n*** we recommend that you upgrade to $rec_ver.\n";
     }
 
