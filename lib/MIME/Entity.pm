@@ -235,7 +235,7 @@ use MIME::Tools qw(:config :msgs :utils);
 use MIME::Head;
 use MIME::Body;
 use MIME::Decoder;
-use IO::Scalar;
+use IO::ScalarArray;
 use IO::Wrap;
 use IO::Lines;
 
@@ -1882,10 +1882,11 @@ You can also use C<as_string()>.
 =cut
 
 sub stringify {
-    my $str = '';
-    shift->print(new IO::Scalar \$str);
-    $str;    
+    my @arr = ();
+    shift->print(new IO::ScalarArray \@arr);
+    join("", @arr);
 }
+
 sub as_string { shift->stringify };      ### silent BC
 
 #------------------------------
@@ -1909,9 +1910,9 @@ singlepart message (like a "text/plain"), use C<bodyhandle()> instead:
 =cut
 
 sub stringify_body {
-    my $str = '';
-    shift->print_body(new IO::Scalar \$str);
-    $str;    
+    my @arr = ();
+    shift->print_body(new IO::ScalarArray \@arr);
+    join("", @arr);
 }
 sub body_as_string { shift->stringify_body }
 
@@ -1922,9 +1923,9 @@ sub body_as_string { shift->stringify_body }
 # Instance method, unpublicized.  Stringify just the bodyhandle.
 
 sub stringify_bodyhandle {
-    my $str = '';
-    shift->print_bodyhandle(new IO::Scalar \$str);
-    $str;    
+    my @arr = ();
+    shift->print_bodyhandle(new IO::ScalarArray \@arr);
+    join("", @arr);
 }
 sub bodyhandle_as_string { shift->stringify_bodyhandle }
 
