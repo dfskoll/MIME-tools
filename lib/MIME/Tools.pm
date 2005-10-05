@@ -65,18 +65,18 @@ sub config {
 sub debugging {
     my ($class, $value) = @_;
     $CONFIG{'DEBUGGING'} = $value   if (@_ > 1);
-    $CONFIG{'DEBUGGING'};
+    return $CONFIG{'DEBUGGING'};
 }
 
 sub quiet {
     my ($class, $value) = @_;
     $CONFIG{'QUIET'} = $value   if (@_ > 1);
-    $CONFIG{'QUIET'};
+    return $CONFIG{'QUIET'};
 }
 
 sub version {
     my ($class, $value) = @_;
-    $VERSION;
+    return $VERSION;
 }
 
 

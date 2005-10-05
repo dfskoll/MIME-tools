@@ -286,11 +286,13 @@ sub results {
 ### Log debug messages:
 sub debug {
     my $self = shift;
-    if ($self->{MPF_Results}) {
-	unshift @_, $self->{MPF_Results}->indent;
-	$self->{MPF_Results}->msg($M_DEBUG, @_);
+    if (MIME::Tools->debugging()) {
+	if ($self->{MPF_Results}) {
+	    unshift @_, $self->{MPF_Results}->indent;
+	    $self->{MPF_Results}->msg($M_DEBUG, @_);
+	}
+	MIME::Tools::debug(@_);
     }
-    MIME::Tools::debug(@_);
 }
 
 ### Log warning messages:

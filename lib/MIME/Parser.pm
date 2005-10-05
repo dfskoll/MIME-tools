@@ -490,11 +490,13 @@ sub ignore_errors {
 #
 sub debug {
     my $self = shift;
-    if (my $r = $self->{MP5_Results}) {
-	unshift @_, $r->indent;
-	$r->msg($M_DEBUG, @_);
+    if (MIME::Tools->debugging()) {
+	    if (my $r = $self->{MP5_Results}) {
+		    unshift @_, $r->indent;
+		    $r->msg($M_DEBUG, @_);
+	    }
+	    MIME::Tools::debug(@_);
     }
-    &MIME::Tools::debug(@_);
 }
 
 #------------------------------
