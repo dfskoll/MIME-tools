@@ -57,7 +57,6 @@ sub decode_it {
     my ($self, $in, $out) = @_;
     my ($mode, $file);
     my (@preamble, @data);
-    local $_;
     my $H2B = Convert::BinHex->hex2bin;
     my $line;
 
@@ -66,6 +65,7 @@ sub decode_it {
     $self->{MDU_File} = undef;
 
     ### Find beginning...
+    local $_;
     while (defined($_ = $in->getline)) {
         if (/^\(This file must be converted/) {
 	    $_ = $in->getline;

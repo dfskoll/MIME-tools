@@ -1445,8 +1445,8 @@ sub suggest_encoding {
 	$self->bodyhandle || return ($self->parts ? 'binary' : '7bit');
 	my ($IO, $unclean);
 	if ($IO = $self->bodyhandle->open("r")) {
-
-	    ### Scan message for 7bit-cleanliness:
+	    ### Scan message for 7bit-cleanliness
+	    local $_;
 	    while (defined($_ = $IO->getline)) {
 		last if ($unclean = ((length($_) > 999) or /[\200-\377]/));
 	    }

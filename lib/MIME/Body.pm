@@ -191,6 +191,7 @@ sub as_lines {
     my $self = shift;
     my @lines;
     my $io = $self->open("r") || return ();
+    local $_;
     push @lines, $_ while (defined($_ = $io->getline()));
     $io->close;
     @lines;

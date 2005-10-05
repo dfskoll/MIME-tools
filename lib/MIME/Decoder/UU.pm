@@ -60,7 +60,6 @@ sub decode_it {
     my ($self, $in, $out) = @_;
     my ($mode, $file);
     my @preamble;
-    local $_;
 
     ### Init:
     $self->{MDU_Preamble} = \@preamble;
@@ -68,6 +67,7 @@ sub decode_it {
     $self->{MDU_File} = undef;
 
     ### Find beginning...
+    local $_;
     while (defined($_ = $in->getline)) {
 	if (/^begin(.*)/) {        ### found it: now decode it...
 	    my $modefile = $1;
