@@ -1794,7 +1794,7 @@ sub print_body {
 
 	### Preamble:
 	my $preamble = join('', @{ $self->preamble || $DefPreamble });
-	$out->print("$preamble\n") if ($preamble ne '');
+	$out->print("$preamble\n") if ($preamble ne '' or $self->preamble);
 
 	### Parts:
 	my $part;
@@ -1846,14 +1846,20 @@ sub print_bodyhandle {
     my ($self, $out) = @_;
     $out = wraphandle($out || select);             ### get a printable output
 
-    ### Get the encoding, defaulting to "binary" if unsupported:
-    my $encoding = ($self->head->mime_encoding || 'binary');
-    my $decoder = best MIME::Decoder $encoding;
-    $decoder->head($self->head);      ### associate with head, if any
-
-    ### Output the body:
     my $IO = $self->open("r")     || die "open body: $!";
-    $decoder->encode($IO, $out, textual_type($self->head->mime_type) ? 1 : 0)   || die "encoding failed\n";
+    if ( $self->bodyhandle->is_encoded ) {
+      ### Transparent mode: data is already encoded, so no
+      ### need to encode it again
+      my $buf;
+      $out->print($buf) while ($IO->read($buf, 2048));
+    } else {
+      ### Get the encoding, defaulting to "binary" if unsupported:
+      my $encoding = ($self->head->mime_encoding || 'binary');
+      my $decoder = best MIME::Decoder $encoding;
+      $decoder->head($self->head);      ### associate with head, if any
+      $decoder->encode($IO, $out)   || return error "encoding failed";
+    }
+
     $IO->close;
     1;
 }

@@ -240,6 +240,23 @@ sub binmode {
 
 #------------------------------
 
+=item is_encoded [ONOFF]
+
+I<Instance method.>
+If set to yes, no decoding is applied on output. This flag is set
+by MIME::Parser, if the parser runs in decode_bodies(0) mode, so the
+content is handled unmodified.
+
+=cut
+
+sub is_encoded {
+    my ($self, $yesno) = @_;
+    $self->{MB_IsEncoded} = $yesno if (@_ > 1);
+    $self->{MB_IsEncoded};
+}
+
+#------------------------------
+
 =item dup
 
 I<Instance method.>
