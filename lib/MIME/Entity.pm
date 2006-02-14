@@ -1857,7 +1857,7 @@ sub print_bodyhandle {
       my $encoding = ($self->head->mime_encoding || 'binary');
       my $decoder = best MIME::Decoder $encoding;
       $decoder->head($self->head);      ### associate with head, if any
-      $decoder->encode($IO, $out)   || return error "encoding failed";
+      $decoder->encode($IO, $out, textual_type($self->head->mime_type) ? 1 : 0)   || return error "encoding failed";
     }
 
     $IO->close;
