@@ -49,7 +49,6 @@ main: {
     #-- Check if MD5 resp. length match as expected
     $mail_text = $entity->as_string;
     if ( $has_md5 ) {
-	    print STDERR "$mail_text\n\n";
         my $md5 = Digest::MD5::md5_hex($mail_text);
         ok($md5 eq "54a4ccb3a16f83e851581ffa5178f68a", "Decoded MD5 match");
     } else {

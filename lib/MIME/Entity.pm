@@ -651,8 +651,8 @@ sub build {
 
     ### Add the X-Mailer field, if top level (use default value if not given):
     $top and $head->replace('X-Mailer', 
-			    "MIME-tools ".(0+MIME::Tools->version).
-			    " (Entity "  .(0+$VERSION).")"); 
+			    "MIME-tools ".(MIME::Tools->version).
+			    " (Entity "  .($VERSION).")"); 
 	
     ### Add remaining user-specified fields, if any:
     while (@paramlist) {
