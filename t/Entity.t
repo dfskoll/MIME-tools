@@ -57,7 +57,6 @@ $T->msg("Testing build()");
      my $x = $e->stringify();
      my $version = $MIME::Entity::VERSION;
      my $desired = "Content-Type: text/plain\nContent-Disposition: inline\nContent-Transfer-Encoding: binary\nMIME-Version: 1.0\nX-Mailer: MIME-tools $version (Entity $version)\n\nDear «François Müller»,\n\nAs you requested, I have rewritten the MIME:: parser modules to support\nthe creation of MIME messages.\n\nEryq\n";
-	print STDERR "x = $x \n desired = $desired \n";
      $T->ok($x eq $desired,
 	    "Tested stringify",
 	    Got => $x);
