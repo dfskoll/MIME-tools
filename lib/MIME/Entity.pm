@@ -249,7 +249,7 @@ use IO::Lines;
 #------------------------------
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.419";
+$VERSION = "5.420";
 
 ### Boundary counter:
 my $BCount = 0;
