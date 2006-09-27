@@ -13,7 +13,6 @@ use vars (qw(@ISA %CONFIG @EXPORT_OK %EXPORT_TAGS $VERSION $ME
 require Exporter;
 use FileHandle;
 use Carp;
-use Benchmark;
 
 $ME = "MIME-tools";
 
