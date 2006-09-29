@@ -1,1 +1,4 @@
 set-version.pl
+Makefile
+Makefile.old
+MANIFEST.bak
