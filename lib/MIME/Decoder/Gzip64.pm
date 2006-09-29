@@ -62,7 +62,7 @@ use IO::Wrap;
 @ISA = qw(MIME::Decoder::Base64);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.420";
+$VERSION = "5.420_01";
 
 # How to compress stdin to stdout:
 $GZIP   = "gzip -c";
