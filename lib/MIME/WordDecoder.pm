@@ -574,11 +574,6 @@ for (1..15) {
     $DecoderFor{"ISO-8859-$_"} = MIME::WordDecoder::ISO_8859->new($_);
 }
 
-{ 
-  package main; no strict; local $^W = 0;
-  my @x = <::DATA>;
-  eval join('',<::DATA>) || die $@ unless caller();
-}
 1;           # end the module
 __END__
 
