@@ -13,6 +13,7 @@ use vars (qw(@ISA %CONFIG @EXPORT_OK %EXPORT_TAGS $VERSION $ME
 require Exporter;
 use FileHandle;
 use Carp;
+use File::Temp;
 
 $ME = "MIME-tools";
 
@@ -201,7 +202,7 @@ sub tmpopen {
     &$Tmpopen();
 }
 
-$Tmpopen = sub { IO::File->new_tmpfile; };
+$Tmpopen = sub { File::Temp::tempfile() };
 
 
 

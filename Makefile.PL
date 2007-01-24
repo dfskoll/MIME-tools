@@ -12,7 +12,8 @@ my %modules =
 		       rec_version => "3.03" },
  'IO::Stringy' =>    { min_version => "1.211" },
  'File::Spec' =>     { min_version => "0.6" },
- 'File::Path' =>     { min_version => "1" }
+ 'File::Path' =>     { min_version => "1" },
+ 'File::Temp' =>     { min_version => "0" },
  );
 
 my($m, $foundit, $foundrec, @missing);
@@ -75,6 +76,7 @@ WriteMakefile(
 		       "IO::Stringy"       => 1.211,
 		       "File::Spec"        => 0.6,
 		       "File::Path"        => 1,
+		       "File::Temp"	   => 0,
                        "Test::More"        => 0,
 		       },
       AUTHOR => 'Eryq <eryq@zeegee.com>, David F. Skoll <dfs@roaringpenguin.com>',

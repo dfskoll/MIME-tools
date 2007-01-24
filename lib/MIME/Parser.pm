@@ -121,8 +121,6 @@ that parse MIME streams into MIME::Entity objects.
 
 #------------------------------
 
-# We require the new FileHandle methods, and a non-buggy version
-# of FileHandle->new_tmpfile:
 require 5.004;
 
 ### Pragmas:
@@ -247,8 +245,6 @@ sub init {
     $self->{MP5_DecodeBodies}    = 1;
     $self->{MP5_Interface}       = {};
     $self->{MP5_ParseNested}     = 'NEST';
-    $self->{MP5_Tmp}             = undef;
-    $self->{MP5_TmpRecycling}    = 1;
     $self->{MP5_TmpToCore}       = 0;
     $self->{MP5_IgnoreErrors}    = 1;
     $self->{MP5_UseInnerFiles}   = 0;
@@ -802,8 +798,7 @@ sub process_singlepart {
 	}
 	else {
 	    $self->debug("using temp file");
-	    $ENCODED = $self->new_tmpfile($self->{Tmp});
-	    $self->{Tmp} = $ENCODED if $self->{TmpRecycle};
+	    $ENCODED = $self->new_tmpfile();
 	}
 
 	### Read encoded body until boundary (or EOF)...
@@ -1484,30 +1479,6 @@ sub output_to_core {
 
 #------------------------------
 
-=item tmp_recycling [YESNO]
-
-I<Instance method.>
-Normally, tmpfiles are created when needed during parsing, and
-destroyed automatically when they go out of scope.  But for efficiency,
-you might prefer for your parser to attempt to rewind and reuse the
-same file until the parser itself is destroyed.
-
-If YESNO is true (the default), we allow recycling;
-tmpfiles persist until the parser itself is destroyed.
-If YESNO is false, we do not allow recycling;
-tmpfiles persist only as long as they are needed during the parse.
-With no argument, just returns the current setting.
-
-=cut
-
-sub tmp_recycling {
-    my ($self, $yesno) = @_;
-    $self->{MP5_TmpRecycling} = $yesno if (@_ > 1);
-    $self->{MP5_TmpRecycling};
-}
-
-#------------------------------
-
 =item tmp_to_core [YESNO]
 
 I<Instance method.>
@@ -1641,13 +1612,14 @@ sub new_body_for {
 
 #------------------------------
 
-=item new_tmpfile [RECYCLE]
+=item new_tmpfile
 
 I<Instance method.>
 Return an IO handle to be used to hold temporary data during a parse.
-The default uses the standard IO::File->new_tmpfile() method unless
-L<tmp_to_core()|/tmp_to_core> dictates otherwise, but you can override this.
-You shouldn't need to.
+
+The default uses MIME::Tools::tmpopen() to create a new temporary file,
+unless L<tmp_to_core()|/tmp_to_core> dictates otherwise, but you can
+override this.  You shouldn't need to.
 
 If you do override this, make certain that the object you return is
 set for binmode(), and is able to handle the following methods:
@@ -1661,34 +1633,18 @@ set for binmode(), and is able to handle the following methods:
 
 Fatal exception if the stream could not be established.
 
-If RECYCLE is given, it is an object returned by a previous invocation
-of this method; to recycle it, this method must effectively rewind and
-truncate it, and return the same object.  If you don't want to support
-recycling, just ignore it and always return a new object.
-
 =cut
 
 sub new_tmpfile {
-    my ($self, $recycle) = @_;
+    my ($self) = @_;
 
     my $io;
     if ($self->{MP5_TmpToCore}) {         ### Use an in-core tmpfile (slow)
 	$io = IO::ScalarArray->new;
     }
     else {                                ### Use a real tmpfile (fast)
-					       ### Recycle?
-	if ($self->{TmpRecycling} &&                 ### we're recycling
-	    $recycle &&                              ### something to recycle
-	    $Config{'truncate'} && $io->can('seek')  ### recycling will work
-	    ){
-	    $self->debug("recycling tmpfile: $io");
-	    $io->seek(0, 0) or die "$ME: can't seek: $!";
-	    truncate($io, 0) or die "$ME: can't truncate: $!";
-	}
-	else {                                 ### Return a new one:
-	    $io = tmpopen() or die "$ME: can't open tmpfile: $!\n";
-	    binmode($io) or die "$ME: can't set to binmode: $!";
-	}
+	$io = tmpopen() or die "$ME: can't open tmpfile: $!\n";
+	binmode($io) or die "$ME: can't set to binmode: $!";
     }
     return $io;
 }
