@@ -1746,7 +1746,6 @@ Optimum settings:
     extract_nested_messages()  0   (may be slightly faster, but in
 				    general you want it set to 1)
     output_to_core()           0   (will be MUCH faster)
-    tmp_recycling()            1?  (probably, but should be investigated)
     tmp_to_core()              0   (will be MUCH faster)
     use_inner_files()          0   (if tmp_to_core() is 0;
 				    use 1 otherwise)
@@ -1794,7 +1793,6 @@ Optimum settings:
     decode_headers()           *** (no real difference)
     extract_nested_messages()  *** (no real difference)
     output_to_core()           0   (will use MUCH less memory)
-    tmp_recycling()            0?  (promotes faster GC if
 				    tmp_to_core is 1)
     tmp_to_core()              0   (will use MUCH less memory)
     use_inner_files()          *** (no real difference, but set it to 1
@@ -1817,7 +1815,6 @@ Optimum settings:
     extract_nested_messages()  0   (sidesteps problems of bad nested messages,
 				    but often you want it set to 1 anyway).
     output_to_core()           *** (doesn't matter)
-    tmp_recycling()            *** (doesn't matter)
     tmp_to_core()              *** (doesn't matter)
     use_inner_files()          *** (doesn't matter)
 
@@ -1836,7 +1833,6 @@ Optimum settings:
     decode_headers()           *** (doesn't matter)
     extract_nested_messages()  *** (doesn't matter)
     output_to_core()           *** (doesn't matter)
-    tmp_recycling              1   (restricts created files to 1 per parser)
     tmp_to_core()              1
     use_inner_files()          1
 
