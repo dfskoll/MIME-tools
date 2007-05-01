@@ -113,7 +113,6 @@ use strict;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
 ### System modules:
-use IO::Wrap;
 
 ### Other modules:
 use Mail::Header 1.09 ();
@@ -526,7 +525,7 @@ Also, it defaults to the I<currently-selected> filehandle if none is given
 
 sub print {
     my ($self, $fh) = @_;
-    $fh = wraphandle($fh || select);   ### get output handle, as a print()able
+    $fh ||= select;
     $fh->print($self->as_string);
 }
 

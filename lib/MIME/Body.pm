@@ -138,7 +138,6 @@ use strict;
 use vars qw($VERSION); 
 
 ### System modules:
-use IO::Scalar;
 use Carp;
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
@@ -214,8 +213,10 @@ repeated read() calls; your subclass might wish to override this.
 sub as_string {
     my $self = shift;
     my $str = '';
-    my $out = new IO::Scalar \$str;
-    $self->print($out);
+    my $fh;
+    CORE::open($fh, '>', \$str) or croak("Cannot open in-memory file: $!");
+    $self->print($fh);
+    close($fh);
     return $str;
 }
 *data = \&as_string;         ### silenty invoke preferred usage
@@ -328,7 +329,7 @@ sub print {
     my $nread;
 
     ### Get output filehandle, and ensure that it's a printable object:
-    $fh = IO::Wrap::wraphandle($fh || select);
+    $fh ||= select;
 
     ### Write it:
     my $buf = '';
@@ -365,8 +366,8 @@ The following built-in classes are provided:
    class:               data in:        returns:    
    --------------------------------------------------------
    MIME::Body::File     disk file       IO::Handle   
-   MIME::Body::Scalar   scalar          IO::Scalar  
-   MIME::Body::InCore   scalar array    IO::ScalarArray
+   MIME::Body::Scalar   scalar          IO::Handle   
+   MIME::Body::InCore   scalar array    IO::Handle   
 
 =cut
 
@@ -377,8 +378,8 @@ package MIME::Body::File;
 
 =head2 MIME::Body::File
 
-A body class that stores the data in a disk file.  
-The I/O handle is a wrapped filehandle.  Invoke the constructor as:
+A body class that stores the data in a disk file.  Invoke the
+constructor as:
 
     $body = new MIME::Body::File "/path/to/file";
 
@@ -407,7 +408,6 @@ require FileHandle;
 
 ### Kit modules:
 use MIME::Tools qw(whine);
-use IO::Wrap;
 
 @ISA = qw(MIME::Body);
 
@@ -438,7 +438,7 @@ sub open {
 	die "bad mode: '$mode'";
     }
     binmode($IO) if $self->binmode;        ### set binary read/write mode?
-    return (IO::Wrap::wraphandle($IO));    ### wrap if old FileHandle class
+    return $IO;
 }
 
 #------------------------------
@@ -482,8 +482,6 @@ elements of that array together:
                                     "Line 2\n",
                                     "Line 3"];
 
-Uses B<IO::Scalar> as the I/O handle.
-
 =cut
 
 use vars qw(@ISA);
@@ -491,7 +489,6 @@ use strict;
 
 require FileHandle;
 
-use IO::Scalar;
 use Carp;
 
 @ISA = qw(MIME::Body);
@@ -520,7 +517,16 @@ sub as_string {
 sub open {
     my ($self, $mode) = @_;
     $self->{MBS_Data} = '' if ($mode eq 'w');        ### writing
-    return new IO::Scalar \($self->{MBS_Data});
+    my $fh;
+    if ($mode eq 'w') {
+	    $mode = '>';
+    } elsif ($mode eq 'r') {
+	    $mode = '<';
+    } else {
+	    die "bad mode: $mode";
+    }
+    CORE::open($fh, $mode, \($self->{MBS_Data}));
+    return $fh;
 }
 
 
@@ -543,7 +549,7 @@ Invoke the constructor as:
 A simple scalar argument sets the body to that value, exactly as though
 you'd opened for the body for writing, written the value, 
 and closed the body again:
-    
+
     $body = new MIME::Body::InCore "Line 1\nLine 2\nLine 3";
 
 A single array reference sets the body to the concatenation of all
@@ -553,8 +559,6 @@ scalars that it holds:
                                     "Line 2\n",
                                     "Line 3"];
 
-Uses B<IO::ScalarArray> as the I/O handle.
-
 =cut
 
 use vars qw(@ISA);
@@ -562,10 +566,9 @@ use strict;
 
 require FileHandle;
 
-use IO::ScalarArray;
 use Carp;
 
-@ISA = qw(MIME::Body);
+@ISA = qw(MIME::Body::Scalar);
 
 
 #------------------------------
@@ -574,40 +577,22 @@ use Carp;
 sub init {
     my ($self, $data) = @_;
     if (!defined($data)) {  ### nothing
-	$self->{MBC_Data} = [];
+	$self->{MBS_Data} = '';
     }
     elsif (!ref($data)) {   ### simple scalar
-	$self->{MBC_Data} = [ $data ];
+	$self->{MBS_Data} = $data;
     }
     elsif (ref($data) eq 'SCALAR') {
-	$self->{MBC_Data} = [ $$data ];
+	$self->{MBS_Data} = $$data;
     }
     elsif (ref($data) eq 'ARRAY') {
-	$self->{MBC_Data} = $data;
+	$self->{MBS_Data} = join('', @$data);
     }
     else {
 	croak "I can't handle DATA which is a ".ref($data)."\n";
     }
     $self;
 }
-
-#------------------------------
-# as_string
-#------------------------------
-sub as_string {
-    my $self = shift;
-    return join '', @{$self->{MBC_Data}};
-}
-
-#------------------------------
-# open READWRITE
-#------------------------------
-sub open {
-    my ($self, $mode) = @_;
-    $self->{MBC_Data} = [] if ($mode eq 'w');        ### writing
-    return new IO::ScalarArray $self->{MBC_Data};
-}
-
 
 1;
 __END__

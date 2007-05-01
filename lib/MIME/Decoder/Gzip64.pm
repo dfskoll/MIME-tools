@@ -56,7 +56,6 @@ use MIME::Decoder;
 use MIME::Base64;
 use MIME::Decoder::Base64;
 use MIME::Tools qw(tmpopen whine);
-use IO::Wrap;
 
 # Inheritance:
 @ISA = qw(MIME::Decoder::Base64);
@@ -79,7 +78,7 @@ sub decode_it {
     my ($self, $in, $out) = @_;
 
     # Open a temp file (assume the worst, that this is a big stream):
-    my $tmp = wraphandle(tmpopen() || die "can't get temp file");
+    my $tmp = tmpopen() || die "can't get temp file";
 
     # Stage 1: decode the base64'd stream into zipped data:
     $self->SUPER::decode_it($in, $tmp)    or die "base64 decoding failed!";
@@ -98,7 +97,7 @@ sub encode_it {
     whine "Encoding ", $self->encoding, " is not standard MIME!"; 
     
     # Open a temp file (assume the worst, that this is a big stream):
-    my $tmp = wraphandle(tmpopen() || die "can't get temp file");
+    my $tmp = tmpopen() || die "can't get temp file";
   
     # Stage 1: zip the raw data:
     $self->filter($in, $tmp, $GZIP)       or die "gzip encoding failed!";

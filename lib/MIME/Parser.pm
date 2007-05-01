@@ -129,7 +129,6 @@ use vars (qw($VERSION $CAT $CRLF));
 
 ### Built-in modules:
 use FileHandle ();
-use IO::Wrap;
 use IO::Scalar       1.117;
 use IO::ScalarArray  1.114;
 use IO::Lines        1.108;
@@ -1170,7 +1169,7 @@ parts (as set by I<max_parts>), returns undef.
 
 sub parse {
     my $self = shift;
-    my $in = wraphandle(shift);    ### coerce old-style filehandles to objects
+    my $in = shift;
     my $entity;
     local $/ = "\n";    ### just to be safe
 
