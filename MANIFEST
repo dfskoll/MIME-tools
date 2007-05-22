@@ -47,7 +47,6 @@ t/02-pod.t
 t/Body.t
 t/Decoder.t
 t/Entity.t
-t/ExtUtils/TBone.pm
 t/Gauntlet.t
 t/Globby.pm
 t/Head.t
