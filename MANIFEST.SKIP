@@ -1,4 +1,6 @@
 set-version.pl
-Makefile
+Makefile$
 Makefile.old
 MANIFEST.bak
+.svn/
+~$
