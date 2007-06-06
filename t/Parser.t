@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 12;
+use Test::More tests => 20;
 
 use MIME::Tools;
 
@@ -114,3 +114,34 @@ diag("Simple message, in two parts");
 $entity = $parser->parse_two("./testin/simple.msgh", "./testin/simple.msgb");
 my $es = ($entity ? $entity->head->get('subject',0) : '');
 like($es,  qr/^Request for Leave$/, "	parse of 2-part simple message (subj <$es>)");
+
+
+# diag('new_tmpfile(), with real temp file');
+{
+	my $fh;
+	eval { 
+		local $parser->{MP5_TmpToCore} = 0;
+		$fh = $parser->new_tmpfile();
+	};
+	ok( ! $@, '->new_tmpfile() lives');
+	ok( $fh->print("testing\n"), '->print on fh ok');
+
+	ok( $fh->seek(0,0), '->seek on fh ok');
+	my $line = <$fh>;
+	is( $line, "testing\n", 'Read line back in OK');
+}
+
+# diag('new_tmpfile(), with in-core temp file');
+{
+	my $fh;
+	eval { 
+		local $parser->{MP5_TmpToCore} = 1;
+		$fh = $parser->new_tmpfile();
+	};
+	ok( ! $@, '->new_tmpfile() lives');
+	ok( $fh->print("testing\n"), '->print on fh ok');
+
+	ok( $fh->seek(0,0), '->seek on fh ok');
+	my $line = <$fh>;
+	is( $line, "testing\n", 'Read line back in OK');
+}

@@ -1638,10 +1638,10 @@ sub new_tmpfile {
     my ($self) = @_;
 
     my $io;
-    if ($self->{MP5_TmpToCore}) {         ### Use an in-core tmpfile (slow)
-	$io = IO::ScalarArray->new;
-    }
-    else {                                ### Use a real tmpfile (fast)
+    if ($self->{MP5_TmpToCore}) {
+	my $var;
+	CORE::open($io, '+>', \$var) or die "$ME: Can't open in-core tmpfile: $!";
+    } else {
 	$io = tmpopen() or die "$ME: can't open tmpfile: $!\n";
 	binmode($io) or die "$ME: can't set to binmode: $!";
     }
