@@ -1241,13 +1241,13 @@ Throws exception on failure.
 
 sub parse_two {
     my ($self, $headfile, $bodyfile) = @_;
-    my @lines;
+    my $data;
     foreach ($headfile, $bodyfile) {
 	open IN, "<$_" or die "$ME: open $_: $!";
-	push @lines, <IN>;
+	$data .= do { local $/; <IN> };
 	close IN or die "$ME: can't close: $!";
     }
-    return $self->parse_data(\@lines);
+    return $self->parse_data($data);
 }
 
 =back
