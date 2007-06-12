@@ -699,7 +699,7 @@ sub process_multipart {
     $self->debug("process_multipart...");
 
     ### Get actual type and subtype from the header:
-    my ($type, $subtype) = (split('/', $head->mime_type), "");
+    my ($type, $subtype) = (split('/', $head->mime_type, -1), '');
 
     ### If this was a type "multipart/digest", then the RFCs say we
     ### should default the parts to have type "message/rfc822".
@@ -1065,7 +1065,7 @@ sub process_part {
     $head->mime_type($p{Retype}) if $p{Retype};
 
     ### Get the MIME type and subtype:
-    my ($type, $subtype) = (split('/', $head->mime_type), '');
+    my ($type, $subtype) = (split('/', $head->mime_type, -1), '');
     $self->debug("type = $type, subtype = $subtype");
 
     ### Handle, according to the MIME type:
