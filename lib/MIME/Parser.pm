@@ -131,7 +131,6 @@ use vars (qw($VERSION $CAT $CRLF));
 use FileHandle ();
 use IO::Scalar       1.117;
 use IO::ScalarArray  1.114;
-use IO::Lines        1.108;
 use IO::File;
 use IO::InnerFile;
 use File::Spec;
