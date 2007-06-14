@@ -1637,7 +1637,7 @@ sub new_tmpfile {
     my $io;
     if ($self->{MP5_TmpToCore}) {
 	my $var;
-	CORE::open($io, '+>', \$var) or die "$ME: Can't open in-core tmpfile: $!";
+	$io = IO::File->new(\$var, '+>') or die "$ME: Can't open in-core tmpfile: $!";
     } else {
 	$io = tmpopen() or die "$ME: can't open tmpfile: $!\n";
 	binmode($io) or die "$ME: can't set to binmode: $!";
