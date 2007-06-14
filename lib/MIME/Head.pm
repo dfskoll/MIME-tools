@@ -202,10 +202,10 @@ sub from_file {
     my $class = ref($self) ? ref($self) : $self;
 
     ### Parse:
-    open(HDR, $file) or return error("open $file: $!");
-    binmode(HDR) or return error("binmode $file: $!");  # we expect to have \r\n at line ends, and want to keep 'em.
-    $self = $class->new(\*HDR, @opts);      ### now, $self is instance or undef
-    close(HDR) or return error("close $file: $!");
+    my $fh = IO::File->new($file, '<') or return error("open $file: $!");
+    $fh->binmode() or return error("binmode $file: $!");  # we expect to have \r\n at line ends, and want to keep 'em.
+    $self = $class->new($fh, @opts);      ### now, $self is instance or undef
+    $fh->close or return error("close $file: $!");
     $self;
 }
 

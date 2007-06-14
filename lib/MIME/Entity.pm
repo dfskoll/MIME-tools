@@ -757,11 +757,8 @@ sub body {
 		croak "you cannot use body() to set the encoded contents\n";
 	}
 	else {             ### getting body lines...
-		my ($fh, $output);
-		$output = '';
-		if (!open($fh, '>', \$output)) {
-			croak("Cannot open in-memory file: $!");
-		}
+		my $output = '';
+		my $fh = IO::File->new(\$output, '>') or croak("Cannot open in-memory file: $!");
 		$self->print_body($fh);
 		close($fh);
 		return split("\n", $output);
@@ -1372,9 +1369,9 @@ sub sign {
 	$sig = (ref($sig) ? join('', @$sig) : $sig);
     }
     elsif ($params{File}) {                      ### file contents
-	CORE::open SIG, $params{File} or croak "can't open $params{File}: $!";
-	$sig = join('', SIG->getlines);
-	close SIG or croak "can't close $params{File}: $!";
+	my $fh = IO::File->new( $params{File} ) or croak "can't open $params{File}: $!";
+	$sig = join('', $fh->getlines);
+	$fh->close or croak "can't close $params{File}: $!";
     }
     else {
 	croak "no signature given!";
@@ -1888,11 +1885,11 @@ You can also use C<as_string()>.
 =cut
 
 sub stringify {
-	my($fh, $output);
-	$output = '';
-	CORE::open($fh, '>', \$output) or croak("Cannot open in-memory file: $!");
-	shift->print($fh);
-	close($fh);
+	my ($self) = @_;
+	my $output = '';
+	my $fh = IO::File->new( \$output, '>' ) or croak("Cannot open in-memory file: $!");
+	$self->print($fh);
+	$fh->close;
 	return $output;
 }
 
@@ -1919,11 +1916,11 @@ singlepart message (like a "text/plain"), use C<bodyhandle()> instead:
 =cut
 
 sub stringify_body {
-	my($fh, $output);
-	$output = '';
-	CORE::open($fh, '>', \$output) or croak("Cannot open in-memory file: $!");
-	shift->print_body($fh);
-	close($fh);
+	my ($self) = @_;
+	my $output = '';
+	my $fh = IO::File->new( \$output, '>' ) or croak("Cannot open in-memory file: $!");
+	$self->print_body($fh);
+	$fh->close;
 	return $output;
 }
 
@@ -1945,9 +1942,8 @@ sub stringify_header {
 sub header_as_string { shift->stringify_header }
 
 
-
-__END__
 1;
+__END__
   
 #------------------------------
 
@@ -2232,4 +2228,3 @@ $Revision$ $Date$
 =cut
 
 #------------------------------
-1;

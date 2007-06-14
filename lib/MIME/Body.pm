@@ -213,8 +213,7 @@ repeated read() calls; your subclass might wish to override this.
 sub as_string {
     my $self = shift;
     my $str = '';
-    my $fh;
-    CORE::open($fh, '>', \$str) or croak("Cannot open in-memory file: $!");
+    my $fh = IO::File->new(\$str, '>') or croak("Cannot open in-memory file: $!");
     $self->print($fh);
     close($fh);
     return $str;
