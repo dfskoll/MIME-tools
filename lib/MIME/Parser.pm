@@ -128,7 +128,6 @@ use strict;
 use vars (qw($VERSION $CAT $CRLF));
 
 ### Built-in modules:
-use FileHandle ();
 use IO::Scalar       1.117;
 use IO::ScalarArray  1.114;
 use IO::File;
@@ -1155,10 +1154,9 @@ sub parse_data {
 I<Instance method.>
 Takes a MIME-stream and splits it into its component entities.
 
-The INSTREAM can be given as a readable FileHandle, an IO::File,
-a globref filehandle (like C<\*STDIN>),
-or as I<any> blessed object conforming to the IO:: interface
-(which minimally implements getline() and read()).
+The INSTREAM can be given as an IO::File, a globref filehandle (like
+C<\*STDIN>), or as I<any> blessed object conforming to the IO::
+interface (which minimally implements getline() and read()).
 
 Returns the parsed MIME::Entity on success.
 Throws exception on failure.  If the message contained too many

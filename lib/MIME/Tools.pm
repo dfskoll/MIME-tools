@@ -11,7 +11,6 @@ use vars (qw(@ISA %CONFIG @EXPORT_OK %EXPORT_TAGS $VERSION $ME
 	     $Tmpopen ));
 
 require Exporter;
-use FileHandle;
 use Carp;
 use File::Temp;
 
@@ -368,10 +367,9 @@ and you will get back an "I/O handle".
 =item *
 
 B<You can open() a "body" and get an "I/O handle" to read/write message data.>
-This handle is an object that is basically like an IO::Handle or
-a FileHandle... it can be any class, so long as it supports a small,
-standard set of methods for reading from or writing to the underlying
-data source.
+This handle is an object that is basically like an IO::Handle...  it
+can be any class, so long as it supports a small, standard set of
+methods for reading from or writing to the underlying data source.
 
 =back
 
@@ -419,9 +417,9 @@ header data.
 
 A B<MIME::Body>, which is a object that knows where the body data is.
 You ask this object to "open" itself for reading, and it
-will hand you back an "I/O handle" for reading the data: this is
-a FileHandle-like object, and could be of any class, so long as it
-conforms to a subset of the B<IO::Handle> interface.
+will hand you back an "I/O handle" for reading the data: this could be
+of any class, so long as it conforms to a subset of the B<IO::Handle>
+interface.
 
 =back
 

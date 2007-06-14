@@ -100,11 +100,11 @@ foreach $msgfile (@msgfiles) {
 	is($s2, $outsize, "GLOB ref:   size $out ($s2) == $outsize?");
 
 	# Open output stream 3:
-        my $GOUT = (new FileHandle ">$out") || die "$!";
+        my $GOUT = IO::File->new($out, '>') || die "$!";
 	gout($GOUT, $ent);
 	$GOUT->close;
 	my $s3 = -s $out;
-	is($s3, $outsize, "FileHandle: size $out ($s3) == $outsize?");
+	is($s3, $outsize, "IO::File: size $out ($s3) == $outsize?");
     }
 }
 

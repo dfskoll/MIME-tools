@@ -85,7 +85,6 @@ use strict;
 use vars qw($VERSION %DecoderFor);
 
 ### System modules:
-use FileHandle;
 use IPC::Open2;
 
 ### Kit modules:

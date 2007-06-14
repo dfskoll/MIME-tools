@@ -223,7 +223,6 @@ use vars qw(@ISA $VERSION);
 use strict;
 
 ### System modules:
-use FileHandle;
 use Carp;
 
 ### Other modules:

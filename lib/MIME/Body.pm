@@ -404,7 +404,7 @@ use vars qw(@ISA);
 use strict;
 
 ### System modules:
-require FileHandle;
+use IO::File;
 
 ### Kit modules:
 use MIME::Tools qw(whine);
@@ -428,16 +428,19 @@ sub open {
     my ($self, $mode) = @_;
     my $IO;
     my $path = $self->path;
+
+    # TODO: should just use
+    # 	IO::File->new($path, $mode) || die ...
     if ($mode eq 'w') {          ### writing
-	$IO = FileHandle->new(">$path") || die "write-open $path: $!";
+	$IO = IO::File->new(">$path") || die "write-open $path: $!";
     }
     elsif ($mode eq 'r') {       ### reading
-	$IO = FileHandle->new("<$path") || die "read-open $path: $!";
+	$IO = IO::File->new("<$path") || die "read-open $path: $!";
     }
     else {  
 	die "bad mode: '$mode'";
     }
-    binmode($IO) if $self->binmode;        ### set binary read/write mode?
+    $IO->binmode() if $self->binmode;
     return $IO;
 }
 
@@ -487,8 +490,6 @@ elements of that array together:
 use vars qw(@ISA);
 use strict;
 
-require FileHandle;
-
 use Carp;
 
 @ISA = qw(MIME::Body);
@@ -517,7 +518,7 @@ sub as_string {
 sub open {
     my ($self, $mode) = @_;
     $self->{MBS_Data} = '' if ($mode eq 'w');        ### writing
-    my $fh;
+
     if ($mode eq 'w') {
 	    $mode = '>';
     } elsif ($mode eq 'r') {
@@ -525,8 +526,8 @@ sub open {
     } else {
 	    die "bad mode: $mode";
     }
-    CORE::open($fh, $mode, \($self->{MBS_Data}));
-    return $fh;
+
+    return IO::File->new(\($self->{MBS_Data}), $mode);
 }
 
 
@@ -563,8 +564,6 @@ scalars that it holds:
 
 use vars qw(@ISA);
 use strict;
-
-require FileHandle;
 
 use Carp;
 
@@ -635,10 +634,10 @@ The default inherited method I<will probably not suffice> for these:
 
 =head1 NOTES
 
-One reason I didn't just use FileHandle or IO::Handle objects for message
-bodies was that I wanted a "body" object to be a form of completely
-encapsulated program-persistent storage; that is, I wanted users
-to be able to write code like this...
+One reason I didn't just use IO::Handle objects for message bodies was
+that I wanted a "body" object to be a form of completely encapsulated
+program-persistent storage; that is, I wanted users to be able to write
+code like this...
 
    ### Get body handle from this MIME message, and read its data:
    $body = $entity->bodyhandle;
