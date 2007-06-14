@@ -128,7 +128,6 @@ use strict;
 use vars (qw($VERSION $CAT $CRLF));
 
 ### Built-in modules:
-use IO::Scalar       1.117;
 use IO::ScalarArray  1.114;
 use IO::File;
 use IO::InnerFile;
@@ -1130,18 +1129,18 @@ sub parse_data {
 
     ### Get data as a scalar:
     my $io;
-  switch: while(1) {
-      (!ref($data)) and do {
-	  $io = new IO::Scalar \$data; last switch;
-      };
-      (ref($data) eq 'SCALAR') and do {
-	  $io = new IO::Scalar $data; last switch;
-      };
-      (ref($data) eq 'ARRAY') and do {
-	  $io = new IO::ScalarArray $data; last switch;
-      };
-      croak "parse_data: wrong argument ref type: ", ref($data);
-  }
+
+    if (! ref $data ) {
+        $io = IO::File->new(\$data, '<');
+    } elsif( ref $data eq 'SCALAR' ) {
+        $io = IO::File->new($data, '<');
+    } elsif( ref $data eq 'ARRAY' ) {
+	# Unfortunately, if they give us an array, we have to keep
+	# using it.  We don't really want to make a copy.
+        $io = IO::ScalarArray->new($data);
+    } else {
+        croak "parse_data: wrong argument ref type: ", ref($data);
+    }
 
     ### Parse!
     return $self->parse($io);

@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 20;
+use Test::More tests => 23;
 
 use MIME::Tools;
 
@@ -97,13 +97,12 @@ Content-type: text/html
 EOF
 my $data_scalarref = \$data_scalar;
 my $data_arrayref  = [ map { "$_\n" } (split "\n", $data_scalar) ];
-my $data_test;
 
 $parser->output_to_core('ALL');
-foreach $data_test ($data_scalar, $data_scalarref, $data_arrayref) {
+foreach my $data_test ($data_scalar, $data_scalarref, $data_arrayref) {
     $entity = $parser->parse_data($data_test);
-    ok(($entity and $entity->head->mime_type eq 'text/html') ,
-	((ref($data_test)||'NO') . "-REF"));
+    isa_ok($entity, 'MIME::Entity');
+    is($entity->head->mime_type, 'text/html', 'type is text/html');
 }
 $parser->output_to_core('NONE');
 

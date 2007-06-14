@@ -285,7 +285,7 @@ You will need the following installed on your system:
 	File::Path
 	File::Spec
 	IPC::Open2              (optional)
-	IO::Scalar, ...         from the IO-stringy distribution
+	IO::ScalarArray         from the IO-stringy distribution
 	MIME::Base64
 	MIME::QuotedPrint
 	Net::SMTP
