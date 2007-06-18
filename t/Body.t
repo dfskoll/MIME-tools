@@ -1,25 +1,23 @@
 use strict;
-use Test::More tests => 18;
+use Test::More tests => 27;
 
 use MIME::Body;
 use MIME::Tools;
 config MIME::Tools DEBUGGING=>0;
 
-#------------------------------------------------------------
-# BEGIN
-#------------------------------------------------------------
 
 # Check bodies:
-my $sbody = new MIME::Body::Scalar;
-my $ibody = new MIME::Body::InCore;
-my $fbody = new MIME::Body::File "./testout/fbody";
+my @bodies = (
+	MIME::Body::Scalar->new(),
+	MIME::Body::File->new('./testout/fbody'),
+	MIME::Body::InCore->new(),
+);
 
 my $buf;
 my @lines;
 my $line;
-my $body;
 my $pos;
-foreach $body ($sbody, $fbody) {
+foreach my $body ( @bodies ) {
     my $io;
     my $class = ref($body);
 
@@ -84,5 +82,4 @@ foreach $body ($sbody, $fbody) {
     is($str, "Line 1\nLine 2\nLine 3", "$class: as_string works?");
 }
     
-exit(0);
 1;
