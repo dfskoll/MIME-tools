@@ -2,5 +2,12 @@ set-version.pl
 Makefile$
 Makefile.old
 MANIFEST.bak
-.svn/
+\.svn/
+\.git/
+testout/
+cover_db/
+blib*
+MIME-tools-*
 ~$
+pm_to_blib*
+META.yml
