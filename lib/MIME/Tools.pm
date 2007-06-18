@@ -23,7 +23,7 @@ $ME = "MIME-tools";
     'config'  => [qw(%CONFIG)],
     'msgs'    => [qw(usage debug whine error)],
     'msgtypes'=> [qw($M_DEBUG $M_WARNING $M_ERROR)],		
-    'utils'   => [qw(catfile shellquote textual_type tmpopen )],
+    'utils'   => [qw(textual_type tmpopen )],
     );
 Exporter::export_ok_tags('config', 'msgs', 'msgtypes', 'utils');
 
@@ -149,38 +149,6 @@ sub usage {
 # UTILS...
 #
 #------------------------------
-
-#------------------------------
-#
-# catfile DIR, FILE
-#
-# Directory/file concatenation.
-#
-sub catfile {
-    my ($parent, $child) = @_;
-    if ($^O eq 'Mac') {
-	$parent =~ s{:\Z}{};
-	return "$parent:$child";
-    }
-    else {
-	$parent =~ s{/\Z}{};
-	return "$parent/$child";
-    }
-}
-
-#------------------------------
-#
-# shellquote STRING
-#
-# Private utility: make string safe for shell.
-#
-sub shellquote {
-    my $str = shift;
-    $str =~ s/\$/\\\$/g;
-    $str =~ s/\`/\\`/g;
-    $str =~ s/\"/\\"/g;
-    return "\"$str\"";        # wrap in double-quotes
-}
 
 #------------------------------
 #
