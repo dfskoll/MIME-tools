@@ -79,7 +79,7 @@ foreach my $refpath (@refpaths) {
     ### Output parse log:
 #    diag("PARSE LOG FOR $refpath [$msgpath]");
     if ($parser->results) {
-	diag($parser->results->msgs);
+#	diag($parser->results->msgs);
     }
     else {
 	diag("Parse failed before results object was created");

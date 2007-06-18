@@ -4,7 +4,7 @@ use Test::More tests => 17;
 use MIME::Head;
 
 #------------------------------------------------------------
-diag("Read a bogus file (this had better fail...)");
+##diag("Read a bogus file (this had better fail...)");
 #------------------------------------------------------------
 my $WARNS = $SIG{'__WARN__'}; $SIG{'__WARN__'} = sub { };
 my $head = MIME::Head->from_file('BLAHBLAH');
@@ -12,7 +12,7 @@ ok(!$head, "parse failed as expected?");
 $SIG{'__WARN__'} = $WARNS;
 
 #------------------------------------------------------------
-diag("Parse in the crlf.hdr file:");
+##diag("Parse in the crlf.hdr file:");
 #------------------------------------------------------------
 # TODO: use lives_ok from Test::Exception ?
 ($head = MIME::Head->from_file('./testin/crlf.hdr'))
@@ -21,7 +21,7 @@ ok('HERE',
 	"parse of good file succeeded as expected?");
 
 #------------------------------------------------------------
-diag("Did we get all the fields?");
+##diag("Did we get all the fields?");
 #------------------------------------------------------------
 my @actuals = qw(path
 		 from
@@ -44,14 +44,14 @@ my $parsed = join '|', sort( map {lc($_)} $head->tags);
 is($parsed, $actual, 'got all fields we expected?');
 
 #------------------------------------------------------------
-diag("Could we get() the 'subject'? (it'll end in \\r\\n)");
+##diag("Could we get() the 'subject'? (it'll end in \\r\\n)");
 #------------------------------------------------------------
 my $subject;
 ($subject) = ($head->get('subject',0));    # force array context, see if okay
 is($subject, "EMPLOYMENT: CHICAGO, IL UNIX/CGI/WEB/DBASE\r\n", "got the subject okay?" );
 
 #------------------------------------------------------------
-diag("Could we replace() the 'Subject', and get it as 'SUBJECT'?");
+##diag("Could we replace() the 'Subject', and get it as 'SUBJECT'?");
 #------------------------------------------------------------
 my $newsubject = "Hellooooooo, nurse!\r\n";
 $head->replace('Subject', $newsubject);
@@ -59,7 +59,7 @@ $subject = $head->get('SUBJECT');
 is($subject, $newsubject, 'able to set Subject, and get SUBJECT?');
 
 #------------------------------------------------------------
-diag("Does the count() method work?");
+##diag("Does the count() method work?");
 #------------------------------------------------------------
 ok($head->count('NNTP-Posting-Host') and
         $head->count('nntp-POSTING-HOST') and
@@ -67,7 +67,7 @@ ok($head->count('NNTP-Posting-Host') and
 	'count method working?');
 
 #------------------------------------------------------------
-diag("Create a custom structured field, and extract parameters");
+##diag("Create a custom structured field, and extract parameters");
 #------------------------------------------------------------
 $head->replace('X-Files', 
 	       'default ; name="X Files Test"; LENgth=60 ;setting="6"');
@@ -82,7 +82,7 @@ is($params->{'length'} , '60',		"got the length?");
 is($params->{'setting'}, '6',		"got the setting?");
 
 #------------------------------------------------------------
-diag("Output to a desired file");
+##diag("Output to a desired file");
 #------------------------------------------------------------
 open TMP, ">./testout/tmp.head" or die "open: $!";
 $head->print(\*TMP);
@@ -91,7 +91,7 @@ ok((-s "./testout/tmp.head") > 50,
 	"output is a decent size?");      # looks okay
 
 #------------------------------------------------------------
-diag("Parse in international header, decode and unfold it");
+##diag("Parse in international header, decode and unfold it");
 #------------------------------------------------------------
 ($head = MIME::Head->from_file('./testin/encoded.hdr'))
     or die "couldn't parse input";  # stop now
@@ -105,7 +105,7 @@ is($to, $tto,      "Q decoding okay?");
 is($subject, $tsubject, "B encoding and compositing okay?");
 
 #------------------------------------------------------------
-diag("Parse in header with 'From ', and check field order");
+##diag("Parse in header with 'From ', and check field order");
 #------------------------------------------------------------
 
 # Prep:

@@ -23,9 +23,7 @@ foreach $body ($sbody, $fbody) {
     my $io;
     my $class = ref($body);
 
-    #------------------------------------------------------------
-    diag("Checking class: ", ref($body));
-    #------------------------------------------------------------
+#    diag("Checking class: ", ref($body));
 
     # Open body for writing, and write stuff:
     $io = $body->open("w");

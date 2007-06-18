@@ -40,7 +40,7 @@ sub output_path {
     # Get the recommended filename:
     my $filename = $head->recommended_filename;
     if (defined($filename) && $parser->evil_filename($filename)) {
-	diag("Parser.t: ignoring an evil recommended filename ($filename)");
+##	diag("Parser.t: ignoring an evil recommended filename ($filename)");
 	$filename = undef;      # forget it: it was evil
     }
     if (!defined($filename)) {  # either no name or an evil name
@@ -60,14 +60,14 @@ $parser = new MyParser;
 $parser->output_dir($DIR);
 
 #------------------------------------------------------------
-diag("Read a nested multipart MIME message");
+##diag("Read a nested multipart MIME message");
 #------------------------------------------------------------
 open IN, "./testmsgs/multi-nested.msg" or die "open: $!";
 $entity = $parser->parse(\*IN);
 ok($entity, "parse of nested multipart");
 
 #------------------------------------------------------------
-diag("Check the various output files");
+##diag("Check the various output files");
 #------------------------------------------------------------
 is(-s "$DIR/3d-vise.gif", 419, "vise gif size ok");
 is(-s "$DIR/3d-eye.gif" , 357, "3d-eye gif size ok");
@@ -76,7 +76,7 @@ for $msgno (1..4) {
 }
 
 #------------------------------------------------------------
-diag("Same message, but CRLF-terminated and no output path hook");
+##diag("Same message, but CRLF-terminated and no output path hook");
 #------------------------------------------------------------
 $parser = new MIME::Parser;
 { local $^W = undef;
@@ -87,7 +87,7 @@ ok($entity, "parse of CRLF-terminated message");
 }
 
 #------------------------------------------------------------
-diag("Read a simple in-core MIME message, three ways");
+##diag("Read a simple in-core MIME message, three ways");
 #------------------------------------------------------------
 my $data_scalar = <<EOF;
 Content-type: text/html
@@ -108,7 +108,7 @@ $parser->output_to_core('NONE');
 
 
 #------------------------------------------------------------
-diag("Simple message, in two parts");
+##diag("Simple message, in two parts");
 #------------------------------------------------------------
 $entity = $parser->parse_two("./testin/simple.msgh", "./testin/simple.msgb");
 my $es = ($entity ? $entity->head->get('subject',0) : '');

@@ -11,9 +11,7 @@ my $line;
 my $LINE;
 
 
-#------------------------------------------------------------
-diag("Testing build()");
-#------------------------------------------------------------
+#diag("Testing build()");
 {local $SIG{__WARN__} = sub { die "caught warning: ",@_ };
  {   
      my $e = MIME::Entity->build(Path     => "./testin/short.txt");
@@ -103,9 +101,7 @@ diag("Testing build()");
  }
 }
 
-#------------------------------------------------------------
-diag("Create an entity");
-#------------------------------------------------------------
+#diag("Create an entity");
 
 # Create the top-level, and set up the mail headers in a couple
 # of different ways:
@@ -148,9 +144,8 @@ $attach = attach $top Data=>$LINE;
 #-----test------
 unlink globby("testout/entity.msg*");
 
-#------------------------------------------------------------
-diag("Check body");
-#------------------------------------------------------------
+#diag("Check body");
+
 my $bodylines = $top->parts(0)->body;
 #-----test------
 ok($bodylines > 0, 
@@ -158,9 +153,7 @@ ok($bodylines > 0,
 my $preamble_str = join '', @{$top->preamble || []};
 my $epilogue_str = join '', @{$top->epilogue || []};
 
-#------------------------------------------------------------
-diag("Output msg1 to explicit filehandle glob");
-#------------------------------------------------------------
+#diag("Output msg1 to explicit filehandle glob");
 open TMP, ">testout/entity.msg1" or die "open: $!";
 $top->print(\*TMP);
 close TMP;
@@ -168,9 +161,7 @@ close TMP;
 ok(-s "testout/entity.msg1", 
        "wrote msg1 to filehandle glob");
 
-#------------------------------------------------------------
-diag("Output msg2 to selected filehandle");
-#------------------------------------------------------------
+#diag("Output msg2 to selected filehandle");
 open TMP, ">testout/entity.msg2" or die "open: $!";
 my $oldfh = select TMP;
 $top->print;
@@ -180,16 +171,12 @@ close TMP;
 ok(-s "testout/entity.msg2", 
        "write msg2 to selected filehandle");
 
-#------------------------------------------------------------
-diag("Compare");
-#------------------------------------------------------------
+#diag("Compare");
 # Same?
 is(-s "testout/entity.msg1", -s "testout/entity.msg2",
 	"message files are same length");
 
-#------------------------------------------------------------
-diag("Parse it back in, to check syntax");
-#------------------------------------------------------------
+#diag("Parse it back in, to check syntax");
 my $parser = new MIME::Parser;
 $parser->output_dir("testout");
 open IN, "./testout/entity.msg1" or die "open: $!";
@@ -207,15 +194,11 @@ is($preamble_str, $preamble_str2, 'preamble strings match');
 #-----test------
 is($epilogue_str, $epilogue_str2, "epilogue strings match");
 
-#------------------------------------------------------------
-diag("Check the number of parts");
-#------------------------------------------------------------
+#diag("Check the number of parts");
 is($top->parts, 4,
        "number of parts is correct (4)");
 
-#------------------------------------------------------------
-diag("Check attachment 1 [the GIF]");
-#------------------------------------------------------------
+#diag("Check attachment 1 [the GIF]");
 my $gif_real = (-s "./testin/mime-sm.gif");
 my $gif_this = (-s "./testout/mime-sm.gif");
 #-----test------
@@ -225,9 +208,7 @@ my $part = ($top->parts)[1];
 #-----test------
 is($part->head->mime_type, 'image/gif', "GIF has correct MIME type");
 
-#------------------------------------------------------------
-diag("Check attachment 3 [the short message]");
-#------------------------------------------------------------
+#diag("Check attachment 3 [the short message]");
 $part = ($top->parts)[3];
 $io = $part->bodyhandle->open("r");
 $line = ($io->getline);
@@ -242,18 +223,14 @@ is($part->head->mime_type, 'text/plain',
 is($part->head->mime_encoding, 'binary',
 	"MIME encoding okay");
 
-#------------------------------------------------------------
-diag("Write it out, and compare");
-#------------------------------------------------------------
+#diag("Write it out, and compare");
 open TMP, ">testout/entity.msg3" or die "open: $!";
 $top->print(\*TMP);
 close TMP;
 #-----test------
 is(-s 'testout/entity.msg2', -s 'testout/entity.msg3', 'msg2 same size as msg3');
 
-#------------------------------------------------------------
-diag("Duplicate");
-#------------------------------------------------------------
+#diag("Duplicate");
 my $dup = $top->dup;
 open TMP, ">testout/entity.dup3" or die "open: $!";
 $dup->print(\*TMP);
@@ -264,26 +241,20 @@ my $dup3_s = -s "testout/entity.dup3";
 is($msg3_s, $dup3_s,
 	"msg3 size ($msg3_s) is same as dup3 size ($dup3_s)");
 
-#------------------------------------------------------------
-diag("Test signing");
-#------------------------------------------------------------
+#diag("Test signing");
 $top->sign(File=>"./testin/sig");
 $top->remove_sig;
 $top->sign(File=>"./testin/sig2", Remove=>56);
 $top->sign(File=>"./testin/sig3");
 
-#------------------------------------------------------------
-diag("Write it out again, after synching");
-#------------------------------------------------------------
+#diag("Write it out again, after synching");
 $top->sync_headers(Nonstandard=>'ERASE',
 		   Length=>'COMPUTE');	
 open TMP, ">testout/entity.msg4" or die "open: $!";
 $top->print(\*TMP);
 close TMP;
 
-#------------------------------------------------------------
-diag("Purge the files");
-#------------------------------------------------------------
+#diag("Purge the files");
 $top->purge;
 #-----test------
 ok(!-e "./testout/mime-sm.gif", "purge worked");
