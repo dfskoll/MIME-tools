@@ -61,10 +61,9 @@ is($subject, $newsubject, 'able to set Subject, and get SUBJECT?');
 #------------------------------------------------------------
 ##diag("Does the count() method work?");
 #------------------------------------------------------------
-ok($head->count('NNTP-Posting-Host') and
-        $head->count('nntp-POSTING-HOST') and
-        !($head->count('Doesnt-Exist')),
-	'count method working?');
+ok($head->count('NNTP-Posting-Host')
+   && $head->count('nntp-POSTING-HOST')
+   && !$head->count('Doesnt-Exist'), 'count method working?');
 
 #------------------------------------------------------------
 ##diag("Create a custom structured field, and extract parameters");
