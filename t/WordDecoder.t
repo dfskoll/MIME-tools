@@ -1,4 +1,6 @@
+#!/usr/bin/perl -w
 use strict;
+use warnings;
 use Test::More tests => 18;
 
 use MIME::QuotedPrint qw(decode_qp);

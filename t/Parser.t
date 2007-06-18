@@ -1,12 +1,12 @@
+#!/usr/bin/perl -w
 use strict;
+use warnings;
 use Test::More tests => 23;
 
 use MIME::Tools;
 
 use lib "./t";
 use Globby;
-
-config MIME::Tools DEBUGGING=>0;
 
 use MIME::Parser;
 
@@ -79,12 +79,10 @@ for $msgno (1..4) {
 ##diag("Same message, but CRLF-terminated and no output path hook");
 #------------------------------------------------------------
 $parser = new MIME::Parser;
-{ local $^W = undef;
 $parser->output_dir($DIR);
 open IN, "./testmsgs/multi-nested2.msg" or die "open: $!";
 $entity = $parser->parse(\*IN);
 ok($entity, "parse of CRLF-terminated message");
-}
 
 #------------------------------------------------------------
 ##diag("Read a simple in-core MIME message, three ways");

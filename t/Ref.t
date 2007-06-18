@@ -1,4 +1,6 @@
+#!/usr/bin/perl -w
 use strict;
+use warnings;
 
 use Test::More;
 
@@ -10,8 +12,6 @@ use MIME::WordDecoder qw(unmime);
 
 use lib qw( ./t/ );
 use Globby;
-
-config MIME::Tools DEBUGGING=>0;
 
 use MIME::Parser;
 

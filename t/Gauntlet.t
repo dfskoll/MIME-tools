@@ -1,7 +1,7 @@
+#!/usr/bin/perl -w
 use strict;
+use warnings;
 use Test::More tests => 63;
-
-config MIME::Tools DEBUGGING=>0;
 use MIME::Parser;
 
 

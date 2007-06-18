@@ -1,12 +1,11 @@
+#!/usr/bin/perl -w
 use strict;
+use warnings;
 use Test::More;
 use File::Spec;
 
 use MIME::Tools;
 use MIME::Decoder;
-config MIME::Tools QUIET=>1;
-
-# config MIME::Tools DEBUGGING=>1;
 
 #------------------------------------------------------------
 # BEGIN

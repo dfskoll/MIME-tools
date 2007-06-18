@@ -1,4 +1,6 @@
+#!/usr/bin/perl -w
 use strict;
+use warnings;
 use Test::More tests => 17;
 
 use MIME::Head;
@@ -71,9 +73,7 @@ ok($head->count('NNTP-Posting-Host')
 $head->replace('X-Files', 
 	       'default ; name="X Files Test"; LENgth=60 ;setting="6"');
 my $params;
-{ local $^W = 0;
-  $params = $head->params('X-Files');
-}
+$params = $head->params('X-Files');
 ok($params,					"got the parameter hash?");
 is($params->{_}        , 'default',    	"got the default field?");
 is($params->{'name'}   , 'X Files Test',	"got the name?");

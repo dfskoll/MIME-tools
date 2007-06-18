@@ -1,10 +1,10 @@
+#!/usr/bin/perl -w
 use strict;
+use warnings;
 use Test::More tests => 27;
 
 use MIME::Body;
 use MIME::Tools;
-config MIME::Tools DEBUGGING=>0;
-
 
 # Check bodies:
 my @bodies = (
