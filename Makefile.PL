@@ -10,7 +10,7 @@ my %modules =
  'Mail::Field' =>    { min_version => "1.05" },
  'MIME::Base64' =>   { min_version => "2.20",
 		       rec_version => "3.03" },
- 'IO::Stringy' =>    { min_version => "1.211" },
+ 'IO::Stringy' =>    { min_version => "2.110" },
  'File::Spec' =>     { min_version => "0.6" },
  'File::Path' =>     { min_version => "1" },
  );
@@ -72,7 +72,7 @@ WriteMakefile(
 		       "Mail::Internet"    => 1.0203,
 		       "Mail::Field"       => 1.05,
 	               "MIME::Base64"      => 2.20,
-		       "IO::Stringy"       => 1.211,
+		       "IO::Stringy"       => 2.110,
 		       "File::Spec"        => 0.6,
 		       "File::Path"        => 1,
                        "Test::More"        => 0,
