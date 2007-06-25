@@ -86,6 +86,7 @@ use vars qw($VERSION %DecoderFor);
 
 ### System modules:
 use IPC::Open2;
+use FileHandle;
 
 ### Kit modules:
 use MIME::Tools qw(:config :msgs);
