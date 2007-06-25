@@ -185,6 +185,7 @@ sub eos_type {
 sub native_handle {
     my $fh = shift;
     return $fh  if $fh->isa('IO::File');
+    # TODO: kill IO::Wrap?
     return $$fh if ($fh->isa('IO::Wrap') && (ref($$fh) eq 'GLOB'));
     undef;
 }

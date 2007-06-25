@@ -213,7 +213,7 @@ repeated read() calls; your subclass might wish to override this.
 sub as_string {
     my $self = shift;
     my $str = '';
-    my $fh = IO::File->new(\$str, '>') or croak("Cannot open in-memory file: $!");
+    my $fh = IO::File->new(\$str, '>:') or croak("Cannot open in-memory file: $!");
     $self->print($fh);
     close($fh);
     return $str;
@@ -431,10 +431,10 @@ sub open {
     # TODO: should just use
     # 	IO::File->new($path, $mode) || die ...
     if ($mode eq 'w') {          ### writing
-	$IO = IO::File->new(">$path") || die "write-open $path: $!";
+	$IO = IO::File->new($path, '>') || die "write-open $path: $!";
     }
     elsif ($mode eq 'r') {       ### reading
-	$IO = IO::File->new("<$path") || die "read-open $path: $!";
+	$IO = IO::File->new($path, '<') || die "read-open $path: $!";
     }
     else {  
 	die "bad mode: '$mode'";
@@ -519,9 +519,9 @@ sub open {
     $self->{MBS_Data} = '' if ($mode eq 'w');        ### writing
 
     if ($mode eq 'w') {
-	    $mode = '>';
+	    $mode = '>:';
     } elsif ($mode eq 'r') {
-	    $mode = '<';
+	    $mode = '<:';
     } else {
 	    die "bad mode: $mode";
     }

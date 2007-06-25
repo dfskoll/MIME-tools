@@ -758,7 +758,7 @@ sub body {
 	}
 	else {             ### getting body lines...
 		my $output = '';
-		my $fh = IO::File->new(\$output, '>') or croak("Cannot open in-memory file: $!");
+		my $fh = IO::File->new(\$output, '>:') or croak("Cannot open in-memory file: $!");
 		$self->print_body($fh);
 		close($fh);
 		return split("\n", $output);
@@ -1887,7 +1887,7 @@ You can also use C<as_string()>.
 sub stringify {
 	my ($self) = @_;
 	my $output = '';
-	my $fh = IO::File->new( \$output, '>' ) or croak("Cannot open in-memory file: $!");
+	my $fh = IO::File->new( \$output, '>:' ) or croak("Cannot open in-memory file: $!");
 	$self->print($fh);
 	$fh->close;
 	return $output;
@@ -1918,7 +1918,7 @@ singlepart message (like a "text/plain"), use C<bodyhandle()> instead:
 sub stringify_body {
 	my ($self) = @_;
 	my $output = '';
-	my $fh = IO::File->new( \$output, '>' ) or croak("Cannot open in-memory file: $!");
+	my $fh = IO::File->new( \$output, '>:' ) or croak("Cannot open in-memory file: $!");
 	$self->print_body($fh);
 	$fh->close;
 	return $output;

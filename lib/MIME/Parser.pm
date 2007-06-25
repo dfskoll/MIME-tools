@@ -1131,9 +1131,9 @@ sub parse_data {
     my $io;
 
     if (! ref $data ) {
-        $io = IO::File->new(\$data, '<');
+        $io = IO::File->new(\$data, '<:');
     } elsif( ref $data eq 'SCALAR' ) {
-        $io = IO::File->new($data, '<');
+        $io = IO::File->new($data, '<:');
     } elsif( ref $data eq 'ARRAY' ) {
 	# Unfortunately, if they give us an array, we have to keep
 	# using it.  We don't really want to make a copy.
@@ -1636,7 +1636,7 @@ sub new_tmpfile {
     my $io;
     if ($self->{MP5_TmpToCore}) {
 	my $var;
-	$io = IO::File->new(\$var, '+>') or die "$ME: Can't open in-core tmpfile: $!";
+	$io = IO::File->new(\$var, '+>:') or die "$ME: Can't open in-core tmpfile: $!";
     } else {
 	$io = tmpopen() or die "$ME: can't open tmpfile: $!\n";
 	binmode($io) or die "$ME: can't set to binmode: $!";
