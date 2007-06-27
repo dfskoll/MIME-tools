@@ -297,6 +297,7 @@ sub read_chunk {
 # 
 sub read_lines {
     my ($self, $in, $outlines) = @_;
+    # TODO: we are also stuck keeping this one for now
     $self->read_chunk($in, IO::ScalarArray->new($outlines));
     shift @$outlines if ($outlines->[0] eq '');   ### leading empty line
     1;

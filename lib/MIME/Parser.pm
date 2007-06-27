@@ -917,10 +917,10 @@ sub hunt_for_uuencode {
     $self->whine("Found a $how_encoded attachment");
     my $pre;
     while (1) {
-	my @bin_data;
+	my $bin_data = '';
 
 	### Try next part:
-	my $out = IO::ScalarArray->new(\@bin_data);
+	my $out = IO::File->new(\$bin_data, '>:');
 	eval { $decoder->decode($ENCODED, $out) }; last if $@;
 	my $preamble = $decoder->last_preamble;
 	my $filename = $decoder->last_filename;
@@ -956,7 +956,7 @@ sub hunt_for_uuencode {
 	    $bin_ent->bodyhandle($self->new_body_for($bin_ent->head));
 	    $bin_ent->bodyhandle->binmode(1) or die "$ME: can't set to binmode: $!";
 	    my $io = $bin_ent->bodyhandle->open("w") or die "$ME: can't create: $!";
-	    $io->print(@bin_data) or die "$ME: can't print: $!";
+	    $io->print($bin_data) or die "$ME: can't print: $!";
 	    $io->close or die "$ME: can't close: $!";
 	    push @parts, $bin_ent;
 	}
@@ -1137,6 +1137,7 @@ sub parse_data {
     } elsif( ref $data eq 'ARRAY' ) {
 	# Unfortunately, if they give us an array, we have to keep
 	# using it.  We don't really want to make a copy.
+	# TODO: I think we're stuck keeping this one for now.
         $io = IO::ScalarArray->new($data);
     } else {
         croak "parse_data: wrong argument ref type: ", ref($data);
