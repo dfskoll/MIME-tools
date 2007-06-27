@@ -77,7 +77,7 @@ WriteMakefile(
 		       "File::Path"        => 1,
                        "Test::More"        => 0,
 		       },
-      AUTHOR => 'Eryq <eryq@zeegee.com>, David F. Skoll <dfs@roaringpenguin.com>',
+      AUTHOR => q{Eryq <eryq@zeegee.com>, David F. Skoll <dfs@roaringpenguin.com>, Dave O'Neill <dmo@roaringpenguin.com>},
       ABSTRACT => 'Tools to manipulate MIME messages',
       'dist'       => {
 	  COMPRESS     =>'gzip -f',
