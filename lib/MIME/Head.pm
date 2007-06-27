@@ -763,20 +763,22 @@ Returns undef if no filename could be suggested.
 
 =cut
 
-sub recommended_filename {
-    my $self = shift;
-    my $value;
+sub recommended_filename 
+{
+	my $self = shift;
 
-    ### Start by trying to get 'filename' from the 'content-disposition':
-    $value = $self->mime_attr('content-disposition.filename');
-    return $value if (defined($value) and $value ne '');
+	# Try these headers in order, taking the first defined,
+	# non-blank one we find.
+	foreach my $attr_name ( qw( content-disposition.filename content-type.name ) ) {
+		my $value = $self->mime_attr( $attr_name );
+		if ( defined $value 
+		    && $value ne ''
+		    && $value =~ /\S/ ) {
+			return $value;
+		}
+	}
 
-    ### No?  Okay, try to get 'name' from the 'content-type':
-    $value = $self->mime_attr('content-type.name');
-    return $value if (defined($value) and $value ne '');
-
-    ### Sorry:
-    undef;
+	return undef;
 }
 
 #------------------------------
