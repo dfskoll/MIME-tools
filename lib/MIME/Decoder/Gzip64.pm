@@ -51,7 +51,8 @@ $Revision$ $Date$
 
 
 require 5.002;
-use vars qw(@ISA $VERSION $ZIP $UNZIP);
+use strict;
+use vars qw(@ISA $VERSION $GZIP $GUNZIP);
 use MIME::Decoder;
 use MIME::Base64;
 use MIME::Decoder::Base64;

@@ -2,6 +2,8 @@
 
 	* VERSION 5.420_02 (developer release)
 
+	* (bugfix) Correct 'use vars' and add a 'use strict' (fixes RT #22681)
+
 	* (bugfix) Don't allow all-whitespace filenames in
 	  recommended_filename() (fixes RT #6115)
 
