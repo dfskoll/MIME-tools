@@ -203,7 +203,7 @@ sub native_handle {
 #    EOF         end of file
 
 # Parse up to (and including) the boundary, and dump output.
-# Follows the RFC-1521 specification, that the CRLF immediately preceding 
+# Follows the RFC 2046 specification, that the CRLF immediately preceding 
 # the boundary is part of the boundary, NOT part of the input!
 #
 # NOTE: while parsing, we take care to remember the EXACT end-of-line

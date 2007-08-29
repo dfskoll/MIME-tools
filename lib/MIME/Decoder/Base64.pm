@@ -30,8 +30,10 @@ of course).
 
 When B<encoding>, the input is read 45 bytes at a time: this ensures
 that the output lines are not too long.   We chose 45 since it is
-a multiple of 3 and produces lines under 76 characters, as RFC-1521 
-specifies.
+a multiple of 3 and produces lines under 76 characters, as RFC 2045
+specifies:
+    The encoded output stream must be represented in lines of no more
+    than 76 characters each.
 
 =back
 
