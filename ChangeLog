@@ -10,6 +10,9 @@
 	* (bugfix) Require IO-stringy 2.110.  Fixes RT tickets 11312, 11452,
 	  12375, 12784, and 18791
 
+	* (cleanup) Warn if no decoder is found for a given encoding. (RT #22682)
+
+
 	* (cleanup) IO::Wrap no longer used, IO::ScalarArray use minimized
 
 

@@ -160,17 +160,22 @@ Returns the undefined value if no known decoders are appropriate.
 sub new {
     my ($class, @args) = @_;
     my ($encoding) = @args;
-    my ($concrete_name);
 
     ### Coerce the type to be legit:
     $encoding = lc($encoding || '');
 
     ### Get the class:
-    ($concrete_name = $DecoderFor{$encoding}) or return undef;
+    my $concrete_name = $DecoderFor{$encoding};
+
+    if( ! $concrete_name ) {
+	carp "no decoder for $encoding";
+	return undef;
+    }
 
     ### Create the new object (if we can):
     my $self = { MD_Encoding => lc($encoding) };
     unless (eval "require $concrete_name;") {
+	carp $@;
 	return undef;
     }
     bless $self, $concrete_name;
