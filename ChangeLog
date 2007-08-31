@@ -1,4 +1,4 @@
-2007-08-29  Dave O'Neill <dmo@roaringpenguin.com>
+5.420_02  2007-08-29  Dave O'Neill <dmo@roaringpenguin.com>
 
 	* VERSION 5.420_02 (developer release)
 
@@ -17,7 +17,7 @@
 	* (cleanup) IO::Wrap no longer used, IO::ScalarArray use minimized
 
 
-2007-06-18  Dave O'Neill <dmo@roaringpenguin.com>
+5.420_01  2007-06-18  Dave O'Neill <dmo@roaringpenguin.com>
 
 	* VERSION 5.420_01 (developer release)
 
