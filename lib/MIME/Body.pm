@@ -665,14 +665,6 @@ it and/or modify it under the same terms as Perl itself.
 Thanks to Achim Bohnet for suggesting that MIME::Parser not be restricted
 to the use of FileHandles.
 
-
-
-=head1 VERSION
-
-$Revision$ $Date$
-
-=cut
-
 #------------------------------
 1;
 

@@ -907,11 +907,6 @@ it and/or modify it under the same terms as Perl itself.
 The more-comprehensive filename extraction is courtesy of 
 Lee E. Brotzman, Advanced Data Solutions.
 
-
-=head1 VERSION
-
-$Revision$ $Date$
-
 =cut
 
 1;

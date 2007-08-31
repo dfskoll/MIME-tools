@@ -347,9 +347,3 @@ Thanks also to...
                          its own module.
       Stephane Barizien  For reporting a nasty bug.
 
-
-=head1 VERSION
-
-$Revision$ $Date$
-
-=cut

@@ -989,12 +989,6 @@ MIME-tools releases are planned, just email me and say so.  If your project
 is using MIME-tools, it might not be a bad idea to find out about those
 bugs I<before> they become problems...
 
-
-=head1 VERSION
-
-$Revision$
-
-
 =head1 CHANGE LOG
 
 See ChangeLog file
@@ -1058,8 +1052,7 @@ Better yet, email me, and I'll put you in.
 
 =head1 SEE ALSO
 
-At the time of this writing ($Date$), the
-MIME-tools homepage was
+At the time of this writing, the MIME-tools homepage was
 F<http://www.mimedefang.org/static/mime-tools.php>.  Check there for
 updates and support.
 

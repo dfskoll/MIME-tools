@@ -2,8 +2,6 @@
 #
 # Fix up the version numbers on all subsidiary modules.  Meant for
 # internal developer use.
-#
-# $Id$
 
 use strict;
 
