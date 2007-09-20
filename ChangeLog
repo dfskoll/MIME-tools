@@ -1,3 +1,10 @@
+5.420_03  2007-09-21  Dave O'Neill <dmo@roaringpenguin.com>
+
+	* VERSION 5.420_03 (developer release)
+
+	* (cleanup) Use File::Temp for tempfile generation.
+
+
 5.420_02  2007-08-29  Dave O'Neill <dmo@roaringpenguin.com>
 
 	* VERSION 5.420_02 (developer release)
