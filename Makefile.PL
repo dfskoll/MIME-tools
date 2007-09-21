@@ -79,6 +79,7 @@ WriteMakefile(
 		       "File::Temp"        => 0.12,
                        "Test::More"        => 0,
 		       },
+      LICENSE => 'perl',
       AUTHOR => q{Eryq <eryq@zeegee.com>, David F. Skoll <dfs@roaringpenguin.com>, Dave O'Neill <dmo@roaringpenguin.com>},
       ABSTRACT => 'Tools to manipulate MIME messages',
       'dist'       => {
