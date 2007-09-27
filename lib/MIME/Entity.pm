@@ -738,6 +738,7 @@ sub dup {
 
 I<Instance method.>
 Get the I<encoded> (transport-ready) body, as an array of lines.
+Returns an array reference.
 This is a read-only data structure: changing its contents will have
 no effect.  Its contents are identical to what is printed by
 L<print_body()|/print_body>.
@@ -758,13 +759,13 @@ sub body {
 	my ($self, $value) = @_;
 	if (@_ > 1) {      ### setting body line(s)...
 		croak "you cannot use body() to set the encoded contents\n";
-	}
-	else {             ### getting body lines...
+	} else {
 		my $output = '';
 		my $fh = IO::File->new(\$output, '>:') or croak("Cannot open in-memory file: $!");
 		$self->print_body($fh);
 		close($fh);
-		return split("\n", $output);
+		my @ary = split(/\n/, $output);
+		return \@ary;
 	}
 }
 
