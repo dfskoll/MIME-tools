@@ -1,6 +1,6 @@
-5.433     2007-09-27  Dave O'Neill <dmo@roaringpenguin.com>
+5.423     2007-09-27  Dave O'Neill <dmo@roaringpenguin.com>
 
-	* VERSION 5.4.33 RELEASED
+	* VERSION 5.423 RELEASED
 
 	* (bugfix) Fix API regression - MIME::Entity::body() should return an
 	  arrayref.  Fixes RT 29643.
