@@ -738,7 +738,9 @@ sub dup {
 
 I<Instance method.>
 Get the I<encoded> (transport-ready) body, as an array of lines.
-Returns an array reference.
+Returns an array reference.  Each array entry is a newline-terminated
+line.
+
 This is a read-only data structure: changing its contents will have
 no effect.  Its contents are identical to what is printed by
 L<print_body()|/print_body>.
