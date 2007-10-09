@@ -765,6 +765,9 @@ sub body {
 		$self->print_body($fh);
 		close($fh);
 		my @ary = split(/\n/, $output);
+		# Each line needs the terminating newline
+		@ary = map { "$_\n" } @ary;
+
 		return \@ary;
 	}
 }
