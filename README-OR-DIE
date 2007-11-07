@@ -1,0 +1,12 @@
+*IMPORTANT* *IMPORTANT* *IMPORTANT* *IMPORTANT* *IMPORTANT* 
+
+READ THIS FILE BEFORE YOU DO A "make install", OR YOU MIGHT
+END UP BEING EXTREMELY UNHAPPY!
+
+------------------------------------------------------------
+
+6.x is currently in Alpha.  The regression tests all work,
+and the API has not changed tremendously, but I'm currently 
+in "hack-and-slash" mode, and it's possible that the APIs
+will undergo small tweaking.
+
