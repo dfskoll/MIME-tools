@@ -1,6 +1,10 @@
 #!/usr/bin/perl
 use ExtUtils::MakeMaker;
 
+# We no longer work with Perl < 5.8.0.  If your version of Perl
+# is from before July 2002, use MIME::Tools 5.420.
+require 5.8.0;
+
 # Do our own prerequisite checking
 # Stolen from Net::FTPServer which stole from libwww-perl
 my %modules =
