@@ -312,10 +312,11 @@ sub encode_mimewords {
     my $word;
     $rawstr =~ s{([ a-zA-Z0-9\x7F-\xFF]{1,18})}{     ### get next "word"
 	$word = $1;
-	(($word !~ /[$NONPRINT]/o) 
+	(($word !~ /(?:[$NONPRINT])|(?:^\s+$)/o) 
 	 ? $word                                          ### no unsafe chars
 	 : encode_mimeword($word, $encoding, $charset));  ### has unsafe chars
     }xeg;
+    $rawstr =~ s/\?==\?/?= =?/g;
     $rawstr;
 }
 

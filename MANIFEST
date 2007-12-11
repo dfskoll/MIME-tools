@@ -57,6 +57,7 @@ t/ParserPreamble.t
 t/Ref.t
 t/Smtpsend.t
 t/WordDecoder.t
+t/WordEncoder.t
 t/Words.t
 testin/ak-0696.msg
 testin/andreas-1296.txt
