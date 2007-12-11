@@ -307,7 +307,7 @@ sub encode_mimewords {
     my $encoding = lc($params{Encoding} || 'q');
 
     ### Encode any "words" with unsafe characters.
-    ###    We limit such words to 18 characters, to guarantee that the 
+    ###    We limit such words to 18 characters, to guarantee that the
     ###    worst-case encoding give us no more than 54 + ~10 < 75 characters
     my $word;
     $rawstr =~ s{([ a-zA-Z0-9\x7F-\xFF]{1,18})}{     ### get next "word"
