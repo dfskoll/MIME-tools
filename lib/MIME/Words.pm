@@ -117,7 +117,7 @@ sub _decode_Q {
 #     almost, but not exactly, quoted-printable.  :-P
 sub _encode_Q {
     my $str = shift;
-    $str =~ s{([_\?\=$NONPRINT])}{sprintf("=%02X", ord($1))}eog;
+    $str =~ s{([ _\?\=$NONPRINT])}{sprintf("=%02X", ord($1))}eog;
     $str;
 }
 
@@ -310,7 +310,7 @@ sub encode_mimewords {
     ###    We limit such words to 18 characters, to guarantee that the 
     ###    worst-case encoding give us no more than 54 + ~10 < 75 characters
     my $word;
-    $rawstr =~ s{([a-zA-Z0-9\x7F-\xFF]{1,18})}{     ### get next "word"
+    $rawstr =~ s{([ a-zA-Z0-9\x7F-\xFF]{1,18})}{     ### get next "word"
 	$word = $1;
 	(($word !~ /[$NONPRINT]/o) 
 	 ? $word                                          ### no unsafe chars
