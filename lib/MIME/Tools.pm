@@ -11,7 +11,7 @@ use vars (qw(@ISA %CONFIG @EXPORT_OK %EXPORT_TAGS $VERSION $ME
 
 require Exporter;
 use IO::File;
-use File::Temp ();
+use File::Temp 0.18 ();
 use Carp;
 
 $ME = "MIME-tools";

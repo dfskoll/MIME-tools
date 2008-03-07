@@ -23,7 +23,7 @@ recommends      'MIME::Base64'   => 3.03;
 requires        'IO::Stringy'    => 2.110;
 requires        'File::Spec'     => 0.6;
 requires        'File::Path'     => 1;
-requires        'File::Temp'     => 0.12;
+requires        'File::Temp'     => 0.18;
 
 # Build deps
 build_requires	'Test::More';
