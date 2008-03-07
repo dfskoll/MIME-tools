@@ -8,6 +8,9 @@ author          q{Eryq <eryq@zeegee.com>, David F. Skoll <dfs@roaringpenguin.com
 abstract        'Tools to manipulate MIME messages';
 license         'perl';
 
+# We require 5.8.x, for PerlIO support of "in memory" filehandles opened on scalars
+perl_version    '5.008';
+
 # Runtime deps
 requires        'Mail::Header'   => 1.01;
 requires        'Mail::Internet' => 1.0203;
