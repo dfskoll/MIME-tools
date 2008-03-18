@@ -20,6 +20,8 @@ requires        'Mail::Field'    => 1.05;
 requires        'MIME::Base64'   => 2.20;
 recommends      'MIME::Base64'   => 3.03;
 
+requires        'IO::File';
+requires        'IO::Handle';
 requires        'IO::Stringy'    => 2.110;
 requires        'File::Spec'     => 0.6;
 requires        'File::Path'     => 1;

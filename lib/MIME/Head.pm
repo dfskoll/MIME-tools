@@ -114,6 +114,7 @@ use strict;
 use vars qw($VERSION @ISA @EXPORT_OK);
 
 ### System modules:
+use IO::File;
 
 ### Other modules:
 use Mail::Header 1.09 ();
