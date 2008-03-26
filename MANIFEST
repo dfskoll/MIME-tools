@@ -63,6 +63,7 @@ t/Gauntlet.t
 t/Globby.pm
 t/Head.t
 t/Misc.t
+t/ParamVal.t
 t/Parser.t
 t/ParserEncoded.t
 t/ParserPreamble.t
