@@ -1051,7 +1051,7 @@ sub process_part {
     if (not defined $head) {
        $self->debug("bogus empty part");
        $head = $self->interface('HEAD_CLASS')->new;
-       $head->mime_type('text/plain; charset=US-ASCII');
+       $head->mime_type('text/plain');
        $ent->head($head);
        $ent->bodyhandle($self->new_body_for($head));
        $ent->bodyhandle->open("w")->close or die "$ME: can't close: $!";
