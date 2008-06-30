@@ -6,3 +6,4 @@ blib
 pm_to_blib
 testout
 MIME-tools-*.tar.gz
+META.yml

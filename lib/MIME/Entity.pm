@@ -1163,15 +1163,14 @@ sub make_singlepart {
     return 'ALREADY' if !$self->is_multipart;      ### already a singlepart?
     return '0' if ($self->parts > 1);              ### can this even be done?
 
-    ### Do it:
+    # Get rid of all our existing content info
+    my $tag;
+    foreach $tag (grep {/^content-/i} $self->head->tags) {
+        $self->head->delete($tag);
+    }
+
     if ($self->parts == 1) {    ### one part
 	my $part = $self->parts(0);
-	my $tag;
-
-	### Get rid of all our existing content info:
-	foreach $tag (grep {/^content-/i} $self->head->tags) {
-	    $self->head->delete($tag);
-	}
 
 	### Populate ourselves with any content info from the part:
 	foreach $tag (grep {/^content-/i} $part->head->tags) {
