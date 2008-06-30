@@ -1278,8 +1278,17 @@ sub remove_sig {
     my $self = shift;
     my $nlines = shift;
 
-    ### Handle multiparts:
-    $self->is_multipart and return $self->{ME_Parts}[0]->remove_sig(@_);
+    # If multipart, we only attempt to remove the sig from the first
+    # part.  This is usually a good assumption for multipart/mixed, but
+    # may not always be correct.  It is also possibly incorrect on
+    # multipart/alternative (both may have sigs).
+    if( $self->is_multipart ) {
+	my $first_part = $self->parts(0);
+	if( $first_part ) {
+            return $first_part->remove_sig(@_);
+	}
+	return undef;
+    }
 
     ### Refuse non-textual unless forced:
     textual_type($self->head->mime_type)
