@@ -45,11 +45,11 @@ Ready?  Ok...
     $is_reply = 1 if ($head->get('Subject') =~ /^Re: /);
     
     ### Get receipt information:
-    print "Last received from: ", $head->get('Received', 0), "\n";
+    print "Last received from: ", $head->get('Received', 0);
     @all_received = $head->get('Received');
     
     ### Print the subject, or the empty string if none:
-    print "Subject: ", $head->get('Subject',0), "\n";
+    print "Subject: ", $head->get('Subject',0);
      
     ### Too many hops?  Count 'em and see!
     if ($head->count('Received') > 5) { ...
@@ -441,15 +441,15 @@ sub fields {
 
 =item get TAG,[INDEX]
 
-I<Instance method, inherited.>  
+I<Instance method, inherited.>
 Get the contents of field TAG.
 
-If a B<numeric INDEX> is given, returns the occurence at that index, 
+If a B<numeric INDEX> is given, returns the occurence at that index,
 or undef if not present:
 
     ### Print the first and last 'Received:' entries (explicitly):
-    print "First, or most recent: ", $head->get('received', 0), "\n";
-    print "Last, or least recent: ", $head->get('received',-1), "\n"; 
+    print "First, or most recent: ", $head->get('received', 0);
+    print "Last, or least recent: ", $head->get('received',-1);
 
 If B<no INDEX> is given, but invoked in a B<scalar> context, then
 INDEX simply defaults to 0:
@@ -483,7 +483,7 @@ B<Note:> I had originally experimented with having C<get()> return all
 occurences when invoked in an array context... but that causes a lot of 
 accidents when you get careless and do stuff like this:
 
-    print "\u$field: ", $head->get($field), "\n";
+    print "\u$field: ", $head->get($field);
 
 It also made the intuitive behaviour unclear if the INDEX argument 
 was given in an array context.  So I opted for an explicit approach
