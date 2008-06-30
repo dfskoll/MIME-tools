@@ -2029,7 +2029,9 @@ my attention.>
 
 =back
 
+=head1 SEE ALSO
 
+L<MIME::Tools>, L<MIME::Head>, L<MIME::Body>, L<MIME::Entity>, L<MIME::Decoder>
 
 =head1 AUTHOR
 

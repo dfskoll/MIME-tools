@@ -2219,6 +2219,9 @@ how we work.
 
 =back
 
+=head1 SEE ALSO
+
+L<MIME::Tools>, L<MIME::Head>, L<MIME::Body>, L<MIME::Decoder>, L<Mail::Internet>
 
 =head1 AUTHOR
 

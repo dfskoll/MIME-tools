@@ -36,6 +36,9 @@ B<Note:> just like MIME::QuotedPrint, we currently use the
 native C<"\n"> for line breaks, and not C<CRLF>.  This may
 need to change in future versions.
 
+=head1 SEE ALSO
+
+L<MIME::Decoder>
 
 =head1 AUTHOR
 

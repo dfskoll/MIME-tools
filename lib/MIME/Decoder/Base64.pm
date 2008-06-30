@@ -37,6 +37,9 @@ specifies:
 
 =back
 
+=head1 SEE ALSO
+
+L<MIME::Decoder>
 
 =head1 AUTHOR
 

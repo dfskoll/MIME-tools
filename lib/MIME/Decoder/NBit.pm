@@ -74,6 +74,10 @@ domain.  The default action is to warn once per encoding if violations
 are detected; the warnings may be silenced with the QUIET configuration
 of L<MIME::Tools>.
 
+=head1 SEE ALSO
+
+L<MIME::Decoder>
+
 
 =head1 AUTHOR
 
@@ -112,7 +116,7 @@ sub decode_it {
     while ($in->read($_, $DecodeChunkLength)) {
 	$and_also = $in->getline;
 	$_ .= $and_also if defined($and_also);
-	
+
 	### Just got a chunk ending in a line.
 	s/\015\012$/\n/g;
 	$out->print($_);

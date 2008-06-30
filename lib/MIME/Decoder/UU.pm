@@ -22,6 +22,9 @@ data are uuencoded.  Common non-standard MIME encodings for this:
     x-uu
     x-uuencode
 
+=head1 SEE ALSO
+
+L<MIME::Decoder>
 
 =head1 AUTHOR
 

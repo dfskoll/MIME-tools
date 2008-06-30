@@ -25,6 +25,10 @@ read-and-write fixed-size chunks.
 Both the B<encoder> and B<decoder> do a simple pass-through of the data
 from input to output.
 
+=head1 SEE ALSO
+
+L<MIME::Decoder>
+
 
 =head1 AUTHOR
 

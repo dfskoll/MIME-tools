@@ -614,6 +614,9 @@ write a MIME::Decoder for any future standard encodings.
 The C<"binary"> decoder, however, really required block reads and writes:
 see L<"MIME::Decoder::Binary"> for details.
 
+=head1 SEE ALSO
+
+L<MIME::Tools>, other MIME::Decoder subclasses.
 
 =head1 AUTHOR
 

@@ -376,6 +376,10 @@ sub tag { '' }
 
 =back
 
+=head1 SEE ALSO
+
+L<Mail::Field>
+
 =cut
 
 #------------------------------
