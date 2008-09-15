@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 use warnings;
-use Test::More tests => 19;
+use Test::More tests => 20;
 
 use MIME::QuotedPrint qw(decode_qp);
 use MIME::Words qw( :all );
@@ -35,3 +35,13 @@ use MIME::Words qw( :all );
 	my $decoded = decode_mimewords($encoded);
 	is( $decoded, $source, 'encode/decode of string with spaces matches original');
 }
+
+# Second test case for ticket 5462
+{
+	my $source = 'это специальныйсабжект для теста системы тикетов';
+	my $encoded = encode_mimewords($source, ('Encode' => 'Q', 'Charset' => 'utf8'));
+	my $decoded = decode_mimewords($encoded);
+	is( $decoded, $source, 'encode/decode of string with spaces matches original');
+}
+
+# vim: set encoding=utf8 fileencoding=utf8:
