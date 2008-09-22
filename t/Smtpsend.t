@@ -10,7 +10,7 @@ use IO::Socket::INET;
 
 # Listen on port 5225 to pretend to be an SMTP server
 my $sock = IO::Socket::INET->new(Listen => 5,
-				 LocalPort => 5225,
+				 LocalAddr => 'localhost:5225',
 				 ReuseAddr => 1,
 				 Type => SOCK_STREAM,
 				 Timeout => 10,
