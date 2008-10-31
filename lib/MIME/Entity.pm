@@ -686,7 +686,7 @@ external data in bodyhandles is I<not> copied to new files!
 Changing the data in one entity's data file, or purging that entity,
 I<will> affect its duplicate.  Entities with in-core data probably need
 not worry.
-'
+
 =cut
 
 sub dup {
