@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 use warnings;
-use Test::More tests => 30;
+use Test::More tests => 34;
 
 use MIME::Entity;
 use MIME::Parser;
@@ -255,6 +255,21 @@ $top->sync_headers(Nonstandard=>'ERASE',
 open TMP, ">testout/entity.msg4" or die "open: $!";
 $top->print(\*TMP);
 close TMP;
+
+## Test that parts() replacement works
+my @newparts = $top->parts;
+pop @newparts;
+$top->parts( \@newparts );
+
+is($top->parts, 3, "number of parts is correct (3)");
+
+$bodylines = $top->parts(0)->body;
+is( ref $bodylines, 'ARRAY', '->body returns an array reference');
+is( scalar @$bodylines, 12, '... of the correct size (12 incl. signature)');
+
+$part = ($top->parts)[1];
+#-----test------
+is($part->head->mime_type, 'image/gif', "GIF has correct MIME type");
 
 #diag("Purge the files");
 $top->purge;
