@@ -73,6 +73,7 @@ t/Ref.t
 t/Smtpsend.t
 t/ticket-11901.t
 t/ticket-37139.t
+t/ticket-41632.t
 t/WordDecoder.t
 t/WordEncoder.t
 t/Words.t
