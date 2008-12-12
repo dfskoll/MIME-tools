@@ -268,18 +268,19 @@ sub parse_params {
 	    }
 	    $rfc2231params{$name}{$num} .= $val;
 	} else {
-	    # Make a special part for non-RFC2231 params
-	    $rfc2231params{$param}{"-1"} = $val;
+	    # Assign non-rfc2231 value directly.  If we
+	    # did get a mix of rfc2231 and non-rfc2231 values,
+            # the non-rfc2231 will be blown away in the
+	    # "extract reconstructed parameters" loop.
+	    $params{$param} = $val;
 	}
     }
 
     # Extract reconstructed parameters
     foreach $param (keys %rfc2231params) {
-	# If we have RFC2231 parts and a non-RFC2231 part, don't
-	# use the non-RFC2231 part.
-	if (exists($rfc2231params{$param}{"-1"}) && scalar(keys(%{$rfc2231params{$param}})) > 1) {
-		delete($rfc2231params{$param}{"-1"});
-	}
+	# If we got any rfc-2231 parameters, then
+        # blow away any potential non-rfc-2231 parameter.
+	$params{$param} = '';
 	foreach $part (sort { $a <=> $b } keys %{$rfc2231params{$param}}) {
 	    $params{$param} .= $rfc2231params{$param}{$part};
 	}
