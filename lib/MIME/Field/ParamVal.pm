@@ -234,7 +234,7 @@ sub parse_params {
     # Extract subsequent parameters.
     # No, we can't just "split" on semicolons: they're legal in quoted strings!
     while (1) {                     # keep chopping away until done...
-	$raw =~ m/\G$SPCZ\;$SPCZ/og or last;             # skip leading separator
+	$raw =~ m/\G$SPCZ(\;$SPCZ)+/og or last;             # skip leading separator
 	$raw =~ m/\G($PARAMNAME)\s*=\s*/og or last;      # give up if not a param
 	$param = lc($1);
 	$raw =~ m/\G(\"([^\"]*)\")|\G($ENCTOKEN)|\G($BADTOKEN)|\G($TOKEN)/g or last;   # give up if no value"
