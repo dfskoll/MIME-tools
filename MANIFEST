@@ -74,6 +74,8 @@ t/Smtpsend.t
 t/ticket-11901.t
 t/ticket-37139.t
 t/ticket-41632.t
+t/ticket-43439.t
+t/ticket-52924.t
 t/WordDecoder.t
 t/WordEncoder.t
 t/Words.t
@@ -136,6 +138,8 @@ testmsgs/bluedot-postcard.msg
 testmsgs/bluedot-postcard.ref
 testmsgs/bluedot-simple.msg
 testmsgs/bluedot-simple.ref
+testmsgs/double-semicolon.msg
+testmsgs/double-semicolon2.msg
 testmsgs/dup-names.msg
 testmsgs/dup-names.ref
 testmsgs/empty-preamble.msg
