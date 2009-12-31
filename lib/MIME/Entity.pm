@@ -646,7 +646,16 @@ sub build {
     ### Add other MIME fields:
     $head->replace('Content-transfer-encoding', $encoding) if $encoding;
     $head->replace('Content-description', $desc)           if $desc;
-    $head->replace('Content-id', $id)                      if defined($id);
+
+    # Content-Id value should be surrounded by < >, but versions before 5.428
+    # did not do this.  So, we check, and add if the caller has not done so
+    # already.
+    if( defined $id ) {
+	if( $id !~ /^<.*>$/ ) {
+		$id = "<$id>";
+	}
+	$head->replace('Content-id', $id);
+    }
     $head->replace('MIME-Version', '1.0')                  if $top;
 
     ### Add the X-Mailer field, if top level (use default value if not given):
