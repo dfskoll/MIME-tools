@@ -12,8 +12,8 @@ Pretty basic:
         -n        Don't actually send it; just print it to stdout.
         -t to     The "to" address.
         -s subj   The subject of the message.
-        -f file   Path to attached file.
-        -m type   MIME type of last -f file.
+        -f file   Path to attached file, or - for STDIN.
+        -m type   MIME type of previous -f; therefore -m must follow -f.
 
 For example:
 
@@ -41,10 +41,10 @@ my %TypeFor = qw(
     jpg   image/jpeg
     jpeg  image/jpeg
     gif   image/gif
-    gif   image/gif
     tif   image/tiff
     tiff  image/tiff
     xbm   image/xbm
+    pdf   application/pdf
     );
 
 # Usage:
@@ -113,7 +113,7 @@ elsif (@files == 1) {
    # Build:
    $top =  build MIME::Entity 
        Type     => ($type || type_for($path)),
-       Path     => $path,
+       $path eq '-' ? (Data => [<>]) : (Path => $path),
        Encoding => '-SUGGEST';
    $top->head->add('To', $to);
    $top->head->add('Subject', $subj);
