@@ -1,3 +1,28 @@
+5.428     2010-04-22  Dave O'Neill <dmo@roaringpenguin.com>
+
+	* VERSION 5.428 RELEASED
+
+	* (ticket 56764) Build release with a newer Module::Install
+
+	* (ticket 52924) ensure we add <> around Content-id data
+
+	* (ticket 48036) make mimesend example script a bit more useful
+	  (courtesy of Jerrad Pierce)
+
+	* (ticket 43439) fix for parsing of doubled ; in multipart headers
+
+	* (ticket 41632) If both RFC-2231 and non-RFC-2231 parameters are
+	  present, use only the RFC-2231 ones
+
+	* (ticket 40715) Reference Encode::MIME::Header in docs
+
+	* (ticket 39985) correct POD typos
+
+	* Only bind to localhost in smtpsend test, rather than to all available
+	  interfaces.  This might avoid some of the test failures seen on
+	  cpantesters.
+
+
 5.427     2008-06-30  Dave O'Neill <dmo@roaringpenguin.com>
 	* VERSION 5.427 RELEASED
 
