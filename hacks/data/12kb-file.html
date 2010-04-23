@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
+<!--http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd-->  
+<html xmlns="http://www.w3.org/1999/xhtml"  
+> 
+<head><title>H SNMP Agents for CanIt-PRO</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+<meta name="generator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" /> 
+<meta name="originator" content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" /> 
+<!-- xhtml,2,fn-in,graphics-,html --> 
+<meta name="src" content="adminguide-pro.tex" /> 
+<meta name="date" content="2009-10-09 16:07:00" /> 
+<link rel="stylesheet" type="text/css" href="adminguide-pro.css" /> 
+</head><body 
+>
+<!--l. 1--><div class="crosslinks"><p class="noindent">[<a 
+href="adminguide-proap9.php" >next</a>] [<a 
+href="adminguide-proap7.php" >prev</a>] [<a 
+href="adminguide-proap7.php#tailadminguide-proap7.php" >prev-tail</a>] [<a 
+href="#tailadminguide-proap8.php">tail</a>] [<a 
+href="adminguide-pro.php#adminguide-proap8.php" >up</a>] </p></div>
+<h2 class="appendixHead"><span class="titlemark">Appendix&#x00A0;H</span><br /><a 
+ id="x26-259000H"></a>SNMP Agents for Canit-PRO</h2> <a 
+ id="dx26-259001"></a>
+<h3 class="sectionHead"><span class="titlemark">H.1 </span> <a 
+ id="x26-260000H.1"></a>Introduction</h3>
+<!--l. 7--><p class="noindent" >SNMP (&#8220;Simple Network Management Protocol&#8221;) is a protocol for monitoring networks. An SNMP
+monitoring station typically polls an SNMP <em>Agent</em> via UDP and receives data about the monitored
+facility.
+</p><!--l. 11--><p class="noindent" >CanIt-PRO includes three SNMP agents that integrate with the Net-SNMP package. (For more
+information on Net-SNMP, please see   <a 
+href="http://www.net-snmp.org/" class="url" ><span 
+class="pcrr7t-x-x-109">http://www.net-snmp.org/</span></a>)
+</p><!--l. 18--><p class="noindent" ><div class="note"><span class="noteintro">Note: </span>This chapter is <em>not</em> a tutorial on SNMP, nor will it tell you how to configure Net-SNMP; we assume you&#8217;re
+familiar with both. Also, we support the SNMP agents <em>only</em> on our Debian-based appliance and our Red Hat
+Enterprse Linux RPMs; on all other systems, the SNMP agents are supplied on an as-is basis without
+support.</div>
+</p><!--l. 20--><p class="noindent" >To use the SNMP agent, ensure that Net-SNMP is installed, and that <tt>snmpd</tt> is configured and set to start on
+system boot.
+</p><!--l. 23--><p class="noindent" >Data returned by an SNMP agent is described in a <em>Management Information Base</em> or MIB. You can download
+the CanIt-PRO MIB by logging in to the Web interface as the administrator, selecting <b>Setup :
+Wizards</b> and then clicking <b>Download CanIt SNMP MIB File</b>.
+</p><!--l. 27--><p class="noindent" >
+</p>
+<h3 class="sectionHead"><span class="titlemark">H.2 </span> <a 
+ id="x26-261000H.2"></a>The SNMP Agents</h3>
+<!--l. 29--><p class="noindent" >The three SNMP agents included with CanIt-PRO monitor:
+</p><ol  class="enumerate1" >
+<li 
+  class="enumerate" id="x26-261002x1">Sendmail queue sizes.
+</li>
+<li 
+  class="enumerate" id="x26-261004x2">MIMEDefang busy/free scanners.
+</li>
+<li 
+  class="enumerate" id="x26-261006x3">Failover status.</li></ol>
+<!--l. 36--><p class="noindent" >The agents all provide information under the MIB tree <tt>.1.3.6.1.4.1.10055</tt>, which corresponds to
+<tt>enterprises.roaringpenguin</tt>.
+</p><!--l. 39--><p class="noindent" >
+                                                                                    
+                                                                                    
+</p>
+<h4 class="subsectionHead"><span class="titlemark">H.2.1 </span> <a 
+ id="x26-262000H.2.1"></a>Sendmail Agent</h4>
+<!--l. 41--><p class="noindent" >To enable the Sendmail monitoring agent, add this line to <tt>snmpd.conf</tt>:
+                                                                                    
+                                                                                    
+</p>
+<div class="verbatim">
+pass_persist&#x00A0;.1.3.6.1.4.1.10055.100&#x00A0;/usr/sbin/sendmail-snmp-agent
+</div>
+<!--l. 45--><p class="nopar" >
+</p><!--l. 47--><p class="noindent" >(The agent lives in <tt>/usr/local/sbin</tt> rather than <tt>/usr/sbin</tt> on Red Hat systems.)
+</p><!--l. 50--><p class="noindent" >The Sendmail agent returns information about the number of entries in the main queue and the submission
+queue. The meanings of the variables are as follows; &#8220;sendmail&#8221; is short for .1.3.6.1.4.1.10055.100:
+</p>
+<ul class="itemize1">
+<li class="itemize">sendmail.1.1.1.1 &#8212; constant integer 1
+</li>
+<li class="itemize">sendmail.1.1.2.1 &#8212; constant string &#8220;Main Queue&#8221;
+</li>
+<li class="itemize">sendmail.1.1.3.1 &#8212; number of messages in Sendmail&#8217;s primary queue
+</li>
+<li class="itemize">sendmail.1.1.1.2 &#8212; constant integer 2
+</li>
+<li class="itemize">sendmail.1.1.2.2 &#8212; constant string &#8220;Submission Queue&#8221;
+</li>
+<li class="itemize">sendmail.1.1.3.2 &#8212; number of messages in Sendmail&#8217;s submission queue</li></ul>
+<!--l. 62--><p class="noindent" >
+</p>
+<h4 class="subsectionHead"><span class="titlemark">H.2.2 </span> <a 
+ id="x26-263000H.2.2"></a>MIMEDefang Agent</h4>
+<!--l. 64--><p class="noindent" >To enable the MIMEDefang monitoring agent, add this line to <tt>snmpd.conf</tt>:
+                                                                                    
+                                                                                    
+</p>
+<div class="verbatim">
+pass_persist&#x00A0;.1.3.6.1.4.1.10055.1&#x00A0;/usr/sbin/mimedefang-snmp-agent
+</div>
+<!--l. 68--><p class="nopar" >
+</p><!--l. 70--><p class="noindent" >(The agent lives in <tt>/usr/local/sbin</tt> rather than <tt>/usr/sbin</tt> on Red Hat systems.)
+</p><!--l. 73--><p class="noindent" >The MIMEDefang agent returns information about the number of messages processed in the last 10
+seconds, 1 minute, 5 minutes and 10 minutes; the average scan time in millisends, and the average
+number of busy scanners. The meanings of the variables are as follows; &#8220;mimedefang&#8221; is short for
+.1.3.6.1.4.1.10055.1:
+</p>
+<ul class="itemize1">
+<li class="itemize">mimedefang.1.1.1.1 &#8212; constant integer 1
+</li>
+<li class="itemize">mimedefang.1.1.1.2 &#8212; constant integer 2
+</li>
+<li class="itemize">mimedefang.1.1.1.3 &#8212; constant integer 3
+</li>
+<li class="itemize">mimedefang.1.1.2.1 &#8212; constant string &#8220;Max slaves&#8221;
+</li>
+<li class="itemize">mimedefang.1.1.2.2 &#8212; constant string &#8220;Busy slaves&#8221;
+</li>
+<li class="itemize">mimedefang.1.1.2.3 &#8212; constant string &#8220;Free slaves&#8221;
+</li>
+<li class="itemize">mimedefang.1.1.3.1 &#8212; maximum number of scanning processes configured
+</li>
+<li class="itemize">mimedefang.1.1.3.2 &#8212; number of busy scanning processes
+</li>
+<li class="itemize">mimedefang.1.1.3.3 &#8212; number of free scanning processes
+</li>
+<li class="itemize">mimedefang.2.1.1.1 &#8212; constant integer 1
+</li>
+<li class="itemize">mimedefang.2.1.1.2 &#8212; constant integer 2
+                                                                                    
+                                                                                    
+</li>
+<li class="itemize">mimedefang.2.1.1.3 &#8212; constant integer 3
+</li>
+<li class="itemize">mimedefang.2.1.1.4 &#8212; constant integer 4
+</li>
+<li class="itemize">mimedefang.2.1.2.1 &#8212; constant string &#8220;10 Seconds&#8221;
+</li>
+<li class="itemize">mimedefang.2.1.2.2 &#8212; constant string &#8220;1 Minute&#8221;
+</li>
+<li class="itemize">mimedefang.2.1.2.3 &#8212; constant string &#8220;5 Minutes&#8221;
+</li>
+<li class="itemize">mimedefang.2.1.2.4 &#8212; constant string &#8220;10 Minutes&#8221;
+</li>
+<li class="itemize">mimedefang.2.1.3.1 &#8212; number of messages scanned in the last 10 seconds
+</li>
+<li class="itemize">mimedefang.2.1.3.2 &#8212; number of messages scanned in the last 1 minute
+</li>
+<li class="itemize">mimedefang.2.1.3.3 &#8212; number of messages scanned in the last 5 minutes
+</li>
+<li class="itemize">mimedefang.2.1.3.4 &#8212; number of messages scanned in the last 10 minutes
+</li>
+<li class="itemize">mimedefang.2.1.4.1 &#8212; average scan time in milliseconds (last 10 seconds)
+</li>
+<li class="itemize">mimedefang.2.1.4.2 &#8212; average scan time in milliseconds (last 1 minute)
+</li>
+<li class="itemize">mimedefang.2.1.4.3 &#8212; average scan time in milliseconds (last 5 minutes)
+</li>
+<li class="itemize">mimedefang.2.1.4.4 &#8212; average scan time in milliseconds (last 10 minutes)
+</li>
+<li class="itemize">mimedefang.2.1.5.1 &#8212; average busy scanners times 1000 (last 10 seconds)
+</li>
+<li class="itemize">mimedefang.2.1.5.2 &#8212; average busy scanners times 1000 (last 1 minute)
+</li>
+<li class="itemize">mimedefang.2.1.5.3 &#8212; average busy scanners times 1000 (last 5 minutes)
+                                                                                    
+                                                                                    
+</li>
+<li class="itemize">mimedefang.2.1.5.4 &#8212; average busy scanners times 1000 (last 10 minutes)</li></ul>
+<!--l. 111--><p class="noindent" >
+</p>
+<h4 class="subsectionHead"><span class="titlemark">H.2.3 </span> <a 
+ id="x26-264000H.2.3"></a>Failover SNMP Agent</h4>
+<!--l. 113--><p class="noindent" >The failover SNMP agent is useful only if you have configured PostgreSQL failover as described in the
+CanIt-PRO Clustering Guide. To enable the failover SNMP agent, add this line to
+<tt>snmpd.conf</tt>:
+                                                                                    
+                                                                                    
+</p>
+<div class="verbatim">
+pass_persist&#x00A0;.1.3.6.1.4.1.10055.2&#x00A0;/usr/sbin/failover-snmp-agent
+</div>
+<!--l. 119--><p class="nopar" >
+</p><!--l. 121--><p class="noindent" >(The agent lives in <tt>/usr/local/sbin</tt> rather than <tt>/usr/sbin</tt> on Red Hat systems.)
+</p><!--l. 124--><p class="noindent" >The failover agent returns information about the status of PostgreSQL failover. The meanings of the variables
+are as follows; &#8220;failover&#8221; is short for .1.3.6.1.4.1.10055.2:
+</p>
+<ul class="itemize1">
+<li class="itemize">failover.1 &#8212; the type of server; one of &#8220;master&#8221; or &#8220;backup&#8221;.
+</li>
+<li class="itemize">failover.2 &#8212; if 1, then the failover system is OK. If 0, then there are problems that should be
+investigated.
+</li>
+<li class="itemize">failover.3 &#8212; a count of errors seen in the PostgreSQL log file. (Meaningful only on the &#8220;master&#8221;
+server.)
+</li>
+<li class="itemize">failover.4 &#8212; a count of WAL files waiting to be consumed on the backup server. Always reported
+as 0 on the master server.
+</li>
+<li class="itemize">failover.5  &#8212;  the  count  of  WAL  files  in  the  <tt>pg_xlog</tt>  directory  on  the  master  server.  Always
+reported as 0 on the backup server.
+</li>
+<li class="itemize">failover.6 &#8212; the time of last base backup as a UNIX timestamp (seconds since 1 January 1970
+00:00:00 UTC.) Always reported as 0 on the master server.
+</li>
+<li class="itemize">failover.7 &#8212; the time the last WAL file was shipped to the backup server as a UNIX timestamp.
+Always reported as 0 on the master server.</li></ul>
+                                                                                    
+                                                                                    
+<!--l. 1--><div class="crosslinks"><p class="noindent">[<a 
+href="adminguide-proap9.php" >next</a>] [<a 
+href="adminguide-proap7.php" >prev</a>] [<a 
+href="adminguide-proap7.php#tailadminguide-proap7.php" >prev-tail</a>] [<a 
+href="adminguide-proap8.php" >front</a>] [<a 
+href="adminguide-pro.php#adminguide-proap8.php" >up</a>] </p></div>
+<!--l. 1--><p class="noindent" ><a 
+ id="tailadminguide-proap8.php"></a></p> 
+</body></html> 

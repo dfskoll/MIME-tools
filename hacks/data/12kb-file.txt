@@ -1,0 +1,141 @@
+   [next] [prev] [prev-tail] [tail] [up]
+
+Appendix H
+SNMP Agents for Canit-PRO
+
+  H.1 Introduction
+
+   SNMP ("Simple Network Management Protocol") is a protocol for monitoring
+   networks. An SNMP monitoring station typically polls an SNMP Agent via UDP
+   and receives data about the monitored facility.
+
+   CanIt-PRO includes three SNMP agents that integrate with the Net-SNMP
+   package. (For more information on Net-SNMP, please see
+   http://www.net-snmp.org/)
+
+   Note: This chapter is not a tutorial on SNMP, nor will it tell you how to
+   configure Net-SNMP; we assume you're familiar with both. Also, we support
+   the SNMP agents only on our Debian-based appliance and our Red Hat
+   Enterprse Linux RPMs; on all other systems, the SNMP agents are supplied
+   on an as-is basis without support.
+
+   To use the SNMP agent, ensure that Net-SNMP is installed, and that snmpd
+   is configured and set to start on system boot.
+
+   Data returned by an SNMP agent is described in a Management Information
+   Base or MIB. You can download the CanIt-PRO MIB by logging in to the Web
+   interface as the administrator, selecting Setup : Wizards and then
+   clicking Download CanIt SNMP MIB File.
+
+  H.2 The SNMP Agents
+
+   The three SNMP agents included with CanIt-PRO monitor:
+
+    1. Sendmail queue sizes.
+    2. MIMEDefang busy/free scanners.
+    3. Failover status.
+
+   The agents all provide information under the MIB tree .1.3.6.1.4.1.10055,
+   which corresponds to enterprises.roaringpenguin.
+
+    H.2.1 Sendmail Agent
+
+   To enable the Sendmail monitoring agent, add this line to snmpd.conf:
+
+   pass_persist .1.3.6.1.4.1.10055.100 /usr/sbin/sendmail-snmp-agent
+
+   (The agent lives in /usr/local/sbin rather than /usr/sbin on Red Hat
+   systems.)
+
+   The Sendmail agent returns information about the number of entries in the
+   main queue and the submission queue. The meanings of the variables are as
+   follows; "sendmail" is short for .1.3.6.1.4.1.10055.100:
+
+     * sendmail.1.1.1.1 - constant integer 1
+     * sendmail.1.1.2.1 - constant string "Main Queue"
+     * sendmail.1.1.3.1 - number of messages in Sendmail's primary queue
+     * sendmail.1.1.1.2 - constant integer 2
+     * sendmail.1.1.2.2 - constant string "Submission Queue"
+     * sendmail.1.1.3.2 - number of messages in Sendmail's submission queue
+
+    H.2.2 MIMEDefang Agent
+
+   To enable the MIMEDefang monitoring agent, add this line to snmpd.conf:
+
+   pass_persist .1.3.6.1.4.1.10055.1 /usr/sbin/mimedefang-snmp-agent
+
+   (The agent lives in /usr/local/sbin rather than /usr/sbin on Red Hat
+   systems.)
+
+   The MIMEDefang agent returns information about the number of messages
+   processed in the last 10 seconds, 1 minute, 5 minutes and 10 minutes; the
+   average scan time in millisends, and the average number of busy scanners.
+   The meanings of the variables are as follows; "mimedefang" is short for
+   .1.3.6.1.4.1.10055.1:
+
+     * mimedefang.1.1.1.1 - constant integer 1
+     * mimedefang.1.1.1.2 - constant integer 2
+     * mimedefang.1.1.1.3 - constant integer 3
+     * mimedefang.1.1.2.1 - constant string "Max slaves"
+     * mimedefang.1.1.2.2 - constant string "Busy slaves"
+     * mimedefang.1.1.2.3 - constant string "Free slaves"
+     * mimedefang.1.1.3.1 - maximum number of scanning processes configured
+     * mimedefang.1.1.3.2 - number of busy scanning processes
+     * mimedefang.1.1.3.3 - number of free scanning processes
+     * mimedefang.2.1.1.1 - constant integer 1
+     * mimedefang.2.1.1.2 - constant integer 2
+     * mimedefang.2.1.1.3 - constant integer 3
+     * mimedefang.2.1.1.4 - constant integer 4
+     * mimedefang.2.1.2.1 - constant string "10 Seconds"
+     * mimedefang.2.1.2.2 - constant string "1 Minute"
+     * mimedefang.2.1.2.3 - constant string "5 Minutes"
+     * mimedefang.2.1.2.4 - constant string "10 Minutes"
+     * mimedefang.2.1.3.1 - number of messages scanned in the last 10 seconds
+     * mimedefang.2.1.3.2 - number of messages scanned in the last 1 minute
+     * mimedefang.2.1.3.3 - number of messages scanned in the last 5 minutes
+     * mimedefang.2.1.3.4 - number of messages scanned in the last 10 minutes
+     * mimedefang.2.1.4.1 - average scan time in milliseconds (last 10
+       seconds)
+     * mimedefang.2.1.4.2 - average scan time in milliseconds (last 1 minute)
+     * mimedefang.2.1.4.3 - average scan time in milliseconds (last 5
+       minutes)
+     * mimedefang.2.1.4.4 - average scan time in milliseconds (last 10
+       minutes)
+     * mimedefang.2.1.5.1 - average busy scanners times 1000 (last 10
+       seconds)
+     * mimedefang.2.1.5.2 - average busy scanners times 1000 (last 1 minute)
+     * mimedefang.2.1.5.3 - average busy scanners times 1000 (last 5 minutes)
+     * mimedefang.2.1.5.4 - average busy scanners times 1000 (last 10
+       minutes)
+
+    H.2.3 Failover SNMP Agent
+
+   The failover SNMP agent is useful only if you have configured PostgreSQL
+   failover as described in the CanIt-PRO Clustering Guide. To enable the
+   failover SNMP agent, add this line to snmpd.conf:
+
+   pass_persist .1.3.6.1.4.1.10055.2 /usr/sbin/failover-snmp-agent
+
+   (The agent lives in /usr/local/sbin rather than /usr/sbin on Red Hat
+   systems.)
+
+   The failover agent returns information about the status of PostgreSQL
+   failover. The meanings of the variables are as follows; "failover" is
+   short for .1.3.6.1.4.1.10055.2:
+
+     * failover.1 - the type of server; one of "master" or "backup".
+     * failover.2 - if 1, then the failover system is OK. If 0, then there
+       are problems that should be investigated.
+     * failover.3 - a count of errors seen in the PostgreSQL log file.
+       (Meaningful only on the "master" server.)
+     * failover.4 - a count of WAL files waiting to be consumed on the backup
+       server. Always reported as 0 on the master server.
+     * failover.5 - the count of WAL files in the pg_xlog directory on the
+       master server. Always reported as 0 on the backup server.
+     * failover.6 - the time of last base backup as a UNIX timestamp (seconds
+       since 1 January 1970 00:00:00 UTC.) Always reported as 0 on the master
+       server.
+     * failover.7 - the time the last WAL file was shipped to the backup
+       server as a UNIX timestamp. Always reported as 0 on the master server.
+
+   [next] [prev] [prev-tail] [front] [up]
