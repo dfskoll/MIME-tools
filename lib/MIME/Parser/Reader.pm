@@ -34,7 +34,6 @@ This class has no official public interface
 =cut
 
 use strict;
-use IO::ScalarArray;
 
 ### All possible end-of-line sequences.
 ### Note that "" is included because last line of stream may have no newline!
@@ -296,9 +295,13 @@ sub read_chunk {
 #
 sub read_lines {
     my ($self, $in, $outlines) = @_;
-    # TODO: we are also stuck keeping this one for now
-    $self->read_chunk($in, IO::ScalarArray->new($outlines));
-    shift @$outlines if ($outlines->[0] eq '');   ### leading empty line
+
+    my $data = '';
+    open(my $fh, '>', \$data) or die $!;
+    $self->read_chunk($in, $fh);
+    @$outlines =  split(/^/, $data);
+    close $fh;
+
     1;
 }
 

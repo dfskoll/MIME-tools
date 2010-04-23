@@ -106,8 +106,8 @@ Ready?  Ok...
 =head2 Miscellaneous examples
 
     ### Convert a Mail::Internet object to a MIME::Entity:
-    @lines = (@{$mail->header}, "\n", @{$mail->body});
-    $entity = $parser->parse_data(\@lines);
+    my $data = join('', (@{$mail->header}, "\n", @{$mail->body}));
+    $entity = $parser->parse_data(\$data);
 
 
 
@@ -130,7 +130,6 @@ use strict;
 use vars (qw($VERSION $CAT $CRLF));
 
 ### Built-in modules:
-use IO::ScalarArray  1.114;
 use IO::File;
 use IO::InnerFile;
 use File::Spec;
@@ -638,7 +637,11 @@ sub process_header {
     my $hdr_rdr = $rdr->spawn;
     $hdr_rdr->add_terminator("");
     $hdr_rdr->add_terminator("\r");           ### sigh
-    $hdr_rdr->read_lines($in, \@headlines);
+
+    my $headstr = '';
+    open(my $outfh, '>:scalar', \$headstr) or die $!;
+    $hdr_rdr->read_chunk($in, $outfh);
+    close $outfh;
 
     ### How did we do?
     if ($hdr_rdr->eos_type eq 'DELIM') {
@@ -648,29 +651,19 @@ sub process_header {
     ($hdr_rdr->eos_type eq 'DONE') or
 	$self->error("unexpected end of header\n");
 
-    foreach (@headlines) { s/[\r\n]+\Z/\n/ }  ### fold
-
-    ### Cleanup bogus header lines.
-    ###    Some folks like to parse mailboxes, so the header will start
-    ###    with "From " or ">From ".  Tolerate this by removing both kinds
-    ###    of lines silently (can't we use Mail::Header for this, and try
-    ###    and keep the envelope?).  Ditto for POP.
-    while (@headlines) {
-	if    ($headlines[0] =~ /^>?From /) {    ### mailbox
-	    $self->whine("skipping bogus mailbox 'From ' line");
-	    shift @headlines;
-	}
-	elsif ($headlines[0] =~ /^\+OK/) {       ### POP3 status line
-	    $self->whine("skipping bogus POP3 '+OK' line");
-	    shift @headlines;
-	}
-	else { last }
-    }
+    # TODO: necessary?
+    $headstr =~ s/[\r\n]+/\n/g; ### fold
 
     ### Extract the header (note that zero-size headers are admissible!):
-    $head->extract(\@headlines);
-    @headlines and
-	$self->error("couldn't parse head; error near:\n",@headlines);
+    open(my $readfh, '<:scalar', \$headstr) or die $!;
+    $head->read( $readfh );
+
+    unless( $readfh->eof() ) {
+	# Not entirely correct, since ->read consumes the line it gives up on.
+	# it's actually the line /before/ the one we get with ->getline
+	$self->error("couldn't parse head; error near:\n", $readfh->getline());
+    }
+
 
     ### If desired, auto-decode the header as per RFC 2047
     ###    This shouldn't affect non-encoded headers; however, it will decode
@@ -1104,23 +1097,34 @@ sub process_part {
 =item parse_data DATA
 
 I<Instance method.>
-Parse a MIME message that's already in core.
+Parse a MIME message that's already in core.  This internally creates an "in
+memory" filehandle on a Perl scalar value using PerlIO
+
 You may supply the DATA in any of a number of ways...
 
 =over 4
 
 =item *
 
-B<A scalar> which holds the message.
+B<A scalar> which holds the message.  A reference to this scalar will be used
+internally.
 
 =item *
 
-B<A ref to a scalar> which holds the message.  This is an efficiency hack.
+B<A ref to a scalar> which holds the message.  This reference will be used
+internally.
 
 =item *
 
-B<A ref to an array of scalars.>  They are treated as a stream
-which (conceptually) consists of simply concatenating the scalars.
+B<DEPRECATED>
+
+B<A ref to an array of scalars.>  The array is internally concatenated into a
+temporary string, and a reference to the new string is used internally.
+
+It is much more efficient to pass in a scalar reference, so please consider
+refactoring your code to use that interface instead.  If you absolutely MUST
+pass an array, you may be better off using IO::ScalarArray in the calling code
+to generate a filehandle, and passing that filehandle to I<parse()>
 
 =back
 
@@ -1139,10 +1143,11 @@ sub parse_data {
     } elsif( ref $data eq 'SCALAR' ) {
         $io = IO::File->new($data, '<:');
     } elsif( ref $data eq 'ARRAY' ) {
-	# Unfortunately, if they give us an array, we have to keep
-	# using it.  We don't really want to make a copy.
-	# TODO: I think we're stuck keeping this one for now.
-        $io = IO::ScalarArray->new($data);
+	# Passing arrays is deprecated now that we've nuked IO::ScalarArray
+	# but for backwards compatibility we still support it by joining the
+	# array lines to a scalar and doing scalar IO on it.
+	my $tmp_data = join('', @$data);
+	$io = IO::File->new(\$tmp_data, '<:');
     } else {
         croak "parse_data: wrong argument ref type: ", ref($data);
     }
