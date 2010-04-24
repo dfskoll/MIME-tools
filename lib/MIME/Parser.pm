@@ -639,7 +639,6 @@ sub process_header {
     $hdr_rdr->add_terminator("");
     $hdr_rdr->add_terminator("\r");           ### sigh
     $hdr_rdr->read_lines($in, \@headlines);
-    foreach (@headlines) { s/[\r\n]+\Z/\n/ }  ### fold
 
     ### How did we do?
     if ($hdr_rdr->eos_type eq 'DELIM') {
@@ -648,6 +647,8 @@ sub process_header {
     }
     ($hdr_rdr->eos_type eq 'DONE') or
 	$self->error("unexpected end of header\n");
+
+    foreach (@headlines) { s/[\r\n]+\Z/\n/ }  ### fold
 
     ### Cleanup bogus header lines.
     ###    Some folks like to parse mailboxes, so the header will start
