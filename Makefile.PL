@@ -30,5 +30,4 @@ requires        'File::Temp'     => 0.18;
 # Build deps
 build_requires	'Test::More';
 
-auto_install;
 WriteAll;
