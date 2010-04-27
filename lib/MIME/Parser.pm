@@ -129,9 +129,8 @@ require 5.004;
 use strict;
 use vars (qw($VERSION $CAT $CRLF));
 
-### Built-in modules:
+### core Perl modules
 use IO::File;
-use IO::InnerFile;
 use File::Spec;
 use File::Path;
 use Config qw(%Config);
@@ -146,31 +145,6 @@ use MIME::Decoder;
 use MIME::Parser::Reader;
 use MIME::Parser::Filer;
 use MIME::Parser::Results;
-
-
-#============================================================
-#
-# A special kind of inner file that we can virtually print to.
-#
-package MIME::Parser::InnerFile;
-
-use vars qw(@ISA);
-@ISA = qw(IO::InnerFile);
-
-sub print {
-    shift->add_length(length(join('', @_)));
-    1;
-}
-
-sub PRINT  {
-    shift->{LG} += length(join('', @_));
-    1;
-}
-
-#============================================================
-
-package MIME::Parser;
-
 
 #------------------------------
 #
@@ -244,7 +218,6 @@ sub init {
     $self->{MP5_ParseNested}     = 'NEST';
     $self->{MP5_TmpToCore}       = 0;
     $self->{MP5_IgnoreErrors}    = 1;
-    $self->{MP5_UseInnerFiles}   = 0;
     $self->{MP5_UUDecode}        = 0;
     $self->{MP5_MaxParts}        = -1;
     $self->{MP5_TmpDir}          = undef;
@@ -783,16 +756,8 @@ sub process_singlepart {
     }
     else {
 
-	### Can we read real fast?
-	if ($self->{MP5_UseInnerFiles} &&
-	    $in->can('seek') && $in->can('tell')) {
-	    $self->debug("using inner file");
-	    $ENCODED = MIME::Parser::InnerFile->new($in, $in->tell, 0);
-	}
-	else {
-	    $self->debug("using temp file");
-	    $ENCODED = $self->new_tmpfile();
-	}
+	$self->debug("using temp file");
+	$ENCODED = $self->new_tmpfile();
 
 	### Read encoded body until boundary (or EOF)...
 	$self->process_to_bound($in, $rdr, $ENCODED);
@@ -1527,28 +1492,32 @@ sub tmp_to_core {
 
 =item use_inner_files [YESNO]
 
+I<REMOVED>.
+
 I<Instance method.>
-If you are parsing from a handle which supports seek() and tell(),
-then we can avoid tmpfiles completely by using IO::InnerFile, if so
-desired: basically, we simulate a temporary file via pointers
-to virtual start- and end-positions in the input stream.
 
-If YESNO is false (the default), then we will not use IO::InnerFile.
-If YESNO is true, we use IO::InnerFile if we can.
-With no argument, just returns the current setting.
+MIME::Parser no longer supports IO::InnerFile, but this method is retained for
+backwards compatibility.  It does nothing.
 
-B<Note:> inner files are slower than I<real> tmpfiles,
-but possibly faster than I<in-core> tmpfiles... so your choice for
-this option will probably depend on your choice for
-L<tmp_to_core()|/tmp_to_core> and the kind of input streams you are
-parsing.
+The original reasoning for IO::InnerFile was that inner files were faster than
+"in-core" temp files.  At the time, the "in-core" tempfile support was
+implemented with IO::Scalar from the IO-Stringy distribution, which used the
+tie() interface to wrap a scalar with the appropriate IO::Handle operations.
+The penalty for this was fairly hefty, and IO::InnerFile actually was faster.
+
+Nowadays, MIME::Parser uses Perl's built in ability to open a filehandle on an
+in-memory scalar variable via PerlIO.  Benchmarking shows that IO::InnerFile is
+slightly slower than using in-memory temporary files, and is slightly faster
+than on-disk temporary files.  Both measurements are within a few percent of
+each other.  Since there's no real benefit, and since the IO::InnerFile abuse
+was fairly hairy and evil ("writes" to it were faked by extending the size of
+the inner file with the assumption that the only data you'd ever ->print() to
+it would be the line from the "outer" file, for example) it's been removed.
 
 =cut
 
 sub use_inner_files {
-    my ($self, $yesno) = @_;
-    $self->{MP5_UseInnerFiles} = $yesno if (@_ > 1);
-    $self->{MP5_UseInnerFiles};
+	return 0;
 }
 
 =back
@@ -1809,21 +1778,6 @@ Optimum settings:
 				    general you want it set to 1)
     output_to_core()           0   (will be MUCH faster)
     tmp_to_core()              0   (will be MUCH faster)
-    use_inner_files()          0   (if tmp_to_core() is 0;
-				    use 1 otherwise)
-
-B<File I/O is much faster than in-core I/O.>
-Although it I<seems> like slurping a message into core and
-processing it in-core should be faster... it isn't.
-Reason: Perl's filehandle-based I/O translates directly into
-native operating-system calls, whereas the in-core I/O is
-implemented in Perl.
-
-B<Inner files are slower than real tmpfiles, but faster than in-core ones.>
-If speed is your concern, that's why
-you should set use_inner_files(true) if you set tmp_to_core(true):
-so that we can bypass the slow in-core tmpfiles if the input stream
-permits.
 
 B<Native I/O is much faster than object-oriented I/O.>
 It's much faster to use E<lt>$fooE<gt> than $foo-E<gt>getline.
@@ -1857,10 +1811,6 @@ Optimum settings:
     output_to_core()           0   (will use MUCH less memory)
 				    tmp_to_core is 1)
     tmp_to_core()              0   (will use MUCH less memory)
-    use_inner_files()          *** (no real difference, but set it to 1
-				    if you *must* have tmp_to_core set to 1,
-				    so that you avoid in-core tmpfiles)
-
 
 =head2 Maximizing tolerance of bad MIME
 
@@ -1878,7 +1828,6 @@ Optimum settings:
 				    but often you want it set to 1 anyway).
     output_to_core()           *** (doesn't matter)
     tmp_to_core()              *** (doesn't matter)
-    use_inner_files()          *** (doesn't matter)
 
 
 =head2 Avoiding disk-based temporary files
@@ -1896,17 +1845,9 @@ Optimum settings:
     extract_nested_messages()  *** (doesn't matter)
     output_to_core()           *** (doesn't matter)
     tmp_to_core()              1
-    use_inner_files()          1
-
-B<If we can use them, inner files avoid most tmpfiles.>
-If you parse from a seekable-and-tellable filehandle, then the internal
-process_to_bound() doesn't need to extract each part into a temporary
-buffer; it can use IO::InnerFile (B<warning:> this will slow down
-the parsing of messages with large attachments).
 
 B<You can veto tmpfiles entirely.>
-If you might not be parsing from a seekable-and-tellable filehandle,
-you can set L<tmp_to_core()|/tmp_to_core> true: this will always
+You can set L<tmp_to_core()|/tmp_to_core> true: this will always
 use in-core I/O for the buffering (B<warning:> this will slow down
 the parsing of messages with large attachments).
 
