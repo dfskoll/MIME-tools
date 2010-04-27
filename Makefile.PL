@@ -22,7 +22,6 @@ recommends      'MIME::Base64'   => 3.03;
 
 requires        'IO::File'       => 1.13;
 requires        'IO::Handle';
-requires        'IO::Stringy'    => 2.110;
 requires        'File::Spec'     => 0.6;
 requires        'File::Path'     => 1;
 requires        'File::Temp'     => 0.18;
