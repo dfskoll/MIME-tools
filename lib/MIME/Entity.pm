@@ -234,7 +234,6 @@ use MIME::Tools qw(:config :msgs :utils);
 use MIME::Head;
 use MIME::Body;
 use MIME::Decoder;
-use IO::Lines;
 
 @ISA = qw(Mail::Internet);
 
