@@ -335,10 +335,6 @@ are some other methods you'll need to know about:
 
 =over 4
 
-=cut
-
-#------------------------------
-
 =item decode_it INSTREAM,OUTSTREAM
 
 I<Abstract instance method.>
@@ -365,8 +361,6 @@ It may also throw an exception to indicate failure.
 sub decode_it {
     die "attempted to use abstract 'decode_it' method!";
 }
-
-#------------------------------
 
 =item encode_it INSTREAM,OUTSTREAM
 
@@ -395,8 +389,6 @@ sub encode_it {
     die "attempted to use abstract 'encode_it' method!";
 }
 
-#------------------------------
-
 =item filter IN, OUT, COMMAND...
 
 I<Class method, utility.>
@@ -417,25 +409,64 @@ so you can specify COMMAND as a single argument or as an array.
 
 =cut
 
-sub filter {
-    my ($self, $in, $out, @cmd) = @_;
-    my $buf = '';
+sub filter
+{
+	my ($self, $in, $out, @cmd) = @_;
+	my $buf = '';
 
-    ### Open pipe:
-    STDOUT->flush;       ### very important, or else we get duplicate output!
-    my $kidpid = open2(\*CHILDOUT, \*CHILDIN, @cmd) || die "open2 failed: $!";
+	### Open pipe:
+	STDOUT->flush;  ### very important, or else we get duplicate output!
 
-    ### Write all:
-    while ($in->read($buf, 2048)) { print CHILDIN $buf }
-    close \*CHILDIN;
+	local (*CHILDOUT, *CHILDIN);
+	my $kidpid = open2(\*CHILDOUT, \*CHILDIN, @cmd) || die "@cmd: open2 failed: $!";
 
-    ### Read all:
-    while (read(\*CHILDOUT, $buf, 2048)) { $out->print($buf) }
-    close \*CHILDOUT;
+	### We have to use select() for doing both reading and writing.
+	my $rno = fileno(CHILDOUT);
+	my $wno = fileno(CHILDIN);
+	vec(my $rfds = '', $rno, 1) = 1;
+	vec(my $wfds = '', $wno, 1) = 1;
 
-    ### Wait for it:
-    waitpid($kidpid,0) or die "couldn't reap child $kidpid";
-    1;
+	while (1) {
+		### Wait for one hour; if that fails, it's too bad.
+		my $n = select(my $rout = $rfds, my $wout = $wfds, undef, 3600);
+		if($n <= 0) {
+			kill 1, $kidpid;
+			waitpid $kidpid, 0;
+			die "@cmd: select failed: $!" if $n < 0;
+			die "@cmd: select timeout" if $n == 0;
+		}
+		### If can read from child:
+		if($rout && vec($rout, $rno, 1)) {
+			if(sysread(CHILDOUT, my $buf, 1024)) {
+				$out->print($buf);
+			} else {
+				close CHILDOUT;
+				undef $rfds;
+			}
+		}
+		### If can write to child:
+		if($wout && vec($wout, $wno, 1)) {
+			if($in->read(my $buf, 1024)) {
+				local $SIG{PIPE} = sub {
+					warn "got SIGPIPE from @cmd";
+					close CHILDIN;
+					undef $wfds;
+				};
+				syswrite(CHILDIN, $buf);
+			} else {
+				close CHILDIN;
+				undef $wfds;
+			}
+		}
+		### If both CHILDOUT and CHILDIN are done:
+		last unless $rfds || $wfds;
+	}
+
+	### Wait for it:
+	waitpid($kidpid, 0) == $kidpid or die "@cmd: couldn't reap child $kidpid";
+	### Check if it failed:
+	$? == 0 or die "@cmd: bad exit status: \$? = $?";
+	1;
 }
 
 
