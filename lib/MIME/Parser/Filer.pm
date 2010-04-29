@@ -327,7 +327,8 @@ I<Instance method.>
 Is this an evil filename; i.e., one which should not be used
 in generating a disk file name?  It is if any of these are true:
 
-    * it is empty
+    * it is empty or entirely whitespace
+    * it contains leading or trailing whitespace
     * it is a string of dots: ".", "..", etc.
     * it contains characters not in the set: "A" - "Z", "a" - "z",
       "0" - "9", "-", "_", "+", "=", ".", ",", "@", "#",
