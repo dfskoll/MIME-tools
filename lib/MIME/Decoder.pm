@@ -86,6 +86,7 @@ use vars qw($VERSION %DecoderFor);
 
 ### System modules:
 use IPC::Open2;
+use IO::Select;
 use FileHandle;
 
 ### Kit modules:
@@ -417,49 +418,50 @@ sub filter
 	### Open pipe:
 	STDOUT->flush;  ### very important, or else we get duplicate output!
 
-	local (*CHILDOUT, *CHILDIN);
-	my $kidpid = open2(\*CHILDOUT, \*CHILDIN, @cmd) || die "@cmd: open2 failed: $!";
+	my $kidpid = open2(my $child_out, my $child_in, @cmd) || die "@cmd: open2 failed: $!";
 
 	### We have to use select() for doing both reading and writing.
-	my $rno = fileno(CHILDOUT);
-	my $wno = fileno(CHILDIN);
-	vec(my $rfds = '', $rno, 1) = 1;
-	vec(my $wfds = '', $wno, 1) = 1;
+	my $rsel = IO::Select->new( $child_out );
+	my $wsel = IO::Select->new( $child_in  );
 
 	while (1) {
+
 		### Wait for one hour; if that fails, it's too bad.
-		my $n = select(my $rout = $rfds, my $wout = $wfds, undef, 3600);
-		if($n <= 0) {
+		my ($read, $write) = IO::Select->select( $rsel, $wsel, undef, 3600);
+
+		if( !defined $read && !defined $write ) {
 			kill 1, $kidpid;
 			waitpid $kidpid, 0;
-			die "@cmd: select failed: $!" if $n < 0;
-			die "@cmd: select timeout" if $n == 0;
+			die "@cmd: select failed: $!";
 		}
+
 		### If can read from child:
-		if($rout && vec($rout, $rno, 1)) {
-			if(sysread(CHILDOUT, my $buf, 1024)) {
+		if( my $fh = shift @$read ) {
+			if( $fh->sysread(my $buf, 1024) ) {
 				$out->print($buf);
 			} else {
-				close CHILDOUT;
-				undef $rfds;
+				$rsel->remove($fh);
+				$fh->close();
 			}
 		}
+
 		### If can write to child:
-		if($wout && vec($wout, $wno, 1)) {
+		if( my $fh = shift @$write ) {
 			if($in->read(my $buf, 1024)) {
 				local $SIG{PIPE} = sub {
 					warn "got SIGPIPE from @cmd";
-					close CHILDIN;
-					undef $wfds;
+					$wsel->remove($fh);
+					$fh->close();
 				};
-				syswrite(CHILDIN, $buf);
+				$fh->syswrite( $buf );
 			} else {
-				close CHILDIN;
-				undef $wfds;
+				$wsel->remove($fh);
+				$fh->close();
 			}
 		}
-		### If both CHILDOUT and CHILDIN are done:
-		last unless $rfds || $wfds;
+
+		### If both $child_out and $child_in are done:
+		last unless ($rsel->count() || $wsel->count());
 	}
 
 	### Wait for it:
