@@ -46,7 +46,6 @@ Makefile.PL
 MANIFEST
 META.yml
 README
-README.win32
 t/02-kwalitee.t
 t/02-pod-coverage.t
 t/02-pod.t
