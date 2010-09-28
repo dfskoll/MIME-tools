@@ -1815,8 +1815,15 @@ sub print_body {
 	my $boundary = $self->head->multipart_boundary;
 
 	### Preamble:
-	my $preamble = join('', @{ $self->preamble || $DefPreamble });
-	$out->print("$preamble\n") if ($preamble ne '' or $self->preamble);
+	my $plines = $self->preamble;
+	if (defined $plines) {
+	    # Defined, so output the preamble if it exists (avoiding additional
+	    # newline as per ticket 60931)
+	    $out->print( join('', @$plines) . "\n") if (@$plines > 0);
+	} else {
+	    # Undefined, so use default preamble
+	    $out->print( join('', @$DefPreamble) . "\n" );
+	}
 
 	### Parts:
 	my $part;
