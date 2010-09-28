@@ -23,8 +23,6 @@ Eryq, eryq@zeegee.com
 =cut
 
 use MIME::Parser;
-# MIME::ToolUtils->debugging(1);
-# MIME::ToolUtils->emulate_tmpfile('CLONE');
 
 my $parser = new MIME::Parser;
 ((-d "./testin") && (-d "./testout")) or 

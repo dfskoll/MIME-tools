@@ -174,8 +174,6 @@ sub tmpopen
 
 #------------------------------
 1;
-package MIME::ToolUtils;
-@MIME::ToolUtils::ISA = qw(MIME::Tools);
 __END__
 
 
