@@ -1,48 +1,40 @@
 #!/usr/bin/perl -w
-
 use strict;
 use warnings;
-use Test::More;
+use Test::More tests => 7;
+use Test::Deep;
 
-plan tests => 2;
+my %files = (
+	'testmsgs/empty-preamble.msg' => [ '' ],
+	'testmsgs/multi-simple.msg'   => [
+		"This is the preamble.  It is to be ignored, though it\n",
+		"is a handy place for mail composers to include an\n",
+		"explanatory note to non-MIME conformant readers."
+	],
+	'testmsgs/ticket-60931.msg'   => [ ],
+);
 
-main: {
-    my ($fh, $mail_text, $entity, $parser);
+#-- Load MIME::Parser
+use_ok("MIME::Parser");
 
-    #-- Check whether Digest::MD5 is available
-    my $has_md5 = eval "require Digest::MD5";
+#-- Prepare parser
+my $parser = MIME::Parser->new();
+$parser->output_to_core(1);
+$parser->decode_bodies(0);
 
-    #-- Load MIME::Parser
-    use_ok("MIME::Parser");
+foreach my $file (keys %files) {
+	#-- Parse quoted-printable encoded file
+	open (my $fh, $file)
+		or die "can't open testmsgs/empty-preamble.msg: $!";
+	my $entity = $parser->parse($fh);
 
-    #-- Prepare parser
-    $parser = MIME::Parser->new();
-    $parser->output_to_core(1);
-    $parser->decode_bodies(0);
+	$fh->seek(0,0);
+	my $expected = do { local $/; <$fh> };
+	close $fh;
 
-    #-- Parse quoted-printable encoded file
-    $entity = parse_empty_preamble_file($parser);
+	cmp_deeply( $entity->preamble(), $files{$file}, 'Preamble is as expected');
 
-    #-- Check if MD5 resp. length match as expected
-    $mail_text = $entity->as_string;
-
-    if ( $has_md5 ) {
-        my $md5 = Digest::MD5::md5_hex($mail_text);
-        ok($md5 eq "7e32c04607e2bc47774b0f9f025e0d39", "Encoded MD5 match");
-    } else {
-        my $len = length($mail_text);
-        ok($len == 930, "Encoded length match");
-    }
-}
-
-#-- Parse quoted printable file and return MIME::Entity
-sub parse_empty_preamble_file {
-    my ($parser) = @_;
-    open (my $fh, "testmsgs/empty-preamble.msg")
-        or die "can't open testmsgs/empty-preamble.msg: $!";
-    my $entity = $parser->parse($fh);
-    close $fh;
-    return $entity;
+	is( $entity->as_string(), $expected, 'File with preamble roundtripped correctly');
 }
 
 1;

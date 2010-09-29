@@ -217,7 +217,11 @@ sub native_handle {
 # last.  I strip the last CRLF when I hit the boundary.
 
 sub read_chunk {
-    my ($self, $in, $out) = @_;
+    my ($self, $in, $out, $keep_newline) = @_;
+
+    # If we're parsing a preamble or epilogue, we need to keep the blank line
+    # that precedes the boundary line.
+    $keep_newline ||= 0;
 
     ### Init:
     my %bh = %{$self->{BH}};
@@ -277,8 +281,10 @@ sub read_chunk {
 	}
     }
 
-    ### Write out last held line, removing terminating CRLF if ended on bound:
-    $last =~ s/[\r\n]+\Z// if ($eos =~ /^(DELIM|CLOSE)/);
+    # Write out last held line, removing terminating CRLF if ended on bound,
+    # unless the line consists only of CRLF and we're wanting to keep the
+    # preceding blank line (as when parsing a preamble)
+    $last =~ s/[\r\n]+\Z// if ($eos =~ /^(DELIM|CLOSE)/ && !($keep_newline && $last =~ m/^[\r\n]\z/));
     $out->print($last);
 
     ### Save and return what we finished on:

@@ -549,7 +549,19 @@ sub process_preamble {
 
     ### Parse preamble:
     my @saved;
-    $rdr->read_lines($in, \@saved);
+    my $data = '';
+    open(my $fh, '>', \$data) or die $!;
+    $rdr->read_chunk($in, $fh, 1);
+    close $fh;
+
+    # Ugh.  Horrible.  If the preamble consists only of CRLF, squash it down
+    # to the empty string.  Else, remove the trailing CRLF.
+    if( $data =~ m/^[\r\n]\z/ ) {
+	@saved = ('');
+    } else {
+	$data =~ s/[\r\n]\z//;
+        @saved = split(/^/, $data);
+    }
     $ent->preamble(\@saved);
     1;
 }
@@ -623,9 +635,6 @@ sub process_header {
     }
     ($hdr_rdr->eos_type eq 'DONE') or
 	$self->error("unexpected end of header\n");
-
-    # TODO: necessary?
-    $headstr =~ s/[\r\n]+/\n/g; ### fold
 
     ### Extract the header (note that zero-size headers are admissible!):
     open(my $readfh, '<:scalar', \$headstr) or die $!;
