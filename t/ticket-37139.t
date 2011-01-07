@@ -18,7 +18,9 @@ use Test::More tests => 2;
 
 use MIME::Parser;
 
-my $entity = MIME::Parser->new->parse(\*DATA);
+my $parser = MIME::Parser->new();
+$parser->output_to_core(1);
+my $entity = $parser->parse(\*DATA);
 
 sub cleanup_mime {
   # Forcibly trash ->parts() to reproduce bug
