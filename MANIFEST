@@ -50,6 +50,7 @@ t/02-kwalitee.t
 t/02-pod-coverage.t
 t/02-pod.t
 t/99-prepare.t
+t/attachment-filename-encoding.t
 t/Body.t
 t/BodyPrint.t
 t/Decoder.t
@@ -67,10 +68,12 @@ t/ParserPreamble.t
 t/Ref.t
 t/Smtpsend.t
 t/ticket-11901.t
+t/ticket-22684.t
 t/ticket-37139.t
 t/ticket-41632.t
 t/ticket-43439.t
 t/ticket-52924.t
+t/ticket-60931.t
 t/WordDecoder.t
 t/WordEncoder.t
 t/Words.t
@@ -129,6 +132,8 @@ testmsgs/ak-0696-nest.ref
 testmsgs/ak-0696-none.ref
 testmsgs/ak-0696-replace.ref
 testmsgs/ak-0696.msg
+testmsgs/attachment-filename-encoding-Latin1.msg
+testmsgs/attachment-filename-encoding-UTF8.msg
 testmsgs/bluedot-postcard.msg
 testmsgs/bluedot-postcard.ref
 testmsgs/bluedot-simple.msg
@@ -173,6 +178,7 @@ testmsgs/russian.msg
 testmsgs/russian.ref
 testmsgs/simple.msg
 testmsgs/simple.ref
+testmsgs/ticket-60931.msg
 testmsgs/uu-junk-extracted.ref
 testmsgs/uu-junk-target.msg
 testmsgs/uu-junk.msg
