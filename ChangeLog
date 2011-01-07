@@ -12,6 +12,8 @@
 
 	* (ticket 60931) If preamble is empty, make sure it's still empty after roundtripping through MIME::Entity
 
+	* (ticket 63739) Properly decude RFC2231 encodings in attachment filenames
+
 5.428     2010-04-22  Dave O'Neill <dmo@roaringpenguin.com>
 
 	* VERSION 5.428 RELEASED
