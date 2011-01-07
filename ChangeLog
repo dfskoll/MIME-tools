@@ -1,4 +1,4 @@
-5.500	  2010-xx-xx  Dave O'Neill <dmo@roaringpenguin.com>
+5.500	  2011-01-07  Dave O'Neill <dmo@roaringpenguin.com>
 
 	* VERSION 5.500 RELEASED
 
@@ -9,6 +9,8 @@
 	  programs such as gzip. (Alexey Tourbin <at -at- altlinux.ru>)
 
 	* Remove auto_install from Makefile.PL
+
+	* (ticket 60931) If preamble is empty, make sure it's still empty after roundtripping through MIME::Entity
 
 5.428     2010-04-22  Dave O'Neill <dmo@roaringpenguin.com>
 
