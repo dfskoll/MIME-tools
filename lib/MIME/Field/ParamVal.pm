@@ -62,6 +62,7 @@ use strict;
 use vars qw($VERSION @ISA);
 
 # System modules:
+use Encode;
 
 
 # Other modules:
@@ -192,7 +193,6 @@ sub rfc2231decode {
     my($enc, $lang, $rest);
 
     if ($val =~ m/^([^\']*)\'([^\']*)\'(.*)$/) {
-	# SHOULD REALLY DO SOMETHING MORE INTELLIGENT WITH ENCODING!!!
 	$enc = $1;
 	$lang = $2;
 	$rest = $3;
@@ -203,6 +203,15 @@ sub rfc2231decode {
 	$rest = rfc2231percent($rest);
     } else {
 	$rest = rfc2231percent($val);
+    }
+    if ($enc) {
+	if (find_encoding($enc)) {
+	    eval {
+		$rest = decode($enc, $rest);
+	    }
+	} else {
+	    warn "Unknown encoding specified in RFC 2231 encoded field value";
+	}
     }
     return $rest;
 }
