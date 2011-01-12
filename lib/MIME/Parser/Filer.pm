@@ -34,7 +34,7 @@ should make sense.
 
 =head2 Semi-public interface
 
-These methods might be overriden or ignored in some subclasses,
+These methods might be overridden or ignored in some subclasses,
 so they don't all make sense in all circumstances:
 
     ### Tweak the mapping from content-type to extension:

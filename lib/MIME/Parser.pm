@@ -1118,7 +1118,7 @@ sub parse_data {
         $io = IO::File->new($data, '<:');
     } elsif( ref $data eq 'ARRAY' ) {
 	# Passing arrays is deprecated now that we've nuked IO::ScalarArray
-	# but for backwards compatibility we still support it by joining the
+	# but for backwards compatability we still support it by joining the
 	# array lines to a scalar and doing scalar IO on it.
 	my $tmp_data = join('', @$data);
 	$io = IO::File->new(\$tmp_data, '<:');
