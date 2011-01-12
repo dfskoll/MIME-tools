@@ -28,5 +28,6 @@ requires        'File::Temp'     => 0.18;
 
 # Build deps
 build_requires	'Test::More';
+build_requires	'Test::Deep';
 
 WriteAll;
