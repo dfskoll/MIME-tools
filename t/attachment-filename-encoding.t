@@ -8,7 +8,7 @@ use utf8;
 binmode STDOUT, ":utf8";
 binmode STDERR, ":utf8";
 
-plan tests => 5;
+plan tests => 7;
 
 main: {
     #-- Load MIME::Parser
@@ -41,6 +41,16 @@ main: {
     #-- Check if parsed recommended filename matches the expected string
     is($filename, "attachment.äöü",
        "Parsed filename should match expectation");
+
+    # CPAN ticket #65162
+    # We need the default parser to tickle the bug
+    $parser = MIME::Parser->new();
+    $parser->output_to_core(0);
+    $parser->output_under('/tmp');
+    $entity = $parser->parse_data("From: test\@example.com\nSubject: test\nDate: Tue, 25 Jan 2011 14:35:04 +0100\nMessage-Id: <123\@example.com>\nContent-Type: text/plain; name*=utf-8''%CE%B2CURE%2Etxt\n\ntest\n");
+    $filename = $entity->head->recommended_filename;
+    is(utf8::is_utf8($filename), 1, "Parsed filename should have UTF-8 flag on");
+    is($filename, "\x{3b2}CURE.txt", 'Got expected filename');
 }
 
 #-- Parse quoted printable file and return MIME::Entity

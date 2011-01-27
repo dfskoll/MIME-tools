@@ -211,7 +211,7 @@ sub decode_mimewords {
 	### Case 3: are we looking at ordinary text?
 	pos($encstr) = $pos;               # reset the pointer.
 	if ($encstr =~ m{\G                # from where we left off...
-			 ([\x00-\xFF]*?    #   shortest possible string,
+			 (.*?    #   shortest possible string,
 			  \n*)             #   followed by 0 or more NLs,
 		         (?=(\Z|=\?))      # terminated by "=?" or EOS
 			}xg) {
