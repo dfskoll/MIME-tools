@@ -1,6 +1,5 @@
 package MIME::WordDecoder;
 
-
 =head1 NAME
 
 MIME::WordDecoder - decode RFC 2047 encoded words to a local representation
@@ -64,7 +63,15 @@ Here's a decoder which uses that:
 
    ### ...which will now hold: "To: Keld J#rn Simonsen <keld>"
 
+The UTF-8 built-in decoder decodes everything into Perl's internal
+string format, possibly turning on the internal UTF8 flag.  Use it like
+this:
 
+    $wd = supported MIME::WordDecoder 'UTF-8';
+    $perl_string = $wd->decode('To: =?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld>');
+    # perl_string will be a valid UTF-8 string with the "UTF8" flag set.
+
+Generally, you should use the UTF-8 decoder in preference to "unmime".
 
 =head1 PUBLIC INTERFACE
 
@@ -293,6 +300,9 @@ sub real_handler {
 I<Function, exported.>
 Decode the given STRING using the default() decoder.
 See L<default()|/default>.
+
+You should consider using the UTF-8 decoder instead.  It decodes
+MIME strings into Perl's internal string format.
 
 =cut
 
@@ -558,6 +568,34 @@ sub decode {
 
 =cut
 
+package MIME::WordDecoder::UTF_8;
+use strict;
+use Encode qw();
+use Carp qw( carp );
+use vars qw(@ISA);
+
+@ISA = qw( MIME::WordDecoder );
+
+sub h_convert_to_utf8
+{
+	my ($data, $charset, $decoder) = @_;
+	$charset = 'US-ASCII' if ($charset eq 'raw');
+	my $enc = Encode::find_encoding($charset);
+	if (!$enc) {
+		carp "Unable to convert text in character set `$charset' to UTF-8... ignoring\n";
+		return '';
+	}
+	my $ans = $enc->decode($data, Encode::FB_PERLQQ);
+	return $ans;
+}
+
+sub new {
+	my ($class) = @_;
+	my $self = $class->SUPER::new();
+	$self->handler('*'     => \&h_convert_to_utf8);
+}
+
+
 #------------------------------------------------------------
 #------------------------------------------------------------
 
@@ -573,6 +611,9 @@ $DecoderFor{"US-ASCII"} = MIME::WordDecoder::US_ASCII->new;
 for (1..15) {
     $DecoderFor{"ISO-8859-$_"} = MIME::WordDecoder::ISO_8859->new($_);
 }
+
+### UTF-8
+$DecoderFor{'UTF-8'} = MIME::WordDecoder::UTF_8->new();
 
 1;           # end the module
 __END__

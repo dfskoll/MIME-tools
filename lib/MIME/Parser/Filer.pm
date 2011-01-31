@@ -531,7 +531,7 @@ sub output_filename {
     my ($self, $head) = @_;
 
     ### Get the recommended name:
-    my $recommended = unmime $head->recommended_filename;
+    my $recommended = $head->recommended_filename;
 
     ### Get content type:
     my ($type, $subtype) = split m{/}, $head->mime_type; $subtype ||= '';
@@ -656,8 +656,8 @@ sub output_path {
     ### Get the output directory:
     my $dir = $self->output_dir($head);
 
-    ### Get the output filename, decoding into the local character set:
-    my $fname = unmime $head->recommended_filename;
+    ### Get the output filename as UTF-8
+    my $fname = $head->recommended_filename;
 
     ### Can we use it:
     if    (!defined($fname)) {

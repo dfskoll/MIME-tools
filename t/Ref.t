@@ -148,6 +148,7 @@ sub trim {
 sub check_ref {
     my ($msgpath, $ent, $ref) = @_;
 
+    my $wd = supported MIME::WordDecoder 'UTF-8';
     ### For each Msg in the ref:
   MSG:
     foreach my $partname (sort keys %$ref) {
@@ -193,7 +194,7 @@ sub check_ref {
 		$got = $head->mime_encoding;
 	    }
 	    elsif (/^Filename$/) {
-		$got = unmime $head->recommended_filename; 
+		$got = $head->recommended_filename; 
 	    }
 	    elsif (/^BodyFilename$/) {
 		$got = (($body and $body->path) 

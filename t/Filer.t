@@ -1,7 +1,10 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use Test::More tests => 13;
+use Test::More tests => 17;
+
+binmode(STDOUT, ":utf8");
+binmode(STDERR, ":utf8");
 
 BEGIN {
 	use_ok('MIME::Parser::Filer');
@@ -19,6 +22,8 @@ BEGIN {
 		'.'               => '..dat',
 		'..'              => '...dat',
 		'index[1].html'   => '.html',
+		" wookie\x{f8}.doc" => "wookie%F8.doc",
+		" wookie\x{042d}.doc" => "wookie%42D.doc",
 	);
 
 	foreach my $name (keys %evil) {

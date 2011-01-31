@@ -1,5 +1,6 @@
 package MIME::Field::ParamVal;
 
+use MIME::Words;
 
 =head1 NAME
 
@@ -204,16 +205,7 @@ sub rfc2231decode {
     } else {
 	$rest = rfc2231percent($val);
     }
-    if ($enc) {
-	if (find_encoding($enc)) {
-	    eval {
-		$rest = decode($enc, $rest);
-	    }
-	} else {
-	    warn "Unknown encoding specified in RFC 2231 encoded field value";
-	}
-    }
-    return $rest;
+    return ($enc, $lang, $rest);
 }
 
 sub rfc2231percent {
@@ -227,6 +219,7 @@ sub parse_params {
     my ($self, $raw) = @_;
     my %params = ();
     my %rfc2231params = ();
+    my %rfc2231encodings = ();
     my $param;
     my $val;
     my $part;
@@ -273,7 +266,9 @@ sub parse_params {
 	    }
 	    # Decode the value unless it was a quoted string
 	    if (!defined($qstr)) {
-		$val = rfc2231decode($val);
+		    my ($enc);
+		    ($enc, undef, $val) = rfc2231decode($val);
+		    $rfc2231encodings{$name} ||= $enc if $enc;
 	    }
 	    $rfc2231params{$name}{$num} .= $val;
 	} else {
@@ -293,6 +288,16 @@ sub parse_params {
 	foreach $part (sort { $a <=> $b } keys %{$rfc2231params{$param}}) {
 	    $params{$param} .= $rfc2231params{$param}{$part};
 	}
+
+	# If we had an encoding, then encode it and re-decode it
+	# using normal MIME-encoding.  This is a huge pile of evil,
+	# but is required to avoid double-decoding problems later on.
+	# SIGH.
+	my $enc = $rfc2231encodings{$param} || 'ISO-8859-1';
+	eval {
+		my $p = encode('utf8', decode($enc, $params{$param}));
+		$params{$param} = MIME::Words::encode_mimeword($p, 'B', 'UTF-8');
+	};
 	debug "   field param <$param> = <$params{$param}>";
     }
 

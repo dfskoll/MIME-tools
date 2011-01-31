@@ -3,6 +3,9 @@ use warnings;
 use Test::More tests => 5;
 
 use MIME::Field::ContType;
+use MIME::WordDecoder;
+
+use Encode;
 
 # Trivial test
 {
@@ -19,12 +22,15 @@ use MIME::Field::ContType;
 
 # Test for CPAN RT #34451
 {
-	my $header = 'stuff; answer*=%FE%20%FF';
+	my $header = 'stuff; answer*=utf-8\'\'%c3%be%20%c3%bf';
 
 	my $field = Mail::Field->new('Content-type');
 	$field->parse( $header );
 	is( $field->param('_'), 'stuff', 'Got body of header');
 
-	my $expected = pack('C', 0xfe) . ' ' . pack('C', 0xff);
-	is( $field->param('answer'), $expected, 'answer param was unpacked correctly');
+	# We get it back in UTF-8!
+	my $expected = pack('CCCCC', 0xc3, 0xbe, 0x20, 0xc3, 0xbf);
+	my $wd = supported MIME::WordDecoder 'UTF-8';
+
+	is( encode('utf8', $wd->decode($field->param('answer'))), $expected, 'answer param was unpacked correctly');
 }
