@@ -173,6 +173,7 @@ Any arguments past the ENCODED string are taken to define a hash of options:
 sub decode_mimewords {
     my $encstr = shift;
     my @tokens;
+    local($1,$2,$3);
     $@ = '';           ### error-return
 
     ### Collapse boundaries between adjacent encoded words:

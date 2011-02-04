@@ -411,6 +411,7 @@ sub h_utf8 {
     my $latin1 = ($_[2]->{MWDI_Num} == 1);
     #print STDERR "UTF8 in:  <$_>\n";
 
+    local($1,$2,$3);
     my $tgt = '';
     while (m{\G(
           ([\x00-\x7F])                | # 0xxxxxxx
@@ -438,6 +439,7 @@ sub h_utf16 {
     my $latin1 = ($_[2]->{MWDI_Num} == 1);
     #print STDERR "UTF16 in:  <$_>\n";
 
+    local($1,$2,$3,$4,$5);
     my $tgt = '';
     while (m{\G(
 		(  \x00  ([\x00-\x7F])) |  # 00000000 0xxxxxxx
