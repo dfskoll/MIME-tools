@@ -463,6 +463,9 @@ I<all> occurences of the field are returned:
     ### Get all 'Received:' entries:
     my @all_received = $head->get('received');
 
+B<NOTE>: The header(s) returned may end with a newline.  If you don't
+want this, then B<chomp> the return value.
+
 =cut
 
 ### Inherited.
