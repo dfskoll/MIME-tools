@@ -625,7 +625,7 @@ sub process_header {
 
     my $headstr = '';
     open(my $outfh, '>:scalar', \$headstr) or die $!;
-    $hdr_rdr->read_chunk($in, $outfh);
+    $hdr_rdr->read_chunk($in, $outfh, 0, 1);
     close $outfh;
 
     ### How did we do?
