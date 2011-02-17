@@ -1880,7 +1880,7 @@ sub print_bodyhandle {
       ### Transparent mode: data is already encoded, so no
       ### need to encode it again
       my $buf;
-      $out->print($buf) while ($IO->read($buf, 2048));
+      $out->print($buf) while ($IO->read($buf, 8192));
     } else {
       ### Get the encoding, defaulting to "binary" if unsupported:
       my $encoding = ($self->head->mime_encoding || 'binary');

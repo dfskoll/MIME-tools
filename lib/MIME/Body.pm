@@ -333,7 +333,7 @@ sub print {
     ### Write it:
     my $buf = '';
     my $io = $self->open("r") || return undef;
-    $fh->print($buf) while ($nread = $io->read($buf, 2048));
+    $fh->print($buf) while ($nread = $io->read($buf, 8192));
     $io->close;
     return defined($nread);    ### how'd we do?
 }
