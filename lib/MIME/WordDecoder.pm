@@ -4,6 +4,8 @@ package MIME::WordDecoder;
 
 MIME::WordDecoder - decode RFC 2047 encoded words to a local representation
 
+WARNING: Most of this module is deprecated and may disappear.  The only
+function you should use for MIME decoding is "mime_to_perl_string".
 
 =head1 SYNOPSIS
 
@@ -26,8 +28,15 @@ See L<"DESCRIPTION"> for how this class works.
     ### Decode a string using the default decoder, non-OO style:
     $str = unmime('To: =?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld>');
 
+    ### Decode a string to an internal Perl string, non-OO style
+    ### The result is likely to have the UTF8 flag ON.
+    $str = mime_to_perl_string('To: =?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld>');
 
 =head1 DESCRIPTION
+
+WARNING: Most of this module is deprecated and may disappear.  It
+duplicates (badly) the function of the standard 'Encode' module.  The
+only function you should rely on is mime_to_perl_string.
 
 A MIME::WordDecoder consists, fundamentally, of a hash which maps
 a character set name (US-ASCII, ISO-8859-1, etc.) to a subroutine which
@@ -86,7 +95,7 @@ use Exporter;
 use vars qw(@ISA @EXPORT);
 
 @ISA = qw(Exporter);
-@EXPORT = qw( unmime );
+@EXPORT = qw( unmime mime_to_perl_string );
 
 
 
@@ -111,6 +120,8 @@ my %Handler =
 ### Global default decoder.  We init it below.
 my $Default;
 
+### Global UTF8 decoder.
+my $DefaultUTF8;
 
 #------------------------------
 
@@ -311,6 +322,21 @@ sub unmime($) {
     $Default->decode($str);
 }
 
+=item mime_to_perl_string
+
+I<Function, exported.>
+Decode the given STRING into an internal Perl Unicode string.
+You should use this function in preference to all others.
+
+The result of mime_to_perl_string is likely to have Perl's
+UTF8 flag set.
+
+=cut
+
+sub mime_to_perl_string($) {
+    my $str = shift;
+    $DecoderFor{'UTF-8'}->decode($str);
+}
 
 =back
 
@@ -605,6 +631,7 @@ package MIME::WordDecoder;
 
 ### Now we can init the default handler.
 $Default = (MIME::WordDecoder::ISO_8859->new('1'));
+
 
 ### Add US-ASCII handler:
 $DecoderFor{"US-ASCII"} = MIME::WordDecoder::US_ASCII->new;
