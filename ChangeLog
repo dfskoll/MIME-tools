@@ -1,3 +1,24 @@
+5.501	  2011-02-17  David F. Skoll <dfs@roaringpenguin.com>
+
+	* VERSION 5.501 RELEASED
+
+	* Add build_requires 'Test::Deep'; to Makefile (rt.cpan.org #64659)
+
+	* Fix spelling errors (rt.cpan.org #64610)
+
+	* Fix double-decoding bug when decoding RFC-2231-encoded parameters
+	  (rt.cpan.org #65162)
+
+	* Fix inappropriate inclusion of CR characters in parsed headers
+	  (rt.cpan.org #65681)
+
+	* Document that MIME::WordDecoder is mostly deprecated.
+
+	* Document that MIME::Head->get(...) can include a trailing newline.
+
+	* Increase buffer size from 2kB to 8kB in MIME::Entity and MIME::Body
+	  (part of rt.cpan.org #65162)
+
 5.500	  2011-01-07  Dave O'Neill <dmo@roaringpenguin.com>
 
 	* VERSION 5.500 RELEASED
