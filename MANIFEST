@@ -75,6 +75,7 @@ t/ticket-43439.t
 t/ticket-52924.t
 t/ticket-60931.t
 t/ticket-65681.t
+t/ticket-66025.t
 t/WordDecoder.t
 t/WordEncoder.t
 t/Words.t

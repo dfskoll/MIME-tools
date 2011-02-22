@@ -215,7 +215,7 @@ sub decode_mimewords {
 			 (.*?    #   shortest possible string,
 			  \n*)             #   followed by 0 or more NLs,
 		         (?=(\Z|=\?))      # terminated by "=?" or EOS
-			}xg) {
+			}sxg) {
 	    length($1) or die "MIME::Words: internal logic err: empty token\n";
 	    push @tokens, [$1];
 	    next;
