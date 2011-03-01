@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Test::More;
+use File::Temp qw(tempdir);
 use utf8;
 
 binmode STDOUT, ":utf8";
@@ -44,9 +45,10 @@ main: {
 
     # CPAN ticket #65162
     # We need the default parser to tickle the bug
+    my $dir = tempdir(CLEANUP => 1);
     $parser = MIME::Parser->new();
     $parser->output_to_core(0);
-    $parser->output_under('/tmp');
+    $parser->output_under($dir);
     $entity = $parser->parse_data("From: test\@example.com\nSubject: test\nDate: Tue, 25 Jan 2011 14:35:04 +0100\nMessage-Id: <123\@example.com>\nContent-Type: text/plain; name*=utf-8''%CE%B2CURE%2Etxt\n\ntest\n");
     $filename = $entity->head->recommended_filename;
     is(utf8::is_utf8($filename), 1, "Parsed filename should have UTF-8 flag on");
