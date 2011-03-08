@@ -1,3 +1,18 @@
+5.502	  2011-03-08  David F. Skoll <dfs@roaringpenguin.com>
+
+	* VERSION 5.502 RELEASED
+
+	* NOTE to packagers (Debian, Red Hat, FreeBSD, etc.): Do not ship
+	MIME::tools 5.500 or 5.501.  They both had serious bugs!
+
+	* Fix parsing bug: https://rt.cpan.org/Ticket/Display.html?id=66025
+
+	* Fix typo: https://rt.cpan.org/Ticket/Display.html?id=65387
+
+	* Fix unit tests on Perl 5.8.x: https://rt.cpan.org/Ticket/Display.html?id=66188
+
+	* Fix unit test failure on Win32:  (https://rt.cpan.org/Ticket/Display.html?id=66286)
+
 5.501	  2011-02-17  David F. Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.501 RELEASED
