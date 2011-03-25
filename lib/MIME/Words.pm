@@ -151,7 +151,7 @@ CHARSET of C<undef>.
 
     $enc = '=?ISO-8859-1?Q?Keld_J=F8rn_Simonsen?= <keld@dkuug.dk>';
     foreach (decode_mimewords($enc)) {
-        print "", ($_[1] || 'US-ASCII'), ": ", $_[0], "\n";
+        print "", ($_->[1] || 'US-ASCII'), ": ", $_->[0], "\n";
     }
 
 B<In a scalar context,> joins the "data" elements of the above
