@@ -67,6 +67,7 @@ require 5.001;
 
 ### Pragmas:
 use strict;
+use re 'taint';
 use vars qw($VERSION @EXPORT_OK %EXPORT_TAGS @ISA);
 
 ### Exporting:
@@ -106,6 +107,7 @@ my $NONPRINT = "\\x00-\\x1F\\x7F-\\xFF";
 #     almost, but not exactly, quoted-printable.  :-P
 sub _decode_Q {
     my $str = shift;
+    local $1;
     $str =~ s/_/\x20/g;                                # RFC-1522, Q rule 2
     $str =~ s/=([\da-fA-F]{2})/pack("C", hex($1))/ge;  # RFC-1522, Q rule 1
     $str;
@@ -116,6 +118,7 @@ sub _decode_Q {
 #     almost, but not exactly, quoted-printable.  :-P
 sub _encode_Q {
     my $str = shift;
+    local $1;
     $str =~ s{([ _\?\=$NONPRINT])}{sprintf("=%02X", ord($1))}eog;
     $str;
 }
@@ -297,6 +300,7 @@ sub encode_mimewords {
     ###    We limit such words to 18 characters, to guarantee that the
     ###    worst-case encoding give us no more than 54 + ~10 < 75 characters
     my $word;
+    local $1;
     $rawstr =~ s{([ a-zA-Z0-9\x7F-\xFF]{1,18})}{     ### get next "word"
 	$word = $1;
 	(($word !~ /(?:[$NONPRINT])|(?:^\s+$)/o)

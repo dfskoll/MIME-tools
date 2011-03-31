@@ -730,9 +730,13 @@ feature.
 sub mime_type {
     my ($self, $default) = @_;
     $self->{MIH_DefaultType} = $default if @_ > 1;
-    lc($self->mime_attr('content-type') ||
+    my $s = $self->mime_attr('content-type') ||
        $self->{MIH_DefaultType} ||
-       'text/plain');
+       'text/plain';
+    # avoid [perl #87336] bug, lc laundering tainted data
+    return lc($s)  if $] <= 5.008 || $] >= 5.014;
+    $s =~ tr/A-Z/a-z/;
+    $s;
 }
 
 #------------------------------

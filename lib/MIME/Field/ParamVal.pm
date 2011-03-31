@@ -60,6 +60,7 @@ require 5.001;
 
 # Pragmas:
 use strict;
+use re 'taint';
 use vars qw($VERSION @ISA);
 
 
