@@ -22,6 +22,3 @@ $\ = "\n";
 my $entity = $parser->parse_data($message);
 my $head = $entity->head;
 is ($head->get('From'), "<devnull\@example.org>\n", 'Header was parsed as expected');
-
-use Data::Dumper;
-#print STDERR Dumper($head);
