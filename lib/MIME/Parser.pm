@@ -1151,6 +1151,7 @@ sub parse {
     my $self = shift;
     my $in = shift;
     my $entity;
+    local $/ = "\n";    ### just to be safe
 
     local $\ = undef; # CPAN ticket #71041
     $self->init_parse;
