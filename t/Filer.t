@@ -33,7 +33,7 @@ BEGIN {
 		'trailing_space ' => 'trailing_space.dat',
 		'.'               => '..dat',
 		'..'              => '...dat',
-		'index[1].html'   => '.html',
+		'index[1].html'   => 'index_1_.html',
 		" wookie\x{f8}.doc" => "wookie%F8.doc",
 		" wookie\x{042d}.doc" => $wookie,
 	);

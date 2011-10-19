@@ -396,7 +396,13 @@ sub exorcise_filename {
     my ($self, $fname) = @_;
 
     ### Isolate to last path element:
-    my $last = $fname; $last =~ s{^.*[/\\\[\]:]}{};
+    my $last = $fname;
+
+    ### Path separators are / or \
+    $last =~ s{^.*[/\\]}{};
+
+    ### Convert semi-evil characters to underscores
+    $last =~ s/[\/\\\[\]:]/_/g;
     if ($last and !$self->evil_filename($last)) {
 	$self->debug("looks like I can use the last path element");
 	return $last;
