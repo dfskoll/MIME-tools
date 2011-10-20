@@ -34,6 +34,7 @@ if (!defined($pid)) {
 
 if (!$pid) {
 	# In the child
+	sleep(1);
 	$top->smtpsend(Host => '127.0.0.1',
 		       Port => 5225);
 	exit(0);
@@ -42,8 +43,12 @@ if (!$pid) {
 # In the parent
 my $s = $sock->accept();
 if (!$s) {
-	kill(9, $pid);
-	die("accept failed: $!");
+	sleep(1);
+	$s = $sock->accept();
+	if (!$s) {
+		kill(9, $pid);
+		die("accept failed: $!");
+	}
 }
 
 $s->print("220 Go ahead\n");
