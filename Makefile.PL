@@ -20,6 +20,12 @@ requires        'Mail::Field'    => 1.05;
 requires        'MIME::Base64'   => 2.20;
 recommends      'MIME::Base64'   => 3.03;
 
+# Convert::BinHex is needed if you want to process
+# BinHex-encoded mail.  These aren't really specified
+# by the MIME standards-track RFCs, so it's a
+# recommends rather than a requires
+recommends      'Convert::BinHex';
+
 requires        'IO::File'       => 1.13;
 requires        'IO::Handle';
 requires        'File::Spec'     => 0.6;
