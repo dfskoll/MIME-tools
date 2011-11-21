@@ -183,7 +183,7 @@ sub eos_type {
 #
 sub native_handle {
     my $fh = shift;
-    return $fh if $fh->isa('IO::File');
+    return $fh if ($fh->isa('IO::File') || $fh->isa('IO::Handle'));
     return $fh if (ref $fh eq 'GLOB');
     undef;
 }
