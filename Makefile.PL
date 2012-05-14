@@ -3,6 +3,7 @@ use warnings;
 use inc::Module::Install;
 
 name            'MIME-tools';
+module_name     'MIME::Tools';
 version_from    'lib/MIME/Tools.pm';
 author          q{Eryq <eryq@zeegee.com>, David F. Skoll <dfs@roaringpenguin.com>, Dave O'Neill <dmo@roaringpenguin.com>};
 abstract        'Tools to manipulate MIME messages';
