@@ -1042,7 +1042,7 @@ sub process_part {
     }
     elsif (("$type/$subtype" eq "message/rfc822" ||
 	    "$type/$subtype" eq "message/external-body" ||
-	    ("$type/$subtype" eq "message/partial" && $head->mime_attr("content-type.number") == 1)) &&
+	    ("$type/$subtype" eq "message/partial" && defined($head->mime_attr("content-type.number")) && $head->mime_attr("content-type.number") == 1)) &&
 	    $self->extract_nested_messages) {
 	$self->debug("attempting to process a nested message");
 	return undef unless defined($self->process_message($in, $rdr, $ent));
