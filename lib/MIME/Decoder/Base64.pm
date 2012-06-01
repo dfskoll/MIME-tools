@@ -1,4 +1,6 @@
 package MIME::Decoder::Base64;
+use strict;
+use warnings;
 
 
 =head1 NAME

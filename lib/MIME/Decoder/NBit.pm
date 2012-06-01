@@ -1,4 +1,6 @@
 package MIME::Decoder::NBit;
+use strict;
+use warnings;
 
 
 =head1 NAME

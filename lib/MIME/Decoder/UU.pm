@@ -1,5 +1,6 @@
 package MIME::Decoder::UU;
-
+use strict;
+use warnings;
 
 =head1 NAME
 
