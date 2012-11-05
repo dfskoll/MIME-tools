@@ -20,8 +20,8 @@
     "Charset" => "us-ascii"
   },
   "Part_2" => {
-    "Filename" => qq{/evil/because:of\\path\\3d-compress.gif},
-    "BodyFilename" => "3d-compress.gif",
+    "Filename" => qq{/evil/because:ofpath3d-compress.gif},
+    "BodyFilename" => "because_ofpath3d-compress.gif",
     "Size" => 419,
     "Disposition" => "inline",
     "Type" => "image/gif",
