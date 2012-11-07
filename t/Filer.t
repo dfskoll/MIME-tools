@@ -7,6 +7,7 @@ use Config;
 
 binmode(STDOUT, ":utf8");
 binmode(STDERR, ":utf8");
+binmode( Test::More->builder()->output(), ':encoding(utf-8)' );
 
 # Perl < 5.10.0 did not handle Unicode at all...
 my $wookie;
