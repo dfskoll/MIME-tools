@@ -73,10 +73,13 @@ t/ticket-37139.t
 t/ticket-41632.t
 t/ticket-43439.t
 t/ticket-52924.t
+t/ticket-5462.t
 t/ticket-60931.t
 t/ticket-65681.t
 t/ticket-66025.t
+t/ticket-71041.t
 t/ticket-71677.t
+t/ticket-80433.t
 t/WordDecoder.t
 t/WordEncoder.t
 t/Words.t
