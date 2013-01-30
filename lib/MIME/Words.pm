@@ -301,7 +301,7 @@ sub encode_mimewords {
     ###    worst-case encoding give us no more than 54 + ~10 < 75 characters
     my $word;
     local $1;
-    $rawstr =~ s{([ a-zA-Z0-9\x7F-\xFF]{1,18})}{     ### get next "word"
+    $rawstr =~ s{([a-zA-Z0-9\x7F-\xFF]+\s*)}{     ### get next "word"
 	$word = $1;
 	(($word !~ /(?:[$NONPRINT])|(?:^\s+$)/o)
 	 ? $word                                          ### no unsafe chars
