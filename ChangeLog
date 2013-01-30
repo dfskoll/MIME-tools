@@ -1,3 +1,18 @@
+5.504	  2013-01-30  David F. Skoll <dfs@roaringpenguin.com>
+
+	* VERSION 5.504 RELEASED
+
+	* Fix encoding of MIME parameters that contain a quoted
+	  string:  "like \"this"
+	  https://rt.cpan.org/Public/Bug/Display.html?id=80433
+
+	* Suppress useless warnings from tests
+	  https://rt.cpan.org/Public/Bug/Display.html?id=80679
+
+	* Fix long-standing bug in encode_mimewords that can
+	  break multibyte-encodings (eg, utf-8)
+	  https://rt.cpan.org/Public/Bug/Display.html?id=5462
+
 5.503	  2012-06-08  David F. Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.503 RELEASED
