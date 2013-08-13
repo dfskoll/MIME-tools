@@ -421,7 +421,7 @@ C<7bit>-compliant, but others might have very long lines and would need to be
 sent C<quoted-printable> for reliability.
 
 See the section on encoding/decoding for more details, as well as
-L<"A MIME PRIMER">.
+L<"A MIME PRIMER"> below.
 
 
 =head2 Sending email
@@ -438,7 +438,7 @@ email.  For example,
 
 The B<MIME::Decoder> class can be used to I<encode> as well; this is done
 when printing MIME entities.  All the standard encodings are supported
-(see L<"A MIME PRIMER"> for details):
+(see L<"A MIME PRIMER"> below for details):
 
     Encoding:        | Normally used when message contents are:
     -------------------------------------------------------------------
