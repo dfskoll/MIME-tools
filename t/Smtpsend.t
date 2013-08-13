@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Config;
 use Test::More;
+$ENV{MAILDOMAIN}='example.com';
 my $can_fork = $Config{d_fork} || $Config{d_pseudofork} ||
 		(($^O eq 'MSWin32' || $^O eq 'NetWare') and
 		$Config{useithreads} and 
