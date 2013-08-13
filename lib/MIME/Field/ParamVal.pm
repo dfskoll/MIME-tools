@@ -209,7 +209,7 @@ sub rfc2231decode {
 }
 
 sub rfc2231percent {
-    # Do percent-subsitution
+    # Do percent-substitution
     my($str) = @_;
     local $1;
     $str =~ s/%([0-9a-fA-F]{2})/pack("C", hex($1))/ge;

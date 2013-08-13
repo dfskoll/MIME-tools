@@ -218,7 +218,7 @@ sub as_string {
     close($fh);
     return $str;
 }
-*data = \&as_string;         ### silenty invoke preferred usage
+*data = \&as_string;         ### silently invoke preferred usage
 
 
 #------------------------------

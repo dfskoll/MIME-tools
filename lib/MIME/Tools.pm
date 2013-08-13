@@ -1,7 +1,7 @@
 package MIME::Tools;
 
 #------------------------------
-# Because the POD documenation is pretty extensive, it follows
+# Because the POD documentation is pretty extensive, it follows
 # the __END__ statement below...
 #------------------------------
 
