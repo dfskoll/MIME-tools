@@ -1036,4 +1036,11 @@ comments) have been invaluable in improving the whole:
 Please forgive me if I've accidentally left you out.
 Better yet, email me, and I'll put you in.
 
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+See the COPYING file for more details.
+
 =cut
