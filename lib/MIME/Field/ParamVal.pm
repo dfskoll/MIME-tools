@@ -93,7 +93,7 @@ $VERSION = "5.504";
 my $PARAMNAME = '[^\x00-\x1f\x80-\xff :=]+';
 
 # Pattern to match the first value on the line:
-my $FIRST    = '[^\s\;\x00-\x1f\x80-\xff]+';
+my $FIRST    = '[^\s\;\x00-\x1f\x80-\xff]*';
 
 # Pattern to match an RFC 2045 token:
 #
