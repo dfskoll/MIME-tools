@@ -98,7 +98,6 @@ testin/infinite.msg
 testin/intl.msg
 testin/jt-0498.msg
 testin/lennie.msg
-testin/malformed-content-type-zip.msg
 testin/mime-lg.b64
 testin/mime-sm.b64
 testin/mime-sm.gif
@@ -156,6 +155,7 @@ testmsgs/german.msg
 testmsgs/german.ref
 testmsgs/hdr-fakeout.msg
 testmsgs/hdr-fakeout.ref
+testmsgs/malformed-content-type-zip.msg
 testmsgs/multi-2evil.msg
 testmsgs/multi-2evil.ref
 testmsgs/multi-2gifs.msg
