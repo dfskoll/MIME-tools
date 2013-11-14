@@ -1,3 +1,22 @@
+5.505	  2013-11-14  David F. Skoll <dfs@roaringpenguin.com>
+
+	* VERSION 5.505 RELEASED
+
+	* Fix documentation typos.
+	  https://rt.cpan.org/Public/Bug/Display.html?id=80473
+
+	* Fix broken test.
+	  https://rt.cpan.org/Public/Bug/Display.html?id=84668
+
+	* Don't run Kwalitee tests unless author or release tests are enabled.
+	  https://rt.cpan.org/Public/Bug/Display.html?id=87094
+
+	* Fix many documentation typos.
+	  https://rt.cpan.org/Public/Bug/Display.html?id=87783
+
+	* Fix bug in header parsing that would fail to parse a header like:
+ 	      Content-Type: ; name="malware.zip"
+
 5.504	  2013-01-30  David F. Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.504 RELEASED
