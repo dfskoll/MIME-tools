@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 use warnings;
-use Test::More tests => 34;
+use Test::More tests => 39;
 
 use MIME::Entity;
 use MIME::Parser;
@@ -100,6 +100,45 @@ my $LINE;
 				 Charset  => 'iso8859-1');
      my $got = $e->head->mime_attr('content-type.charset');
      is($got, 'iso8859-1', 'Charset: explicit');
+ }
+
+ {
+     #-----test------
+     my $croaked = 1;
+     eval {
+	     my $e = MIME::Entity->build(Type => 'message/rfc822',
+					 Encoding => 'base64',
+					 Data => "Subject: phooey\n\nBlat\n");
+	     $croaked = 0;
+     };
+     ok($croaked, 'MIME::Entity->build croaked on message/rfc822 with base64 encoding');
+     ok($@ =~ /can't have encoding base64 for message type message\/rfc822/,
+	'and it croaked with expected error.');
+ }
+
+ {
+     #-----test------
+     my $croaked = 1;
+     eval {
+	     my $e = MIME::Entity->build(Type => 'message/global',
+					 Encoding => 'base64',
+					 Data => "Subject: phooey\n\nBlat\n");
+	     $croaked = 0;
+     };
+     ok(!$croaked, 'MIME::Entity->build did not croak on message/global with base64 encoding');
+ }
+ {
+     #-----test------
+     my $croaked = 1;
+     eval {
+	     my $e = MIME::Entity->build(Type => 'multipart/alternative',
+					 Encoding => 'base64',
+					 Data => "Subject: phooey\n\nBlat\n");
+	     $croaked = 0;
+     };
+     ok($croaked, 'MIME::Entity->build croaked on multipart/alternative with base64 encoding');
+     ok($@ =~ /can't have encoding base64 for message type multipart\/alternative/,
+	'and it croaked with expected error.');
  }
 }
 

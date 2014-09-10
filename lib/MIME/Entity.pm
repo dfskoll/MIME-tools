@@ -570,7 +570,7 @@ sub build {
     $filename = undef if (defined($filename) and $filename eq '');
 
     ### Type-check sanity:
-    if ($type =~ m{^(multipart|message)/}) {
+    if ($type =~ m{^(multipart/|message/(rfc822|partial|external-body|delivery-status|disposition-notification|feedback-report))}) {
 	($encoding =~ /^(|7bit|8bit|binary|-suggest)$/i)
 	    or croak "can't have encoding $encoding for message type $type!";
     }
