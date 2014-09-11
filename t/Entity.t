@@ -131,13 +131,13 @@ my $LINE;
      #-----test------
      my $croaked = 1;
      eval {
-	     my $e = MIME::Entity->build(Type => 'multipart/alternative',
+	     my $e = MIME::Entity->build(Type => 'multipart/ALTERNATIVE',
 					 Encoding => 'base64',
 					 Data => "Subject: phooey\n\nBlat\n");
 	     $croaked = 0;
      };
      ok($croaked, 'MIME::Entity->build croaked on multipart/alternative with base64 encoding');
-     ok($@ =~ /can't have encoding base64 for message type multipart\/alternative/,
+     ok($@ =~ /can't have encoding base64 for message type multipart\/ALTERNATIVE/,
 	'and it croaked with expected error.');
  }
 }
