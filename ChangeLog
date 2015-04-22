@@ -1,4 +1,10 @@
-5.505	  2013-11-14  David F. Skoll <dfs@roaringpenguin.com>
+5.506	  2015-04-22  Dianne Skoll <dfs@roaringpenguin.com>
+
+	* VERSION 5.506 RELEASED
+
+	* Update maintainer's name to "Dianne Skoll"
+
+5.505	  2013-11-14  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.505 RELEASED
 
@@ -17,7 +23,7 @@
 	* Fix bug in header parsing that would fail to parse a header like:
  	      Content-Type: ; name="malware.zip"
 
-5.504	  2013-01-30  David F. Skoll <dfs@roaringpenguin.com>
+5.504	  2013-01-30  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.504 RELEASED
 
@@ -32,7 +38,7 @@
 	  break multibyte-encodings (eg, utf-8)
 	  https://rt.cpan.org/Public/Bug/Display.html?id=5462
 
-5.503	  2012-06-08  David F. Skoll <dfs@roaringpenguin.com>
+5.503	  2012-06-08  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.503 RELEASED
 
@@ -66,7 +72,7 @@
 	* Add "use strict" everywhere
 	  https://rt.cpan.org/Public/Bug/Display.html?id=77582
 
-5.502	  2011-03-08  David F. Skoll <dfs@roaringpenguin.com>
+5.502	  2011-03-08  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.502 RELEASED
 
@@ -81,7 +87,7 @@
 
 	* Fix unit test failure on Win32:  (https://rt.cpan.org/Ticket/Display.html?id=66286)
 
-5.501	  2011-02-17  David F. Skoll <dfs@roaringpenguin.com>
+5.501	  2011-02-17  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.501 RELEASED
 
@@ -187,7 +193,7 @@
 	  never worked and has been removed, any code calling tmp_recycling()
 	  should stop attempting to use the feature.
 
-5.424     2007-11-07  David Skoll <dfs@roaringpenguin.com>
+5.424     2007-11-07  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.424 RELEASED
 
@@ -267,14 +273,14 @@
 	* (cleanup) Merge all changelog information from README and
 	  MIME/Tools.pm into ChangeLog
 
-5.420     2006-03-17  David F. Skoll  <dfs@roaringpenguin.com>
+5.420     2006-03-17  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.420 RELEASED
 
 	* Fix regression introduced in 5.419 -- quoted-printable
 	encoding would sometimes fail on "textual" MIME parts.
 
-5.419     2005-12-22  David F. Skoll  <dfs@roaringpenguin.com>
+5.419     2005-12-22  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.419 RELEASED
 
@@ -283,7 +289,7 @@
 	if you need the exact unmangled message source (for example,
 	for GPG-signing.)  Patch submitted by Jörn Reder.
 
-5.418     2005-09-29  David F. Skoll  <dfs@roaringpenguin.com>
+5.418     2005-09-29  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.418 RELEASED
 
@@ -298,7 +304,7 @@
 	* MANIFEST: Remove some useless internal files from the manifest.
 	They were never meant to be part of the actual distribution.
 
-5.417     2005-01-20  David F. Skoll  <dfs@roaringpenguin.com>
+5.417     2005-01-20  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.417 RELEASED
 
@@ -310,7 +316,7 @@
 	parameters was buggy and caused decoding errors.  This has been
 	fixed.
 
-5.416     2005-01-03  David F. Skoll  <dfs@roaringpenguin.com>
+5.416     2005-01-03  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.416 RELEASED
 
@@ -322,14 +328,14 @@
 	parameters.  Apparently, not doing so can cause Perl to core dump
 	on certain badly-formed messages.
 
-5.415     2004-10-27  David F. Skoll  <dfs@roaringpenguin.com>
+5.415     2004-10-27  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.415 RELEASED
 
 	* Fixed parsing of parameter="" in headers, and fixed case where
 	multipart boundary is ""
 
-5.414     2004-10-06  David F. Skoll  <dfs@roaringpenguin.com>
+5.414     2004-10-06  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.414 RELEASED
 
@@ -339,14 +345,14 @@
 	* Check return values of I/O operations like open(), close(), etc.
 	and die if they fail.  Problem reported by Mark Martinec.
 
-5.413     2004-09-15  David F. Skoll  <dfs@roaringpenguin.com>
+5.413     2004-09-15  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.413 RELEASED
 
 	* Fix some $VERSION = xxx assignments that were broken; make sure
 	VERSION shows up as 5.413 everywhere.  Sorry about that!
 
-5.412     2004-09-09  David F. Skoll  <dfs@roaringpenguin.com>
+5.412     2004-09-09  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* VERSION 5.412 RELEASED
 
@@ -356,7 +362,7 @@
 	* Filer.pm: Be much more strict in evil_filename, allowing only
 	a set of known good characters.
 
-2004-09-08  David F. Skoll  <dfs@roaringpenguin.com>
+2004-09-08  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* Skip BinHex decoding if prerequisite modules not installed.
 
@@ -371,7 +377,7 @@
 
 	* Correct bad regexp test for "bad PDF" files.
 
-2004-09-07  David F. Skoll  <dfs@roaringpenguin.com>
+2004-09-07  Dianne Skoll  <dfs@roaringpenguin.com>
 
 	* lib/MIME/Parser/Filer.pm (evil_filename): Make evil_filename
 	more paranoid (Julian Field and Martin Blapp)
