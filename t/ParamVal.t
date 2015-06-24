@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 9;
 
 use MIME::Field::ContType;
 use MIME::WordDecoder;
@@ -33,4 +33,21 @@ use Encode;
 	my $wd = supported MIME::WordDecoder 'UTF-8';
 
 	is( encode('utf8', $wd->decode($field->param('answer'))), $expected, 'answer param was unpacked correctly');
+}
+
+# Test for CPAN RT #105455
+{
+	my $header = 'attachment; filename=wookie.zip size=3';
+
+	my $field = Mail::Field->new('Content-type');
+	$field->parse( $header );
+	is( $field->param('_'), 'attachment', 'Got body of header');
+	is ($field->param('filename'), 'wookie.zip', 'Got correct filename');
+
+	$header = 'attachment; filename="wookie.zip size=3"';
+
+	$field = Mail::Field->new('Content-type');
+	$field->parse( $header );
+	is( $field->param('_'), 'attachment', 'Got body of header');
+	is ($field->param('filename'), 'wookie.zip size=3', 'Got correct filename');
 }

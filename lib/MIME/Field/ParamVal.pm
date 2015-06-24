@@ -103,7 +103,7 @@ my $TSPECIAL = '()<>@,;:\</[]?="';
 
 #" Fix emacs highlighting...
 
-my $TOKEN    = '[^ \x00-\x1f\x80-\xff' . "\Q$TSPECIAL\E" . ']+';
+my $TOKEN    = '[^\x00-\x1f\x80-\xff' . "\Q$TSPECIAL\E" . ']+';
 
 my $QUOTED_STRING = '"([^\\\\"]*(?:\\\\.(?:[^\\\\"]*))*)"';
 
@@ -251,6 +251,9 @@ sub parse_params {
 	    # Strip leading/trailing whitespace from badtoken
 	    $badtoken =~ s/^\s+//;
 	    $badtoken =~ s/\s+\z//;
+
+	    # Strip anything after a space - CPAN RT #105455
+	    $badtoken =~ s/\s.*//;
 	}
 	$val = defined($qstr) ? $qstr :
 	    (defined($enctoken) ? $enctoken :
