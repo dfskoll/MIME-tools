@@ -252,7 +252,11 @@ sub parse_params {
 	    $badtoken =~ s/^\s+//;
 	    $badtoken =~ s/\s+\z//;
 
-	    # Strip anything after a space - CPAN RT #105455
+	    # Only keep token parameters in badtoken;
+	    # cut it off at the first non-token char.  CPAN RT #105455
+	    $badtoken =~ /^($TOKEN)*/;
+	    $badtoken = $1;
+	    # Cut it off at first whitespace too
 	    $badtoken =~ s/\s.*//;
 	}
 	$val = defined($qstr) ? $qstr :
