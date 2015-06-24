@@ -103,7 +103,7 @@ my $TSPECIAL = '()<>@,;:\</[]?="';
 
 #" Fix emacs highlighting...
 
-my $TOKEN    = '[^\x00-\x1f\x80-\xff' . "\Q$TSPECIAL\E" . ']+';
+my $TOKEN    = '[^ \x00-\x1f\x80-\xff' . "\Q$TSPECIAL\E" . ']+';
 
 my $QUOTED_STRING = '"([^\\\\"]*(?:\\\\.(?:[^\\\\"]*))*)"';
 
