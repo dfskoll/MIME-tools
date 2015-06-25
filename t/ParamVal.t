@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 9;
+use Test::More tests => 13;
 
 use MIME::Field::ContType;
 use MIME::WordDecoder;
@@ -37,12 +37,13 @@ use Encode;
 
 # Test for CPAN RT #105455
 {
-	my $header = 'attachment; filename=wookie.zip size=3';
+	my $header = 'attachment; filename=wookie.zip size=3; junk=cabbage';
 
 	my $field = Mail::Field->new('Content-type');
 	$field->parse( $header );
 	is( $field->param('_'), 'attachment', 'Got body of header');
 	is ($field->param('filename'), 'wookie.zip', 'Got correct filename');
+	is ($field->param('junk'), 'cabbage', 'Got correct final param');
 
 	$header = 'attachment; filename="wookie.zip size=3"';
 
@@ -50,4 +51,12 @@ use Encode;
 	$field->parse( $header );
 	is( $field->param('_'), 'attachment', 'Got body of header');
 	is ($field->param('filename'), 'wookie.zip size=3', 'Got correct filename');
+
+	$header = 'attachment; filename="wookie.zip;x=1"; (crap); (more_crap) adhesive=glueme';
+
+	$field = Mail::Field->new('Content-type');
+	$field->parse( $header );
+	is( $field->param('_'), 'attachment', 'Got body of header');
+	is ($field->param('filename'), 'wookie.zip;x=1', 'Got correct filename');
+	is ($field->param('adhesive'), 'glueme', 'Got correct final parameter');
 }
