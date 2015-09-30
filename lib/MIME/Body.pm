@@ -522,7 +522,7 @@ sub open {
 	    die "bad mode: $mode";
     }
 
-    return IO::File->new(\{$self->{MBS_Data}}, $mode);
+    return IO::File->new(\ $self->{MBS_Data}, $mode);
 }
 
 
