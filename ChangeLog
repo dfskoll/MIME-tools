@@ -1,3 +1,12 @@
+5.507	  2015-09-30  Dianne Skoll <dfs@roaringpenguin.com>
+
+	* VERSION 5.507 RELEASED
+
+	* Fix parsing bug
+	  https://rt.cpan.org/Public/Bug/Display.html?id=105455
+
+	* Fix typo that broke MIME::Body::incore->open() on Perl 5.20
+
 5.506	  2015-04-22  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.506 RELEASED
