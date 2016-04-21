@@ -99,8 +99,6 @@ foreach my $refpath (@refpaths) {
 	if( $@ ) {
 		diag("Eval failed: $@");
 	}
-	use Data::Dumper;
-	print STDERR Dumper($ref, $parse_error, $ent) unless $ok;
 	ok($ok, "$refpath Message => $msgpath, Parser => " . ($ref->{Parser}{Name} || 'default'));
     }
 
