@@ -155,6 +155,7 @@ testmsgs/german.msg
 testmsgs/german.ref
 testmsgs/hdr-fakeout.msg
 testmsgs/hdr-fakeout.ref
+testmsgs/hdr-fakeout-newmailtools-ref
 testmsgs/malformed-content-type-zip.msg
 testmsgs/multi-2evil.msg
 testmsgs/multi-2evil.ref
