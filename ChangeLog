@@ -1,3 +1,10 @@
+5.508	  2016-08-29  Dianne Skoll <dfs@roaringpenguin.com>
+
+	* VERSION 5.508 RELEASED
+
+	* Fix test broken by Perl update
+	  https://rt.cpan.org/Ticket/Display.html?id=113887
+
 5.507	  2015-09-30  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.507 RELEASED
