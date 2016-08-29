@@ -224,9 +224,8 @@ sub write {
 		# ribasushi, "not terminally fucked, > and tested enough".
 		# TODO: We will now need to maintain this over time to push
 		# the version up as new versions are released.
-		# UPDATE: Changed to 6.42 per CPAN RT #102031
-		$self->build_requires(     'ExtUtils::MakeMaker' => 6.42 );
-		$self->configure_requires( 'ExtUtils::MakeMaker' => 6.42 );
+		$self->build_requires(     'ExtUtils::MakeMaker' => 6.59 );
+		$self->configure_requires( 'ExtUtils::MakeMaker' => 6.59 );
 	} else {
 		# Allow legacy-compatibility with 5.005 by depending on the
 		# most recent EU:MM that supported 5.005.
