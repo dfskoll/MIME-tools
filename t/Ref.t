@@ -40,7 +40,8 @@ foreach my $refpath (@refpaths) {
 #   print STDERR "   $msgpath\n";
 
     ### HACK HACK HACK: MailTools behaviour has changed!!!
-    if ($msgpath eq 'testmsgs/hdr-fakeout.msg' && $::Mail::Header::VERSION > 2.14) {
+    if ($msgpath =~ /hdr-fakeout.msg$/ &&
+	$::Mail::Header::VERSION > 2.14) {
 	    $refpath = 'testmsgs/hdr-fakeout-newmailtools-ref';
     }
     ### Get reference, as ref to array:
