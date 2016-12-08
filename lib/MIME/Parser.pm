@@ -1109,6 +1109,10 @@ Returns the parsed MIME::Entity on success.
 sub parse_data {
     my ($self, $data) = @_;
 
+    if (!defined($data)) {
+	    croak "parse_data: No data passed";
+    }
+
     ### Get data as a scalar:
     my $io;
 
