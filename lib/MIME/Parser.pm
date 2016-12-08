@@ -1130,6 +1130,10 @@ sub parse_data {
         croak "parse_data: wrong argument ref type: ", ref($data);
     }
 
+    if (!$io) {
+	    croak "parse_data: unable to open in-memory file handle";
+    }
+
     ### Parse!
     return $self->parse($io);
 }
