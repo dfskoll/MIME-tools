@@ -264,7 +264,7 @@ qw(
    );
 
 ### Fallback preamble and epilogue:
-my $DefPreamble = [ "This is a multi-part message in MIME format...\n" ];
+my $DefPreamble = [ "This is a multi-part message in MIME format..." ];
 my $DefEpilogue = [ ];
 
 
@@ -767,6 +767,7 @@ or raw data (via read()).
 
 sub body {
 	my ($self, $value) = @_;
+	my $boundary_delimiter = $MIME::Entity::BOUNDARY_DELIMITER || "\n";
 	if (@_ > 1) {      ### setting body line(s)...
 		croak "you cannot use body() to set the encoded contents\n";
 	} else {
@@ -776,7 +777,7 @@ sub body {
 		close($fh);
 		my @ary = split(/\n/, $output);
 		# Each line needs the terminating newline
-		@ary = map { "$_\n" } @ary;
+		@ary = map { "$_$boundary_delimiter" } @ary;
 
 		return \@ary;
 	}
@@ -1383,6 +1384,7 @@ sub sign {
     my %params = @_;
     my $io;
 
+    my $boundary_delimiter = $MIME::Entity::BOUNDARY_DELIMITER || "\n";
     ### If multipart and not attaching, try to sign our first part:
     if ($self->is_multipart and !$params{Attach}) {
 	return $self->parts(0)->sign(@_);
@@ -1429,8 +1431,8 @@ sub sign {
 	my $line;
 	$io = $self->open("w") or croak("open: $!");
 	foreach $line (@body) { $io->print($line) };      ### body data
-	(($body[-1]||'') =~ /\n\Z/) or $io->print("\n");  ### ensure final \n
-	$io->print("-- \n$sig");                          ### separator + sig
+	(($body[-1]||'') =~ /\n\Z/) or $io->print($boundary_delimiter);  ### ensure final \n
+	$io->print("-- $boundary_delimiter$sig");                          ### separator + sig
 	$io->close or croak("close: $!");
 	return 1;         ### done!
     }
@@ -1764,11 +1766,12 @@ some sort of email handler, it's up to you to save this information.
 use Symbol;
 sub print {
     my ($self, $out) = @_;
+    my $boundary_delimiter = $MIME::Entity::BOUNDARY_DELIMITER || "\n";
     $out = select if @_ < 2;
     $out = Symbol::qualify($out,scalar(caller)) unless ref($out);
 
     $self->print_header($out);   ### the header
-    $out->print("\n");
+    $out->print($boundary_delimiter);
     $self->print_body($out);     ### the "stuff after the header"
 }
 
@@ -1809,6 +1812,7 @@ sub print_body {
     my ($self, $out) = @_;
     $out ||= select;
     my ($type) = split '/', lc($self->mime_type);  ### handle by MIME type
+    my $boundary_delimiter = $MIME::Entity::BOUNDARY_DELIMITER || "\n";
 
     ### Multipart...
     if ($type eq 'multipart') {
@@ -1819,10 +1823,10 @@ sub print_body {
 	if (defined $plines) {
 	    # Defined, so output the preamble if it exists (avoiding additional
 	    # newline as per ticket 60931)
-	    $out->print( join('', @$plines) . "\n") if (@$plines > 0);
+	    $out->print( join('', @$plines) . $boundary_delimiter) if (@$plines > 0);
 	} else {
 	    # Undefined, so use default preamble
-	    $out->print( join('', @$DefPreamble) . "\n" );
+	    $out->print( join('', @$DefPreamble) . $boundary_delimiter . $boundary_delimiter );
 	}
 
 	### Parts:
@@ -1830,7 +1834,7 @@ sub print_body {
 	foreach $part ($self->parts) {
 	    $out->print("--$boundary\n");
 	    $part->print($out);
-	    $out->print("\n");           ### needed for next delim/close
+	    $out->print($boundary_delimiter);           ### needed for next delim/close
 	}
 	$out->print("--$boundary--\n");
 
@@ -1838,7 +1842,7 @@ sub print_body {
 	my $epilogue = join('', @{ $self->epilogue || $DefEpilogue });
 	if ($epilogue ne '') {
 	    $out->print($epilogue);
-	    $out->print("\n") if ($epilogue !~ /\n\Z/);  ### be nice
+	    $out->print($boundary_delimiter) if ($epilogue !~ /\n\Z/);  ### be nice
 	}
     }
 
@@ -1849,7 +1853,7 @@ sub print_body {
 	my $need_sep = 0;
 	my $part;
 	foreach $part ($self->parts) {
-	    $out->print("\n\n") if $need_sep++;
+	    $out->print("$boundary_delimiter$boundary_delimiter") if $need_sep++;
 	    $part->print($out);
 	}
     }

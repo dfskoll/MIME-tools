@@ -560,7 +560,8 @@ Return the header as a string.  You can also invoke it as C<as_string>.
 sub stringify {
     my $self = shift;          ### build clean header, and output...
     my @header = grep {defined($_) ? $_ : ()} @{$self->header};
-    join "", map { /\n$/ ? $_ : "$_\n" } @header;
+    my $header_delimiter = $MIME::Entity::BOUNDARY_DELIMITER || "\n";
+    join "", map { /\n$/ ? $_ : $_ . $MIME::Entity::BOUNDARY_DELIMITER } @header;
 }
 sub as_string { shift->stringify(@_) }
 
