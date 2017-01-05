@@ -561,7 +561,7 @@ sub stringify {
     my $self = shift;          ### build clean header, and output...
     my @header = grep {defined($_) ? $_ : ()} @{$self->header};
     my $header_delimiter = $MIME::Entity::BOUNDARY_DELIMITER || "\n";
-    join "", map { /\n$/ ? $_ : $_ . $MIME::Entity::BOUNDARY_DELIMITER } @header;
+    join "", map { /\n$/ ? substr($_, 0, -1) . $header_delimiter : $_ . $header_delimiter } @header;
 }
 sub as_string { shift->stringify(@_) }
 

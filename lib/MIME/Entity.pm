@@ -1832,11 +1832,11 @@ sub print_body {
 	### Parts:
 	my $part;
 	foreach $part ($self->parts) {
-	    $out->print("--$boundary\n");
+	    $out->print("--$boundary$boundary_delimiter");
 	    $part->print($out);
 	    $out->print($boundary_delimiter);           ### needed for next delim/close
 	}
-	$out->print("--$boundary--\n");
+	$out->print("--$boundary--$boundary_delimiter");
 
 	### Epilogue:
 	my $epilogue = join('', @{ $self->epilogue || $DefEpilogue });
