@@ -555,6 +555,10 @@ sub set {
 I<Instance method.>
 Return the header as a string.  You can also invoke it as C<as_string>.
 
+If you set the variable $MIME::Entity::BOUNDARY_DELIMITER to a string,
+that string will be used as line-end delimiter.  If it is not set,
+the line ending will be a newline character (\n)
+
 =cut
 
 sub stringify {

@@ -106,9 +106,10 @@ sub encode_it {
     my $fname = (($self->head && 
 		  $self->head->mime_attr('content-disposition.filename')) ||
 		 '');
-    $out->print("begin 644 $fname\n");
+    my $nl = $MIME::Entity::BOUNDARY_DELIMITER || "\n";
+    $out->print("begin 644 $fname$nl");
     while ($in->read($buf, 45)) { $out->print(pack('u', $buf)) }
-    $out->print("end\n");
+    $out->print("end$nl");
     1;
 }
 

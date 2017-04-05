@@ -123,9 +123,10 @@ sub encode_it {
 
     my $nread;
     my $buf = '';
+    my $nl = $MIME::Entity::BOUNDARY_DELIMITER || "\n";
     while ($nread = $in->read($buf, $EncodeChunkLength)) {
-	$encoded = encode_base64($buf);
-	$encoded .= "\n" unless ($encoded =~ /\n\Z/);   ### ensure newline!
+	$encoded = encode_base64($buf, $nl);
+	$encoded .= $nl unless ($encoded =~ /$nl\Z/);   ### ensure newline!
 	$out->print($encoded);
     }
     1;

@@ -1,3 +1,20 @@
+5.509	  2017-04-05  Dianne Skoll <dfs@roaringpenguin.com>
+
+	* VERSION 5.509 RELEASED
+
+	* Fix CPAN bug https://rt.cpan.org/Ticket/Display.html?id=120871
+	  Makefile.PL fails with no '.' in @INC
+
+	* Fix CPAN bug https://rt.cpan.org/Ticket/Display.html?id=118262
+	  Test t/Ref.t fails on Windows install
+
+	* Fix CPAN bug https://rt.cpan.org/Ticket/Display.html?id=119166
+	  MIME::Parser::parse_data() should check what it gets back...
+
+	* Fix CPAN bug https://rt.cpan.org/Ticket/Display.html?id=119568
+	  Allow \r\n to be used as line-end delimeter when outputting MIME
+	  message.
+
 5.508	  2016-08-29  Dianne Skoll <dfs@roaringpenguin.com>
 
 	* VERSION 5.508 RELEASED
