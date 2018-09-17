@@ -636,6 +636,10 @@ sub process_header {
     ($hdr_rdr->eos_type eq 'DONE') or
 	$self->error("unexpected end of header\n");
 
+
+    ### If header line begins with a UTF-8 Byte-Order mark, remove it.
+    $headstr =~ s/^\x{EF}\x{BB}\x{BF}//;
+
     ### Extract the header (note that zero-size headers are admissible!):
     open(my $readfh, '<:scalar', \$headstr) or die $!;
     $head->read( $readfh );
