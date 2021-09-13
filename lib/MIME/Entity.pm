@@ -495,6 +495,11 @@ or an array reference (whose elements are joined together to make
 the actual scalar).  The body is opened on the data using
 MIME::Body::InCore.
 
+Note that for text parts, the Data scalar or array is assumed to be
+encoded in a suitable character encoding (as if by C<Encode::encode>)
+rather than a native Perl string.  The encoding you use must, of
+course, match the C<charset> option of the C<MIME-Type> header.
+
 =item Description
 
 I<Optional.>
