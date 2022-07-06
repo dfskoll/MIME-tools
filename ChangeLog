@@ -4,6 +4,10 @@
 
 	* Update author contact info
 
+	* Make code work in taint mode
+
+	* Clarify MIME::Entity documentation
+
 5.509	  2017-04-05  Dianne Skoll <dianne@skoll.ca>
 
 	* VERSION 5.509 RELEASED
