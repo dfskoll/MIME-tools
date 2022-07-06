@@ -7,7 +7,7 @@ use MIME::Entity;
 use MIME::Parser;
 use lib qw( ./t );
 
-my $e = MIME::Entity->build(From => 'dfs@roaringpenguin.com',
+my $e = MIME::Entity->build(From => 'dianne@skoll.ca',
 			    To   => 'dfs2@roaringpenguin.com',
 			    Subject => 'End-of-line test',
 			    Data => ["Line 1\n", "Line 2\n"],);
@@ -17,7 +17,7 @@ is ($str, "Content-Type: text/plain\nContent-Disposition: inline\nContent-Transf
 
 my $delim = "\r\n";
 $MIME::Entity::BOUNDARY_DELIMITER = $delim;
-$e = MIME::Entity->build(From => 'dfs@roaringpenguin.com',
+$e = MIME::Entity->build(From => 'dianne@skoll.ca',
 			    To   => 'dfs2@roaringpenguin.com',
 			    Subject => 'End-of-line test',
 			    Data => ["Line 1$delim", "Line 2$delim"],);
@@ -28,7 +28,7 @@ is ($str, "Content-Type: text/plain${delim}Content-Disposition: inline${delim}Co
 
 $e->attach(Data => ["More Text$delim"], Type => "text/plain");
 
-$e = MIME::Entity->build(From => 'dfs@roaringpenguin.com',
+$e = MIME::Entity->build(From => 'dianne@skoll.ca',
 			 To   => 'dfs2@roaringpenguin.com',
 			 Subject => 'End-of-line test',
 			 Type => 'multipart/mixed', Boundary => 'foo');
@@ -37,7 +37,7 @@ $e->attach(Data => ["More Text$delim"], Type => "text/plain");
 $str = $e->as_string();
 is ($str, "Content-Type: multipart/mixed; boundary=\"foo\"${delim}Content-Transfer-Encoding: binary${delim}MIME-Version: 1.0${delim}X-Mailer: MIME-tools 5.509 (Entity 5.509)${delim}From: dfs\@roaringpenguin.com${delim}To: dfs2\@roaringpenguin.com${delim}Subject: End-of-line test${delim}${delim}This is a multi-part message in MIME format...${delim}${delim}--foo${delim}Content-Type: text/plain${delim}Content-Disposition: inline${delim}Content-Transfer-Encoding: binary${delim}${delim}Text${delim}${delim}--foo${delim}Content-Type: text/plain${delim}Content-Disposition: inline${delim}Content-Transfer-Encoding: binary${delim}${delim}More Text${delim}${delim}--foo--${delim}", 'Got expected line endings');
 
-$e = MIME::Entity->build(From => 'dfs@roaringpenguin.com',
+$e = MIME::Entity->build(From => 'dianne@skoll.ca',
 			 To   => 'dfs2@roaringpenguin.com',
 			 Subject => 'End-of-line test',
 			 Type => 'multipart/mixed', Boundary => 'foo');
