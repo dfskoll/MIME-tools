@@ -73,7 +73,10 @@ $VERSION = "5.510";
 # The following code is horrible.  I know.  Beat me up. --dfs
 BEGIN {
     if (!defined(&encode_qp_threearg)) {
-        if ($::MIME::QuotedPrint::VERSION >= 3.03) {
+        my $ver = $::MIME::QuotedPrint::VERSION;
+        # Remove developer version suffix
+        $ver =~ s/_.*//;
+        if ($ver >= 3.03) {
             eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift, shift, shift); }';
         } else {
             eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift); }';
