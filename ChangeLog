@@ -1,3 +1,12 @@
+5.511	  2024-01-02  Dianne Skoll <dianne@skoll.ca>
+
+	* VERSION 5.511 RELEASED
+
+	* Silence a warning if used with a development version of
+	  MIME::QuotedPrint
+	  https://rt.cpan.org/Ticket/Display.html?id=150118
+	  https://rt.cpan.org/Ticket/Display.html?id=149225
+
 5.510	  2022-07-06  Dianne Skoll <dianne@skoll.ca>
 
 	* VERSION 5.510 RELEASED

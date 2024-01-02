@@ -1,7 +1,7 @@
 package MIME::Decoder::QuotedPrint;
 use strict;
 use warnings;
-
+use version;
 
 =head1 NAME
 
@@ -73,10 +73,8 @@ $VERSION = "5.511";
 # The following code is horrible.  I know.  Beat me up. --dfs
 BEGIN {
     if (!defined(&encode_qp_threearg)) {
-        my $ver = $::MIME::QuotedPrint::VERSION;
-        # Remove developer version suffix
-        $ver =~ s/_.*//;
-        if ($ver >= 3.03) {
+        my $ver = version->parse($::MIME::QuotedPrint::VERSION);
+        if ($ver >= version->parse(3.03)) {
             eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift, shift, shift); }';
         } else {
             eval 'sub encode_qp_threearg ( $$$ ) { encode_qp(shift); }';
