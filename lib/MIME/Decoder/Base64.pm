@@ -62,9 +62,8 @@ use MIME::Tools qw(debug);
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
 $VERSION = "5.511";
 
-### How many bytes to encode at a time (must be a multiple of 3, and
-### less than (76 * 0.75)!
-my $EncodeChunkLength = 45;
+### How many bytes to encode at a time (must be a multiple of 3)
+my $EncodeChunkLength = 120 * 57;
 
 ### How many bytes to decode at a time?
 my $DecodeChunkLength = 32 * 1024;
