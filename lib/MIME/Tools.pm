@@ -962,10 +962,6 @@ Latin-2, or any other 8-bit alphabet).
 L<MIME::Parser>, L<MIME::Head>, L<MIME::Body>, L<MIME::Entity>, L<MIME::Decoder>, L<Mail::Header>,
 L<Mail::Internet>
 
-At the time of this writing, the MIME-tools homepage was
-F<http://www.mimedefang.org/static/mime-tools.php>.  Check there for
-updates and support.
-
 The MIME format is documented in RFCs 1521-1522, and more recently
 in RFCs 2045-2049.
 
