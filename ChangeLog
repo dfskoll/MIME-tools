@@ -1,3 +1,12 @@
+5.512	  2024-01-08  Dianne Skoll <dianne@skoll.ca>
+
+	* VERSION 5.512 RELEASED
+
+	* Use much larger chunk sizes for Base-64 encoding which reduces
+	  both encoding time and space overhead.
+	  https://rt.cpan.org/Ticket/Display.html?id=128400
+	  https://rt.cpan.org/Ticket/Display.html?id=130110
+
 5.511	  2024-01-02  Dianne Skoll <dianne@skoll.ca>
 
 	* VERSION 5.511 RELEASED
