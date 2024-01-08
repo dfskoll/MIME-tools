@@ -141,7 +141,7 @@ use Carp;
 use IO::File;
 
 ### The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.511";
+$VERSION = "5.512";
 
 
 #------------------------------
