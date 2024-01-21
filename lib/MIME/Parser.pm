@@ -221,6 +221,7 @@ sub init {
     $self->{MP5_UUDecode}        = 0;
     $self->{MP5_MaxParts}        = -1;
     $self->{MP5_TmpDir}          = undef;
+    $self->{MP5_AmbiguousContentType} = 0;
 
     $self->interface(ENTITY_CLASS => 'MIME::Entity');
     $self->interface(HEAD_CLASS   => 'MIME::Head');
@@ -249,6 +250,7 @@ sub init_parse {
     $self->{MP5_Filer}->purgeable([]);
     $self->{MP5_Filer}->init_parse();
     $self->{MP5_NumParts} = 0;
+    $self->{MP5_AmbiguousContentType} = 0;
     1;
 }
 
@@ -1040,6 +1042,12 @@ sub process_part {
     my ($type, $subtype) = (split('/', $head->mime_type, -1), '');
     $self->debug("type = $type, subtype = $subtype");
 
+    # If we have (1) MORE THAN ONE content type, or (2) the
+    # Content-Type header has duplicate fields, set MP5_AmbiguousContentType
+    if ($head->count('content-type') > 1 ||
+        $head->mime_attr('content-type.@duplicate_parameters')) {
+        $self->{MP5_AmbiguousContentType} = 1;
+    }
     ### Handle, according to the MIME type:
     if ($type eq 'multipart') {
 	return undef unless defined($self->process_multipart($in, $rdr, $ent));
@@ -1732,6 +1740,21 @@ sub last_error {
     join '', shift->results->errors;
 }
 
+=item ambiguous_content_type
+
+I<Instance method.>
+
+Returns true if the most recently parsed message has either
+multiple Content-Type: headers in a given part, or if the
+Content-Type header has multiple repeated parameters (such as multiple
+boundary parameters).  Messages with an ambiguous content type should
+be treated as a security risk
+
+=cut
+sub ambiguous_content_type {
+    my ($self) = @_;
+    return $self->{MP5_AmbiguousContentType};
+}
 
 #------------------------------
 
