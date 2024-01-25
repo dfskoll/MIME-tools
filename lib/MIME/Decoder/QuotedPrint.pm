@@ -58,7 +58,7 @@ use MIME::QuotedPrint;
 @ISA = qw(MIME::Decoder);
 
 # The package version, both in 1.23 style *and* usable by MakeMaker:
-$VERSION = "5.512";
+$VERSION = "5.513";
 
 #------------------------------
 # If we have MIME::QuotedPrint 3.03 or later, use the three-argument
