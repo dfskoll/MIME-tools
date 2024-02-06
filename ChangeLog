@@ -1,3 +1,13 @@
+5.513	  2024-01-25  Dianne Skoll <dianne@skoll.ca>
+
+	* VERSION 5.513 RELEASED
+
+	* Add MIME::Parser->ambiguous_content to indicate one of several
+   	  types of ambiguous MIME content that could be security risks.
+
+	* Add the '@duplicate_parameters' pseudo-parameter to let caller
+  	  detect duplicate MIME parameters on a MIME header.
+
 5.512	  2024-01-08  Dianne Skoll <dianne@skoll.ca>
 
 	* VERSION 5.512 RELEASED
