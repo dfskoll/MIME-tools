@@ -277,6 +277,27 @@ qw(
 my $DefPreamble = [ "This is a multi-part message in MIME format..." ];
 my $DefEpilogue = [ ];
 
+# The presence of more than one of the following headers
+# in a given MIME entity could indicate an ambiguous parse
+# and hence a security risk
+
+my $singleton_headers =
+    [
+     'content-type',
+     'content-disposition',
+     'content-transfer-encoding',
+     'content-id',
+    ];
+
+# The presence of a duplicated parameters in one of the following
+# headers in a given MIME entity could indicate an ambiguous parse and
+# hence a security risk
+my $singleton_parameter_headers =
+    [
+     'content-type',
+     'content-disposition',
+    ];
+
 
 #==============================
 #
@@ -350,6 +371,52 @@ sub new {
     $self;
 }
 
+=item ambiguous_content
+
+I<Instance method.>
+
+Returns true if this entity I<or any of its parts, recursively> has
+any the following properties:
+
+=over 4
+
+More than one Content-Type, Content-ID, Content-Transfer-Encoding or
+Content-Disposition header.
+
+A Content-Type or Content-Disposition header contains a repeated
+parameter.
+
+=back
+
+Messages with ambiguous content should be treated as a security risk.
+In particular, if MIME-tools is used in an email security tool,
+ambiguous messages should not be delivered to end-users.
+
+=cut
+sub ambiguous_content {
+    my ($self) = @_;
+    my $head = $self->head;
+    foreach my $hdr (@$singleton_headers) {
+        if ($head->count($hdr) > 1) {
+            return 1;
+        }
+    }
+
+    foreach my $hdr (@$singleton_parameter_headers) {
+        if ($head->mime_attr($hdr . '.@duplicate_parameters')) {
+            return 1;
+        }
+    }
+
+    if ($self->is_multipart) {
+        foreach my $part ($self->parts) {
+            if ($part->ambiguous_content) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 ###------------------------------
 
