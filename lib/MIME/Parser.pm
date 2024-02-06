@@ -1028,7 +1028,7 @@ sub process_part {
        $ent->bodyhandle($self->new_body_for($head));
        $ent->bodyhandle->open("w")->close or die "$ME: can't close: $!";
        if (!$self->{MP5_AmbiguousContent}) {
-           if ($ent->ambiguous_content) {
+           if ($ent->head->ambiguous_content) {
                $self->{MP5_AmbiguousContent} = 1;
            }
        }
@@ -1044,7 +1044,7 @@ sub process_part {
     # We have the header, so that's enough to check for
     # ambiguous content...
     if (!$self->{MP5_AmbiguousContent}) {
-        if ($ent->ambiguous_content) {
+        if ($ent->head->ambiguous_content) {
             $self->{MP5_AmbiguousContent} = 1;
         }
     }

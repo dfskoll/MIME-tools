@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use Test::Deep;
-use Test::More tests => 17;
+use Test::More tests => 20;
 
 use MIME::Entity;
 use MIME::Parser;
@@ -33,7 +33,9 @@ ok($entity->ambiguous_content(), 'Entity method matches parser method');
 $entity = $parser->parse_open('testmsgs/double-content-disposition.msg');
 ok($parser->ambiguous_content(), 'Ambiguous content was detected in message with two Content-Disposition headers');
 ok($entity->ambiguous_content(), 'Entity method matches parser method');
-
+ok(!$entity->head->ambiguous_content(), 'Ambiguous content is not in top-level part');
+ok(!$entity->parts(0)->head->ambiguous_content(), '... or the first sub-part');
+ok($entity->parts(1)->head->ambiguous_content(), '... but it is in the second sub-part');
 $entity = $parser->parse_open('testmsgs/double-content-id.msg');
 ok($parser->ambiguous_content(), 'Ambiguous content was detected in message with two Content-Id headers');
 ok($entity->ambiguous_content(), 'Entity method matches parser method');

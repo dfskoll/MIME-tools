@@ -277,28 +277,6 @@ qw(
 my $DefPreamble = [ "This is a multi-part message in MIME format..." ];
 my $DefEpilogue = [ ];
 
-# The presence of more than one of the following headers
-# in a given MIME entity could indicate an ambiguous parse
-# and hence a security risk
-
-my $singleton_headers =
-    [
-     'content-type',
-     'content-disposition',
-     'content-transfer-encoding',
-     'content-id',
-    ];
-
-# The presence of a duplicated parameters in one of the following
-# headers in a given MIME entity could indicate an ambiguous parse and
-# hence a security risk
-my $singleton_parameter_headers =
-    [
-     'content-type',
-     'content-disposition',
-    ];
-
-
 #==============================
 #
 # Utilities, private
@@ -392,28 +370,27 @@ Messages with ambiguous content should be treated as a security risk.
 In particular, if MIME-tools is used in an email security tool,
 ambiguous messages should not be delivered to end-users.
 
+Note carefully the difference between:
+
+    $entity->head->ambiguous_content();
+
+and
+
+    $entity->ambiguous_content();
+
+The first returns true only if this specific entity's headers indicate
+ambiguity.  The second returns true if this entity
+I<or any of its parts, recursivelty> has headers that indicate ambiguity.
+
 =cut
 sub ambiguous_content {
     my ($self) = @_;
-    my $head = $self->head;
-    foreach my $hdr (@$singleton_headers) {
-        if ($head->count($hdr) > 1) {
-            return 1;
-        }
-    }
 
-    foreach my $hdr (@$singleton_parameter_headers) {
-        if ($head->mime_attr($hdr . '.@duplicate_parameters')) {
-            return 1;
-        }
-    }
+    return 1 if $self->head->ambiguous_content;
+    return 0 unless $self->is_multipart;
 
-    if ($self->is_multipart) {
-        foreach my $part ($self->parts) {
-            if ($part->ambiguous_content) {
-                return 1;
-            }
-        }
+    foreach my $part ($self->parts) {
+        return 1 if $part->ambiguous_content;
     }
     return 0;
 }
