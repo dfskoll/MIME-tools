@@ -1096,6 +1096,9 @@ sub process_part {
 
     ### Done (we hope!):
     $self->results->level(-1);
+    if ($self->{MP5_AmbiguousContent}) {
+        $ent->ambiguous_content(1);
+    }
     return $ent;
 }
 

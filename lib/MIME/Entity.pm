@@ -384,6 +384,29 @@ sub add_part {
 
 #------------------------------
 
+=item ambiguous_content
+
+I<Instance method.>
+Returns true if entity, or its parts, are the result of an ambiguous parse.
+See MIME::Parser->ambiguous_content.
+
+=cut
+sub ambiguous_content {
+    my ($self, $value) = @_;
+    if (@_ > 1) {
+        $self->{ME_AmbiguousContent} = $value;
+    }
+    if ($self->{ME_AmbiguousContent}) {
+        return 1
+    }
+    for my $part ($self->parts) {
+        if ($part->ambiguous_content) {
+            return 1
+        }
+    };
+    return;
+}
+
 =item attach PARAMHASH
 
 I<Instance method.>
