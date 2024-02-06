@@ -1027,8 +1027,10 @@ sub process_part {
        $ent->head($head);
        $ent->bodyhandle($self->new_body_for($head));
        $ent->bodyhandle->open("w")->close or die "$ME: can't close: $!";
-       if ($ent->ambiguous_content) {
-           $self->{MP5_AmbiguousContent} = 1;
+       if (!$self->{MP5_AmbiguousContent}) {
+           if ($ent->ambiguous_content) {
+               $self->{MP5_AmbiguousContent} = 1;
+           }
        }
        $self->results->level(-1);
        return $ent;
@@ -1041,8 +1043,10 @@ sub process_part {
 
     # We have the header, so that's enough to check for
     # ambiguous content...
-    if ($ent->ambiguous_content) {
-        $self->{MP5_AmbiguousContent} = 1;
+    if (!$self->{MP5_AmbiguousContent}) {
+        if ($ent->ambiguous_content) {
+            $self->{MP5_AmbiguousContent} = 1;
+        }
     }
     ### Get the MIME type and subtype:
     my ($type, $subtype) = (split('/', $head->mime_type, -1), '');
