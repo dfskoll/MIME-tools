@@ -1,6 +1,6 @@
 5.514	  2024-02-06  Dianne Skoll <dianne@skoll.ca>
 
-	* VERSION 5.513 RELEASED
+	* VERSION 5.514 RELEASED
 
 	* Move the guts of the ambiguous_content method to MIME::Head
 
