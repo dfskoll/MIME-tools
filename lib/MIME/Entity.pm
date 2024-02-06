@@ -354,21 +354,7 @@ sub new {
 I<Instance method.>
 
 Returns true if this entity I<or any of its parts, recursively> has
-any the following properties:
-
-=over 4
-
-More than one Content-Type, Content-ID, Content-Transfer-Encoding or
-Content-Disposition header.
-
-A Content-Type or Content-Disposition header contains a repeated
-parameter.
-
-=back
-
-Messages with ambiguous content should be treated as a security risk.
-In particular, if MIME-tools is used in an email security tool,
-ambiguous messages should not be delivered to end-users.
+a C<MIME::Head> that indicates ambiguous content.
 
 Note carefully the difference between:
 
@@ -380,7 +366,7 @@ and
 
 The first returns true only if this specific entity's headers indicate
 ambiguity.  The second returns true if this entity
-I<or any of its parts, recursivelty> has headers that indicate ambiguity.
+I<or any of its parts, recursively> has headers that indicate ambiguity.
 
 =cut
 sub ambiguous_content {
