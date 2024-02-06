@@ -1751,6 +1751,17 @@ Returns true if the most recently parsed message has one or more
 entities with ambiguous content.  See the documentation of
 C<MIME::Entity>'s C<ambiguous_content> method for details.
 
+Note that while these two calls to ambuguous_content return the same
+thing:
+
+    $entity = $parser->parse($whatever_stream);
+    $parser->ambuguous_content();
+    $entity->ambuguous_content();
+
+the former is faster because it simply returns the results that were
+detected during the parse, while the latter actually executes the code
+that checks for ambiguous content again.
+
 Messages with ambiguous content should be treated as a security risk.
 In particular, if MIME::Parser is used in an email security tool,
 ambiguous messages should not be delivered to end-users.
