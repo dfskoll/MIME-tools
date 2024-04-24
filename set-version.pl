@@ -27,6 +27,15 @@ sub fix_version($$) {
 		print STDERR "Updated VERSION in $fname\n";
 		print OUT "\$VERSION = \"$version\";\n";
 	    }
+        } elsif ($_ =~ /^version: / && $fname =~ /.yml$/) {
+            if ($_ eq "version: $version\n") {
+		print STDERR "No need to update $fname -- already at $version\n";
+		print OUT;
+            } else {
+                $didit = 1;
+                print STDERR "Updated version: in $fname\n";
+                print OUT "version: $version\n";
+            }
 	} else {
 	    print OUT;
 	}
@@ -48,4 +57,6 @@ while(<FIND>) {
     chomp;
     fix_version($_, $version);
 }
+fix_version("META.yml", $version);
+
 close(FIND);
